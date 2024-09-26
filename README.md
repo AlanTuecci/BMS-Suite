@@ -4,8 +4,7 @@ By Alan Tuecci, Zakaria Almardaee, and Dainell Baker
 
 ### Version 0.1.0
 
-Authenticator-Beta-1
-All dependencies have been updated to versions that have no known vulnerabilities published on the CWE List
+Authenticator-Beta-1 -> All dependencies have been updated to versions that have no known vulnerabilities published on the CWE List
 
 ### Dependency Information
 
@@ -20,21 +19,13 @@ npm install
 ```
 
 Required:
+
 - NodeJS version 20.10.0 or greater
 - PostgreSQL v16
 
 ### Database Setup
 
-In PostgreSQL, run the following command:
-
-```sql
-create table users(
-    user_id serial primary key,
-    email varchar(255) unique not null,
-    password varchar(255) not null,
-    created_at date default current_date
-);
-```
+In a PostgreSQL shell, copy and paste the entire contents of the database.sql file in the backend directory.
 
 ### Environment Variables
 
