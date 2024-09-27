@@ -1,0 +1,73 @@
+.left{
+    float: left;
+    margin-left: 15px;
+}
+
+.left a{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.right{
+    float: right;
+    text-align: right;
+    margin-right: 35px;
+}
+
+.right a{
+    font-size: 14px;
+}
+
+ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Stops list from being vertical */
+li{ 
+    display: inline-block;
+}
+
+li a{/* Modifies text size for list */
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.navbar a{ /* a = descendants within this class */
+    color: #14213D;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.navbar{
+    background-color: #E0FAFF;
+    width: 100%;
+    border-bottom: 1px solid #14213D;
+    padding: 10px;
+}
+
+.nav-button{
+    background-color: #14213D;
+    font-size: 15px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 20px; 
+    padding: 3px 16px;
+    transition-duration: 0.4s;
+}
+
+.nav-button:hover{
+    background-color: #4073E3;
+}
+
+.nav-button a{
+    color: white;
+}
+
