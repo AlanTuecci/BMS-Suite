@@ -2,7 +2,7 @@ const { config } = require("dotenv");
 config();
 
 module.exports = {
-  PORT: process.env.PORT,
+  SERVER_PORT: process.env.SERVER_PORT,
   SERVER_URL: process.env.SERVER_URL,
   CLIENT_URL: process.env.CLIENT_URL,
   SECRET: process.env.SECRET,
@@ -11,4 +11,6 @@ module.exports = {
   DB_DATABASE: process.env.DB_DATABASE,
   DB_PASS: process.env.DB_PASS,
   DB_PORT: process.env.DB_PORT,
+  SERVER_EMAIL: process.env.SERVER_EMAIL,
+  SERVER_EMAIL_PASSWORD: process.env.SERVER_EMAIL_PASSWORD
 };

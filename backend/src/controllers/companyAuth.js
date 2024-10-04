@@ -12,11 +12,19 @@ exports.companyRegister = async (req, res) => {
 
     if (rows.length) {
       return res.status(404).json({
-        error: "There is already a registered company with the same EIN!",
+        errors: [
+          {
+            type: "field",
+            value: company_ein,
+            msg: "There is already a registered company with that same EIN.",
+            path: "company_ein",
+            location: "body",
+          },
+        ],
       });
     }
 
-    // Insert the employee registration details with the hashed password
+    // Insert the company registration details with the hashed password
     const hashedPassword = await hash(password, 10);
     await db.query(
       "insert into companies(company_admin_email, company_admin_password, company_ein) values($1, $2, $3)",
@@ -29,6 +37,18 @@ exports.companyRegister = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    return res.status(500).json({
+      errors: [
+        {
+          type: "Unknown",
+          value: "Unkown",
+          msg: "Unknown error occurred.",
+          path: "Unknown",
+          location: "Unknown",
+        },
+      ],
+      error: error,
+    });
   }
 };
 
@@ -48,8 +68,17 @@ exports.companyLogin = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    return res.status(201).json({
-      error: error.message,
+    return res.status(500).json({
+      errors: [
+        {
+          type: "Unknown",
+          value: "Unkown",
+          msg: "Unknown error occurred.",
+          path: "Unknown",
+          location: "Unknown",
+        },
+      ],
+      error: error,
     });
   }
 };

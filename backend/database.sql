@@ -17,7 +17,8 @@ CREATE TABLE companies(
 --invite_codes TABLE
 CREATE TABLE invite_codes(
     company_id serial REFERENCES companies(company_id),
-    invite_code varchar(6) NOT NULL
+    invite_code integer NOT NULL,
+    employee_email varchar(50) unique NOT NULL
 );
 
 --employee_info TABLE

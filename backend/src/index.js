@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { PORT, CLIENT_URL } = require("./constants");
+const { SERVER_PORT, CLIENT_URL, SERVER_URL } = require("./constants");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const cors = require("cors");
@@ -43,8 +43,8 @@ app.get("/*", (req, res) => {
 const appStart = async () => {
   try {
     await checkConnect();
-    app.listen(PORT, () => {
-      console.log(`The app is running at http://localhost:${PORT}`);
+    app.listen(SERVER_PORT, () => {
+      console.log(`The app is running at ${SERVER_URL}`);
     });
   } catch (error) {
     console.log(`Error: ${error.message}`);

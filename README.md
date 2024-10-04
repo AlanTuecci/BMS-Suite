@@ -2,9 +2,9 @@
 
 By Alan Tuecci, Zakaria Almardaee, and Dainell Baker
 
-### Version 0.1.0
+### Version 0.2.0
 
-Authenticator-Beta-1 -> All dependencies have been updated to versions that have no known vulnerabilities published on the CWE List
+Authenticator-Beta-2 -> Overhauled Signin/Signup and Database
 
 ### Dependency Information
 
@@ -41,11 +41,15 @@ DB_HOST= {db_hostname}
 DB_DATABASE= {db_database}
 DB_PASS= {db_password}
 DB_PORT= {db_port}
+SERVER_EMAIL= {your_email}@gmail.com
+SERVER_EMAIL_PASSWORD= {your_gmail_app_password}
 ```
+
+Note: Instructions for obtaining an app password from Google can be found at this link [Google - Sign in with app passwords](https://support.google.com/accounts/answer/185833?hl=en)
 
 ### To launch the project in development mode
 
-First, update the CLIENT_URL environment variable in the backend folder to make sure that you are accepting connections from the react development server
+First, update the CLIENT_URL environment variable in the backend folder to make sure that you are accepting connections from the local react development server
 
 ```env
 CLIENT_URL=http://localhost:5000
