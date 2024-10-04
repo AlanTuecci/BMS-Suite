@@ -47,6 +47,10 @@ SERVER_EMAIL_PASSWORD= {your_gmail_app_password}
 
 Note: Instructions for obtaining an app password from Google can be found at this link [Google - Sign in with app passwords](https://support.google.com/accounts/answer/185833?hl=en)
 
+### Additional Documentation of Backend Routes
+
+Additional documentation of the backend routes can be found in the README.md file found in the following directory: /backend/src/routes
+
 ### To launch the project in development mode
 
 First, update the CLIENT_URL environment variable in the backend folder to make sure that you are accepting connections from the local react development server
