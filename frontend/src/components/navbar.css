@@ -40,8 +40,8 @@ li a{/* Modifies text size for list */
 
 .navbar a{ /* a = descendants within this class */
     color: #14213D;
-    padding: 10px;
     text-decoration: none;
+    font-size: 18px;
 }
 
 .navbar{
@@ -53,14 +53,14 @@ li a{/* Modifies text size for list */
 
 .nav-button{
     background-color: #14213D;
-    font-size: 15px;
     border: none;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     border-radius: 20px; 
-    padding: 3px 16px;
+    padding: 3px 25px;
     transition-duration: 0.4s;
+    color: white
 }
 
 .nav-button:hover{

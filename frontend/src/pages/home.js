@@ -14,7 +14,7 @@ const Home = () => {
         <h1><b></b>Designed to Improve <br></br> The Efficency of operations</h1>
         <p1>Revolutionizing Business Management Services. <br></br>In an All-In-One Package.</p1>
         <br></br>
-        <button className="button_container">Try Demo</button>
+        <button className="button_container">Register</button>
         <br></br>
         <img className="pic_container" src={hompic} alt = ''/>
 

@@ -14,7 +14,7 @@
 .button_container{
     position: relative;
     top: 15px;
-    background-color:#454FE1;
+    background-color:#14213D;
     color: white;
     font-size: 18px;
     border: none;
@@ -29,7 +29,6 @@
 .button_container:hover{
     background-color: #14213D;
 }
-
 
 .pic_container{
     position: relative;
