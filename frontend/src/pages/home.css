@@ -1,0 +1,41 @@
+.background{
+    background-color: #E0FAFF;
+    height:100dvh;
+}
+
+.text_container{
+    position:relative;
+    text-align: center;
+    top: 55px;
+    color: #14213D;
+
+}
+
+.button_container{
+    position: relative;
+    top: 15px;
+    background-color:#454FE1;
+    color: white;
+    font-size: 18px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 20px; 
+    padding: 3px 25px;
+    transition-duration: 0.4s;
+}
+
+.button_container:hover{
+    background-color: #14213D;
+}
+
+
+.pic_container{
+    position: relative;
+    top:20px;
+}
+
+img {
+    transform: scale(0.9);
+  }
