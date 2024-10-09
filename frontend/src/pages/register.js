@@ -6,6 +6,7 @@ const Register = () => {
   const [values, setValues] = useState({
     email: "",
     password: "",
+    eni: ""
   });
   const [errors, setErrors] = useState([]);
   const [success, setSuccess] = useState(false);
@@ -61,6 +62,21 @@ const Register = () => {
             name="password"
             value={values.password}
             placeholder="password"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="eni" className="form-label">
+            Company ENI
+          </label>
+          <input
+            onChange={(e) => onChange(e)}
+            type="text"
+            className="form-control"
+            id="eni"
+            name="eni"
+            value={values.eni}
+            placeholder="ENI"
             required
           />
         </div>
