@@ -6,27 +6,33 @@ const Register = () => {
   const [values, setValues] = useState({
     email: "",
     password: "",
+    confirmPassword: "",
     company_ein: ""
   });
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (values.password !== values.confirmPassword) {
+      setErrors({ confirmPassword: "Passwords do not match" });
+      return;
+    }
     try {
       const { data } = await onRegistration(values);
-      setErrors([]);
+      setErrors({});
       setSuccess(data.message);
-      setValues({ email: "", password: "" , company_ein: ""});
+      setValues({ email: "", password: "", confirmPassword: "", company_ein: "" });
     } catch (error) {
-      let errorArray = [];
+      let errorObj = {};
       error.response.data.errors.forEach((element) => {
-        errorArray.push(element.msg);
+        errorObj[element.path] = element.msg;
       });
-      setErrors(errorArray);
+      setErrors(errorObj);
       setSuccess("");
     }
   };
@@ -49,6 +55,7 @@ const Register = () => {
             placeholder="email"
             required
           />
+          {errors.email && <div style={{color: "red" }}>{errors.email}</div>}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -64,6 +71,23 @@ const Register = () => {
             placeholder="password"
             required
           />
+          {errors.password && <div style={{ color: "red" }}>{errors.password}</div>}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="confirmPassword" className="form-label">
+            Confirm Password
+          </label>
+          <input
+            onChange={(e) => onChange(e)}
+            type="password"
+            className={`form-control ${errors.confirmPassword ? "is-invalid" : ""}`}
+            id="confirmPassword"
+            name="confirmPassword"
+            value={values.confirmPassword}
+            placeholder="Confirm Password"
+            required
+          />
+          {errors.confirmPassword && <div style={{color: "red"}}>{errors.confirmPassword}</div>}
         </div>
         <div className="mb-3">
           <label htmlFor="company_ein" className="form-label">
@@ -79,13 +103,7 @@ const Register = () => {
             placeholder="EIN"
             required
           />
-        </div>
-        <div style={{ color: "red", margin: "10px 0" }}>
-          <ul>
-            {errors.map((error, index) => {
-              return <li key={index}>{error}</li>;
-            })}
-          </ul>
+          {errors.company_ein && <div style={{ color: "red"}}>{errors.company_ein}</div>}
         </div>
         <div style={{ color: "green", margin: "10px 0" }}>{success}</div>
         <button type="submit" className="btn btn-primary">
