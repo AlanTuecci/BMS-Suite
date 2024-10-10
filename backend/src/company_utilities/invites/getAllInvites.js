@@ -1,11 +1,13 @@
-exports.logout = async (req, res) => {
+const db = require("../../db");
+
+exports.getAllInvites = async (req, res) => {
+  const { company_id } = req.user;
+
   try {
-    return res.status(200).clearCookie("token", { httpOnly: true }).json({
-      success: true,
-      message: "Logout successful.",
-    });
+    const { rows } = await db.query("select * from invite_codes where company_id = $1", [company_id]);
+
+    return res.status(200).json(rows);
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({
       errors: [
         {

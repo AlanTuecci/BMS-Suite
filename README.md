@@ -2,10 +2,9 @@
 
 By Alan Tuecci, Zakaria Almardaee, and Dainell Baker
 
-### Version 0.1.0
+### Version 0.2.0
 
-Authenticator-Beta-1
-All dependencies have been updated to versions that have no known vulnerabilities published on the CWE List
+Authenticator-Beta-2 -> Overhauled Signin/Signup and Database
 
 ### Dependency Information
 
@@ -20,44 +19,46 @@ npm install
 ```
 
 Required:
+
 - NodeJS version 20.10.0 or greater
 - PostgreSQL v16
 
 ### Database Setup
 
-In PostgreSQL, run the following command:
-
-```sql
-create table users(
-    user_id serial primary key,
-    email varchar(255) unique not null,
-    password varchar(255) not null,
-    created_at date default current_date
-);
-```
+In a PostgreSQL shell, copy and paste the entire contents of the database.sql file in the backend directory.
 
 ### Environment Variables
 
 Create a `.env` file in the (backend) project root with the following content:
 
 ```env
-PORT = {port}
-SERVER_URL = http://{url}:{port}
-CLIENT_URL = http://{url}:{port}
-SECRET = {secret_key}
-DB_USER= {db_username}
-DB_HOST= {db_hostname}
-DB_DATABASE= {db_database}
-DB_PASS= {db_password}
-DB_PORT= {db_port}
+SERVER_PORT={port}
+CLIENT_PORT={port}
+SERVER_URL=http://{url}
+CLIENT_URL=http://{url}
+SECRET={secret_key}
+DB_USER={db_username}
+DB_HOST={db_hostname}
+DB_DATABASE={db_database}
+DB_PASS={db_password}
+DB_PORT={db_port}
+SERVER_EMAIL={your_email}@gmail.com
+SERVER_EMAIL_PASSWORD={your_gmail_app_password}
 ```
+
+Note: Instructions for obtaining an app password from Google can be found at this link [Google - Sign in with app passwords](https://support.google.com/accounts/answer/185833?hl=en)
+
+### Additional Documentation of Backend Routes
+
+Additional documentation of the backend routes can be found in the README.md file found in the following directory: /backend/src/routes
 
 ### To launch the project in development mode
 
-First, update the CLIENT_URL environment variable in the backend folder to make sure that you are accepting connections from the react development server
+First, update the CLIENT_URL and CLIENT_PORT environment variables in the backend folder to make sure that you are accepting connections from the local react development server
 
 ```env
-CLIENT_URL=http://localhost:5000
+CLIENT_PORT=5000
+CLIENT_URL=http://localhost
 ```
 
 Then, launch the ExpressJS server by using the following commands:

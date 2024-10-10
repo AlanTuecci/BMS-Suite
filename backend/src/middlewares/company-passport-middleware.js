@@ -1,5 +1,5 @@
 const passport = require("passport");
-const { trategy, Strategy } = require("passport-jwt");
+const { Strategy } = require("passport-jwt");
 const { SECRET } = require("../constants");
 const db = require("../db");
 
@@ -17,15 +17,18 @@ const otps = {
 };
 
 passport.use(
-  new Strategy(otps, async ({ id }, done) => {
+  new Strategy(otps, async ({ company_id, company_admin_email }, done) => {
     try {
-      const { rows } = await db.query("SELECT user_id, email FROM users WHERE user_id = $1", [id]);
+      const { rows } = await db.query(
+        "SELECT company_id, company_admin_email FROM companies WHERE company_id = $1 AND company_admin_email = $2",
+        [company_id, company_admin_email]
+      );
 
       if (!rows.length) {
         throw new Error("401 not authorized");
       }
 
-      let user = { id: rows[0].user_id, email: rows[0].email };
+      let user = { company_id: rows[0].company_id, company_admin_email: rows[0].company_admin_email };
 
       return await done(null, user);
     } catch (error) {
@@ -35,4 +38,4 @@ passport.use(
   })
 );
 
-exports.userAuth = passport.authenticate("jwt", { session: false });
+exports.companyUserAuth = passport.authenticate("jwt", { session: false });

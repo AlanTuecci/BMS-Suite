@@ -1,27 +1,26 @@
 import Layout from "../components/layout";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import './home.css'
+import hompic from '../components/HomeScreen.png'
 
 const Home = () => {
   const authState = useSelector((state) => state.auth);
 
   return (
+    <div className="background">
     <Layout>
-      <h1>BMS-Suite Site Prototype</h1>
-
-      <br></br>
-
-      <h2>
-        This a placeholder site designed to test the authentication methods of the backend.
+      <div className="text_container">
+        <h1><b></b>Designed to Improve <br></br> The Efficency of operations</h1>
+        <p1>Revolutionizing Business Management Services. <br></br>In an All-In-One Package.</p1>
         <br></br>
-        Authentication is done using JWTs stored in cookies.
-      </h2>
+        <button className="button_container"><NavLink to="/register" className=""> Register</NavLink></button>
+        <br></br>
+        <img className="pic_container" src={hompic} alt = ''/>
 
-      <br></br>
+      </div>
 
-      
-
-      {authState.isAuth ? (
+      {/* {authState.isAuth ? (
         <div>
           <h2>Welcome back! You have successfully signed in and can now access the site!</h2>
           <NavLink to="/placeholder">
@@ -56,8 +55,9 @@ const Home = () => {
             </button>
           </NavLink>
         </div>
-      )}
+      )} */}
     </Layout>
+    </div>
   );
 };
 

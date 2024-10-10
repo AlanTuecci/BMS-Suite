@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { PORT, CLIENT_URL } = require("./constants");
+const { SERVER_PORT, CLIENT_URL, SERVER_URL, CLIENT_PORT } = require("./constants");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const cors = require("cors");
@@ -13,10 +13,13 @@ const limiter = rateLimit({
   limit: 40,
 });
 
+//for CORS -> full client url string with port
+const clientUrlString = `${CLIENT_URL}:${CLIENT_PORT}`;
+
 //initialize middlewares
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: CLIENT_URL, credentials: true }));
+app.use(cors({ origin: clientUrlString, credentials: true }));
 app.use(passport.initialize());
 app.use(limiter);
 
@@ -43,8 +46,9 @@ app.get("/*", (req, res) => {
 const appStart = async () => {
   try {
     await checkConnect();
-    app.listen(PORT, () => {
-      console.log(`The app is running at http://localhost:${PORT}`);
+    app.listen(SERVER_PORT, () => {
+      console.log(`The server is running at ${SERVER_URL}:${SERVER_PORT}`);
+      console.log(`The server is using CORS and accepting connections from ${clientUrlString}`);
     });
   } catch (error) {
     console.log(`Error: ${error.message}`);
