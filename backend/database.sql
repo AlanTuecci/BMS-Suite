@@ -1,11 +1,3 @@
--- users TABLE
-CREATE TABLE users(
-    user_id serial PRIMARY KEY,
-    email varchar(255) unique NOT NULL,
-    password varchar(255) NOT NULL,
-    CREATEd_at date DEFAULT current_date
-);
-
 --companies TABLE
 CREATE TABLE companies(
     company_id serial PRIMARY KEY,
