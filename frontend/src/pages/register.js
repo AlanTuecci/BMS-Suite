@@ -6,7 +6,7 @@ const Register = () => {
   const [values, setValues] = useState({
     email: "",
     password: "",
-    eni: ""
+    company_ein: ""
   });
   const [errors, setErrors] = useState([]);
   const [success, setSuccess] = useState(false);
@@ -20,7 +20,7 @@ const Register = () => {
       const { data } = await onRegistration(values);
       setErrors([]);
       setSuccess(data.message);
-      setValues({ email: "", password: "" });
+      setValues({ email: "", password: "" , company_ein: ""});
     } catch (error) {
       let errorArray = [];
       error.response.data.errors.forEach((element) => {
@@ -66,17 +66,17 @@ const Register = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="eni" className="form-label">
-            Company ENI
+          <label htmlFor="company_ein" className="form-label">
+            Company EIN
           </label>
           <input
             onChange={(e) => onChange(e)}
             type="text"
             className="form-control"
-            id="eni"
-            name="eni"
-            value={values.eni}
-            placeholder="ENI"
+            id="company_ein"
+            name="company_ein"
+            value={values.company_ein}
+            placeholder="EIN"
             required
           />
         </div>

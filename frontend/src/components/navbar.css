@@ -42,6 +42,7 @@ li a{/* Modifies text size for list */
     color: #14213D;
     text-decoration: none;
     font-size: 18px;
+    text-align: center;
 }
 
 .navbar{
@@ -58,7 +59,7 @@ li a{/* Modifies text size for list */
     text-decoration: none;
     display: inline-block;
     border-radius: 20px; 
-    padding: 3px 25px;
+    padding: 3px 15px;
     transition-duration: 0.4s;
     color: white
 }
@@ -70,4 +71,3 @@ li a{/* Modifies text size for list */
 .nav-button a{
     color: white;
 }
-

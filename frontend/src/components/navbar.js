@@ -22,7 +22,7 @@ const Navbar = () => {
         ) : (
           <div>
           <div className="right">
-            <button className='nav-button'><NavLink to="/login" className=""> Login</NavLink></button>
+            <button className='nav-button'><NavLink to="/login" className="nav-button">Login</NavLink></button>
           </div> 
         </div>
         )}
