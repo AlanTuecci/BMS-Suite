@@ -7,7 +7,7 @@ exports.employeeRegister = async (req, res) => {
   const { invite_code, full_name, email, password } = req.body;
 
   try {
-    // Are the company id and invite code valid?
+    // Check if there an invite that matches the provided invite code and employee email?
     let { rows } = await db.query("select * from invite_codes where invite_code = $1 and employee_email = $2", [
       invite_code,
       email
