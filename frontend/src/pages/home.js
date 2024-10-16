@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import Layout from "../components/layout";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import './home.css';
 import hompic from '../media/HomeScreen.png';
 import employeeIcon from '../media/Employee.png';
 import businessIcon from '../media/Business.png';
 
 const Home = () => {
-  const authState = useSelector((state) => state.auth);
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
   const [route, setRoute] = useState('/login');
@@ -77,9 +75,6 @@ const Home = () => {
                   <h3>Employee</h3>
                 </div>
               </div>
-              <button className="proceed_button" onClick={handleOptionClick}>
-                Proceed to {route === '/login' ? 'Login' : 'Register'}
-              </button>
             </div>
           </div>
         )}

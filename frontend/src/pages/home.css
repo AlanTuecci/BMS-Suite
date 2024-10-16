@@ -116,21 +116,6 @@ img {
     text-align: center;
 }
 
-.proceed_button {
-    display: block;
-    margin: 20px auto 0;
-    padding: 15px 30px; 
-    background-color: #14213D;
-    color: white;
-    border-radius: 20px;
-    text-decoration: none;
-    transition: background-color 0.4s;
-}
-
-.proceed_button:hover {
-    background-color: #454FE1;
-}
-
 .option_icon {
     width: 100px;
     height: 100px;
