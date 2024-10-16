@@ -3,7 +3,9 @@ import Layout from "../components/layout";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import './home.css';
-import hompic from '../components/HomeScreen.png';
+import hompic from '../media/HomeScreen.png';
+import employeeIcon from '../media/Employee.png';
+import businessIcon from '../media/Business.png';
 
 const Home = () => {
   const authState = useSelector((state) => state.auth);
@@ -67,9 +69,11 @@ const Home = () => {
               <h2>Select Your Role</h2>
               <div className="options_container">
                 <div className="option_box" onClick={handleOptionClick}>
+                  <img src={businessIcon} alt="Business" className="option_icon" />
                   <h3>Business</h3>
                 </div>
                 <div className="option_box" onClick={handleOptionClick}>
+                  <img src={employeeIcon} alt="Employee" className="option_icon" />
                   <h3>Employee</h3>
                 </div>
               </div>

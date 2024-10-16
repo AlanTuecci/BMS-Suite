@@ -72,28 +72,28 @@ img {
 
 .modal_container {
     background-color: #fff;
-    padding: 30px;
+    padding: 50px;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 500px;
 }
 
 .options_container {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
+    gap: 10px;
     margin-top: 20px;
 }
 
 .option_box {
-    width: 100px;
-    height: 100px;
-    background-color: #E0FAFF;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    padding: 30px;
+    background-color: #E0FAFF;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
@@ -103,16 +103,23 @@ img {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+.option_icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
 .option_box h3 {
     color: #14213D;
     font-size: 16px;
+    margin-top: 10px;
     text-align: center;
 }
 
 .proceed_button {
     display: block;
     margin: 20px auto 0;
-    padding: 10px 20px;
+    padding: 15px 30px; 
     background-color: #14213D;
     color: white;
     border-radius: 20px;
@@ -122,4 +129,10 @@ img {
 
 .proceed_button:hover {
     background-color: #454FE1;
+}
+
+.option_icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
 }
