@@ -1,13 +1,19 @@
 .background{
     background-color: #E0FAFF;
-    height:100dvh;
+    height: 100vh;
 }
 
 .text_container{
-    position:relative;
+    position: relative;
     text-align: center;
     top: 55px;
     color: #14213D;
+}
+
+.action_buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 .button_container a{
@@ -17,20 +23,18 @@
 
 .button_container{
     color: white;
-    text-decoration: none;
-    background-color: #E0FAFF;
-    position: relative;
-    top: 15px;
-    background-color:#14213D;
-    color: white;
+    background-color: #14213D;
     font-size: 18px;
     border: none;
+    border-radius: 20px;
+    width: 150px;
+    height: 40px;
+    transition: background-color 0.4s;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    border-radius: 20px; 
-    padding: 5px 30px;
-    transition-duration: 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .button_container:hover{
@@ -39,9 +43,9 @@
 
 .pic_container{
     position: relative;
-    top:20px;
+    top: 40px;
 }
 
 img {
-    transform: scale(0.9);
-  }
+    transform: scale(1.3);
+}

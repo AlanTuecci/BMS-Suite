@@ -25,12 +25,11 @@ ul{
     overflow: hidden;
 }
 
-/* Stops list from being vertical */
 li{ 
     display: inline-block;
 }
 
-li a{/* Modifies text size for list */
+li a{
     font-size: 14px;
     text-align: center;
     padding: 10px;
@@ -38,7 +37,7 @@ li a{/* Modifies text size for list */
     font-weight: 500;
 }
 
-.navbar a{ /* a = descendants within this class */
+.navbar a{
     color: #14213D;
     text-decoration: none;
     font-size: 18px;
@@ -52,22 +51,9 @@ li a{/* Modifies text size for list */
     padding: 10px;
 }
 
-.nav-button{
-    background-color: #14213D;
-    border: none;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 20px; 
-    padding: 3px 15px;
-    transition-duration: 0.4s;
-    color: white
-}
-
-.nav-button:hover{
-    background-color: #454FE1;
-}
-
-.nav-button a{
-    color: white;
+.nav-buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
 }
