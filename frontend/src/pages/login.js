@@ -3,6 +3,7 @@ import Layout from "../components/layout";
 import { onLogin } from "../api/auth";
 import { useDispatch } from "react-redux";
 import { authenticateUser } from "../redux/slices/authSlice";
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -10,6 +11,9 @@ const Login = () => {
     password: "",
   });
   const [errors, setErrors] = useState([]);
+
+  const location = useLocation();
+  const userType = location.state?.userType || "employee";
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -20,14 +24,16 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await onLogin(values);
+      await onLogin(values, userType);
       dispatch(authenticateUser());
       localStorage.setItem("isAuth", "true");
     } catch (error) {
       let errorArray = [];
-      error.response.data.errors.forEach((element) => {
-        errorArray.push(element.msg);
-      });
+      if (error.response && error.response.data.errors) {
+        error.response.data.errors.forEach((element) => {
+          errorArray.push(element.msg);
+        });
+      }
       setErrors(errorArray);
     }
   };

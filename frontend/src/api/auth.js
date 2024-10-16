@@ -1,16 +1,21 @@
-import axios from "axios";
+import axios from 'axios';
+
+const API_URL = process.env.NODE_ENV === 'development'
+  ? process.env.REACT_APP_DEV_API_URL
+  : process.env.REACT_APP_API_URL_PROD;
+
 axios.defaults.withCredentials = true;
 
-const API_URL = process.env.REACT_APP_API_URL;
+export async function onLogin(loginData, userType) {
+  console.log("API_URL:", API_URL);
 
-export async function onRegistration(registrationData) {
-  return await axios.post(`${API_URL}/company/register`, registrationData);
-}
-
-export async function onLogin(loginData) {
-  return await axios.post(`${API_URL}/company/login`, loginData);
+  return await axios.post(`${API_URL}/${userType}/login`, loginData);
 }
 
 export async function onLogout() {
   return await axios.post(`${API_URL}/logout`);
+}
+
+export async function onRegistration(registrationData, userType) {
+  return await axios.post(`${API_URL}/${userType}/register`, registrationData);
 }

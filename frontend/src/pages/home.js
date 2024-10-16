@@ -17,10 +17,11 @@ const Home = () => {
     setShowModal(true);
   };
 
-  const handleOptionClick = () => {
+  const handleOptionClick = (userType) => {
     setShowModal(false);
-    navigate(route);
+    navigate(route, { state: { userType } });
   };
+  
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -66,11 +67,11 @@ const Home = () => {
             <div className="modal_container" ref={modalRef}>
               <h2>Select Your Role</h2>
               <div className="options_container">
-                <div className="option_box" onClick={handleOptionClick}>
-                  <img src={businessIcon} alt="Business" className="option_icon" />
-                  <h3>Business</h3>
+                <div className="option_box" onClick={() => handleOptionClick('company')}>
+                  <img src={businessIcon} alt="Company" className="option_icon" />
+                  <h3>Company</h3>
                 </div>
-                <div className="option_box" onClick={handleOptionClick}>
+                <div className="option_box" onClick={() => handleOptionClick('employee')}>
                   <img src={employeeIcon} alt="Employee" className="option_icon" />
                   <h3>Employee</h3>
                 </div>
