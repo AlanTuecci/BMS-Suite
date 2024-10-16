@@ -1,27 +1,28 @@
-.background{
+.background {
     background-color: #E0FAFF;
     height: 100vh;
+    overflow: hidden;
 }
 
-.text_container{
+.text_container {
     position: relative;
     text-align: center;
     top: 55px;
     color: #14213D;
 }
 
-.action_buttons{
+.action_buttons {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-.button_container a{
+.button_container a {
     color: white;
     text-decoration: none;
 }
 
-.button_container{
+.button_container {
     color: white;
     background-color: #14213D;
     font-size: 18px;
@@ -37,15 +38,88 @@
     justify-content: center;
 }
 
-.button_container:hover{
+.button_container:hover {
     background-color: #454FE1;
 }
 
-.pic_container{
+.pic_container {
     position: relative;
     top: 40px;
 }
 
 img {
     transform: scale(1.3);
+}
+
+.blurred {
+    filter: blur(5px);
+    opacity: 0.5;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.modal_background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.modal_container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.options_container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.option_box {
+    width: 100px;
+    height: 100px;
+    background-color: #E0FAFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.option_box:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.option_box h3 {
+    color: #14213D;
+    font-size: 16px;
+    text-align: center;
+}
+
+.proceed_button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #14213D;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.4s;
+}
+
+.proceed_button:hover {
+    background-color: #454FE1;
 }
