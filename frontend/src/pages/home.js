@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import Layout from "../components/layout";
+import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
 import './home.css';
 import hompic from '../media/HomeScreen.png';
@@ -43,7 +43,7 @@ const Home = () => {
 
   return (
     <div className="background">
-      <Layout>
+      <Navbar></Navbar>
         <div className={`content_container ${showModal ? 'blurred' : ''}`}>
           <div className="text_container">
             <h1>Designed to Improve <br /> The Efficiency of Operations</h1>
@@ -51,12 +51,12 @@ const Home = () => {
             <br />
             <div className="action_buttons">
               <button className="button_container" onClick={() => handleLoginRegisterClick('/login')}>
-                Login
+                  Login
               </button>
               <button className="button_container" onClick={() => handleLoginRegisterClick('/register')}>
-                Register
+                  Register
               </button>
-            </div>
+           </div>
             <br />
             <img className="pic_container" src={hompic} alt="" />
           </div>
@@ -79,7 +79,6 @@ const Home = () => {
             </div>
           </div>
         )}
-      </Layout>
     </div>
   );
 };
