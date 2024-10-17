@@ -8,7 +8,7 @@ exports.companyRegister = async (req, res) => {
 
   try {
     // Is the company EIN unused?
-    let { rows } = await db.query("select * from companies where company_ein = $1", [company_ein]);
+    let { rows } = await db.query("select * from company_info where company_ein = $1", [company_ein]);
 
     if (rows.length) {
       return res.status(404).json({
@@ -27,7 +27,7 @@ exports.companyRegister = async (req, res) => {
     // Insert the company registration details with the hashed password
     const hashedPassword = await hash(password, 10);
     await db.query(
-      "insert into companies(company_admin_email, company_admin_password, company_ein) values($1, $2, $3)",
+      "insert into company_info(company_admin_email, company_admin_password, company_ein) values($1, $2, $3)",
       [email, hashedPassword, company_ein]
     );
 
@@ -41,7 +41,7 @@ exports.companyRegister = async (req, res) => {
       errors: [
         {
           type: "Unknown",
-          value: "Unkown",
+          value: "Unknown",
           msg: "Unknown error occurred.",
           path: "Unknown",
           location: "Unknown",
@@ -72,7 +72,7 @@ exports.companyLogin = async (req, res) => {
       errors: [
         {
           type: "Unknown",
-          value: "Unkown",
+          value: "Unknown",
           msg: "Unknown error occurred.",
           path: "Unknown",
           location: "Unknown",

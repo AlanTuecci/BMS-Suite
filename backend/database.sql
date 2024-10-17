@@ -1,5 +1,5 @@
---companies TABLE
-CREATE TABLE companies(
+--company_info TABLE
+CREATE TABLE company_info(
     company_id serial PRIMARY KEY,
     company_admin_email varchar(50) unique NOT NULL,
     company_admin_password varchar(60) NOT NULL,
@@ -8,14 +8,14 @@ CREATE TABLE companies(
 
 --invite_codes TABLE
 CREATE TABLE invite_codes(
-    company_id serial REFERENCES companies(company_id),
+    company_id serial REFERENCES company_info(company_id),
     invite_code integer NOT NULL,
     employee_email varchar(50) unique NOT NULL
 );
 
 --employee_info TABLE
 CREATE TABLE employee_info(
-    company_id serial REFERENCES companies(company_id),
+    company_id serial REFERENCES company_info(company_id),
     employee_id serial PRIMARY KEY,
     full_name varchar(50) NOT NULL,
     employee_email varchar(50) NOT NULL,
@@ -24,34 +24,22 @@ CREATE TABLE employee_info(
     extern_employee_id integer
 );
 
---department_info TABLE
-CREATE TABLE department_info(
-    company_id serial REFERENCES companies(company_id),
-    department_id serial PRIMARY KEY,
-    department_name varchar(50) NOT NULL,
-    department_min_access_control_level smallint NOT NULL
+--inventory_access_control TABLE
+CREATE TABLE inventory_access_control(
+    company_id serial NOT NULL REFERENCES company_info(company_id),
+    inventory_min_access_control_level smallint DEFAULT 1
 );
 
---department_employee_info TABLE
-CREATE TABLE department_employee_info(
-    company_id serial NOT NULL REFERENCES companies(company_id),
-    department_id serial NOT NULL REFERENCES department_info(department_id),
+--inventory_access_info TABLE
+CREATE TABLE inventory_access_info(
+    company_id serial NOT NULL REFERENCES company_info(company_id),
     employee_id serial NOT NULL REFERENCES employee_info(employee_id),
-    access_control_level smallint NOT NULL
-);
-
---product_categories TABLE
-CREATE TABLE product_categories(
-    company_id serial REFERENCES companies(company_id),
-    department_id serial NOT NULL REFERENCES department_info(department_id),
-    category_id integer PRIMARY KEY NOT NULL
+    access_control_level smallint DEFAULT 0
 );
 
 --product_info TABLE
 CREATE TABLE product_info(
-    company_id serial NOT NULL REFERENCES companies(company_id),
-    department_id serial NOT NULL REFERENCES department_info(department_id),
-    category_id integer NOT NULL REFERENCES product_categories(category_id),
+    company_id serial NOT NULL REFERENCES company_info(company_id),
     product_sku integer PRIMARY KEY NOT NULL,
     product_name varchar(50),
     product_description text
@@ -59,9 +47,7 @@ CREATE TABLE product_info(
 
 --product_counts TABLE
 CREATE TABLE product_counts(
-    company_id serial NOT NULL REFERENCES companies(company_id),
-    department_id serial NOT NULL REFERENCES department_info(department_id),
-    category_id integer NOT NULL REFERENCES product_categories(category_id),
+    company_id serial NOT NULL REFERENCES company_info(company_id),
     product_sku integer NOT NULL REFERENCES product_info(product_sku),
     counted_by_employee serial NOT NULL REFERENCES employee_info(employee_id),
     count_date date DEFAULT current_date,
@@ -73,21 +59,21 @@ CREATE TABLE product_counts(
 
 --labor_access_control TABLE
 CREATE TABLE labor_access_control(
-    company_id serial NOT NULL REFERENCES companies(company_id),
-    labor_min_access_control_level smallint NOT NULL
+    company_id serial NOT NULL REFERENCES company_info(company_id),
+    labor_min_access_control_level smallint DEFAULT 1
 );
 
 --employee_labor_info TABLE
 CREATE TABLE employee_labor_info(
-    company_id serial NOT NULL REFERENCES companies(company_id),
+    company_id serial NOT NULL REFERENCES company_info(company_id),
     employee_id serial NOT NULL REFERENCES employee_info(employee_id),
     hourly_wage money NOT NULL,
-    access_control_level smallint NOT NULL
+    access_control_level smallint DEFAULT 0
 );
 
 --time_punch_record TABLE
 CREATE TABLE time_punch_record(
-    company_id serial NOT NULL REFERENCES companies(company_id),
+    company_id serial NOT NULL REFERENCES company_info(company_id),
     employee_id serial NOT NULL REFERENCES employee_info(employee_id),
     shift_date date DEFAULT current_date,
     clock_in_time time,
@@ -98,23 +84,20 @@ CREATE TABLE time_punch_record(
 
 --cash_access_control TABLE
 CREATE TABLE cash_access_control(
-    company_id serial NOT NULL REFERENCES companies(company_id),
-    department_id serial NOT NULL REFERENCES department_info(department_id),
-    cash_min_access_control_level smallint NOT NULL
+    company_id serial NOT NULL REFERENCES company_info(company_id),
+    cash_min_access_control_level smallint DEFAULT 1
 );
 
---cash_access_levels_by_department TABLE
-CREATE TABLE cash_access_levels_by_department(
-    company_id serial NOT NULL REFERENCES companies(company_id),
-    department_id serial NOT NULL REFERENCES department_info(department_id),
+--cash_access_info TABLE
+CREATE TABLE cash_access_info(
+    company_id serial NOT NULL REFERENCES company_info(company_id),
     employee_id serial NOT NULL REFERENCES employee_info(employee_id),
-    access_control_level smallint NOT NULL
+    access_control_level smallint DEFAULT 0
 );
 
 --register_deposits_record TABLE
 CREATE TABLE register_deposits_record(
-    company_id serial NOT NULL REFERENCES companies(company_id),
-    department_id serial NOT NULL REFERENCES department_info(department_id),
+    company_id serial NOT NULL REFERENCES company_info(company_id),
     employee_id serial NOT NULL REFERENCES employee_info(employee_id),
     deposit_id serial PRIMARY KEY NOT NULL,
     deposit_amount money NOT NULL,
@@ -124,8 +107,7 @@ CREATE TABLE register_deposits_record(
 
 --safe_record TABLE
 CREATE TABLE safe_record(
-    company_id serial NOT NULL REFERENCES companies(company_id),
-    department_id serial NOT NULL REFERENCES department_info(department_id),
+    company_id serial NOT NULL REFERENCES company_info(company_id),
     employee_id serial NOT NULL REFERENCES employee_info(employee_id),
     count_date date DEFAULT current_date,
     count_time time DEFAULT current_time,

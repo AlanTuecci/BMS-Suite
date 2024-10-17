@@ -1,10 +1,18 @@
 const db = require("../../db");
 
-exports.getAllInvites = async (req, res) => {
+exports.getAllEmployeeInfo = async (req, res) => {
   const { company_id } = req.user;
 
   try {
-    const { rows } = await db.query("select * from invite_codes where company_id = $1", [company_id]);
+    let { rows } = await db.query("select * from employee_info where company_id = $1", [company_id]);
+
+    let fieldToRemove = ["company_id", "employee_password"];
+
+    rows.forEach((obj) => {
+      fieldToRemove.forEach((field) => {
+        delete obj[field];
+      });
+    });
 
     return res.status(200).json(rows);
   } catch (error) {
@@ -12,7 +20,7 @@ exports.getAllInvites = async (req, res) => {
       errors: [
         {
           type: "Unknown",
-          value: "Unkown",
+          value: "Unknown",
           msg: "Unknown error occurred.",
           path: "Unknown",
           location: "Unknown",
