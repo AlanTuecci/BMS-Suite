@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
 import './home.css';
-import hompic from '../media/homepage/HomeScreen.png';
+import wmnpg from '../media/homepage/woman-home.webp';
+import menpg from '../media/homepage/man-homepg.jpg';
 import employeeIcon from '../media/homepage/Employee.png';
 import businessIcon from '../media/homepage/Business.png';
 
@@ -46,20 +47,28 @@ const Home = () => {
       <Navbar></Navbar>
         <div className={`content_container ${showModal ? 'blurred' : ''}`}>
           <div className="text_container">
-            <h1>Designed to Improve <br /> The Efficiency of Operations</h1>
+            <h1>Designed to Improve <br /> The Efficiency of <br/> Operations</h1>
             <p>Revolutionizing Business Management Services. <br /> In an All-In-One Package.</p>
             <br />
             <div className="action_buttons">
-              <button className="button_container" onClick={() => handleLoginRegisterClick('/login')}>
-                  Login
-              </button>
               <button className="button_container" onClick={() => handleLoginRegisterClick('/register')}>
                   Register
               </button>
-           </div>
-            <br />
-            <img className="pic_container" src={hompic} alt="" />
+              <button className="button_container" onClick={() => handleLoginRegisterClick('/login')}>
+                  Login
+              </button>
           </div>
+          <div className="info_container">
+                <ul className="info_list">
+                  <li><b className="info_container_header">Easily</b><br/><span>Manage Products</span></li>
+                  <li><b className="info_container_header">Quickly</b><br/><span>Track Hours</span></li>
+                  <li><b className="info_container_header">Effortlessly</b><br/><span>Manage Cash Flow</span></li>
+                </ul>
+            </div>
+            <br />
+          </div>
+          <img className="woman-img" src={wmnpg}></img>
+          <img className="man-img" src={menpg}></img>
         </div>
 
         {showModal && (
