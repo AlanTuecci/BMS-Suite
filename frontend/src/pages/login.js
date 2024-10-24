@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { authenticateUser } from "../redux/slices/authSlice";
 import { useLocation } from "react-router-dom";
 import './login.css';
-import loginImage from '../media/Login.png';
+import loginImage from '../media/login/Login.png';
 import Navbar from "../components/navbar";
 
 const Login = () => {

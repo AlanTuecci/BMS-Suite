@@ -1,4 +1,4 @@
-import './navbar.css';
+import './css/navbar.css';
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
