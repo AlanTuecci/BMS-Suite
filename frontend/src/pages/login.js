@@ -1,8 +1,11 @@
 import { useState } from "react";
-import Layout from "../components/layout";
 import { onLogin } from "../api/auth";
 import { useDispatch } from "react-redux";
 import { authenticateUser } from "../redux/slices/authSlice";
+import { useLocation } from "react-router-dom";
+import './login.css';
+import loginImage from '../media/login/Login.png';
+import Navbar from "../components/navbar";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -10,6 +13,9 @@ const Login = () => {
     password: "",
   });
   const [errors, setErrors] = useState([]);
+
+  const location = useLocation();
+  const userType = location.state?.userType || "employee";
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -20,64 +26,72 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await onLogin(values);
+      await onLogin(values, userType);
       dispatch(authenticateUser());
       localStorage.setItem("isAuth", "true");
     } catch (error) {
       let errorArray = [];
-      error.response.data.errors.forEach((element) => {
-        errorArray.push(element.msg);
-      });
+      if (error.response && error.response.data.errors) {
+        error.response.data.errors.forEach((element) => {
+          errorArray.push(element.msg);
+        });
+      }
       setErrors(errorArray);
     }
   };
 
   return (
-    <Layout>
-      <form onSubmit={(e) => onSubmit(e)} className="container mt-3">
-        <h1>Login</h1>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email address
-          </label>
-          <input
-            onChange={(e) => onChange(e)}
-            type="email"
-            className="form-control"
-            id="email"
-            name="email"
-            value={values.email}
-            placeholder="email"
-            required
-          />
+    <div className="login-background">
+      <Navbar></Navbar> 
+        <div className="login-container">
+          <div className="login-image-container">
+            <img src={loginImage} alt="Login" className="login-image" />
+          </div>
+          <div className="login-form-container">
+            <h1 className="login-title">Welcome Back</h1>
+            <p className="login-subtitle">Login to your account below</p>
+            
+            <form onSubmit={(e) => onSubmit(e)} className="login-form">
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label"></label>
+                <input
+                  onChange={(e) => onChange(e)}
+                  type="email"
+                  className="form-control line-input"
+                  id="email"
+                  name="email"
+                  value={values.email}
+                  placeholder="Email address"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label"></label>
+                <input
+                  onChange={(e) => onChange(e)}
+                  type="password"
+                  className="form-control line-input"
+                  id="password"
+                  name="password"
+                  value={values.password}
+                  placeholder="Password"
+                  required
+                />
+              </div>
+              <div className="error-messages">
+                <ul>
+                  {errors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+              <button type="submit" className="button_container">
+                Login
+              </button>
+            </form>
+          </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
-          <input
-            onChange={(e) => onChange(e)}
-            type="password"
-            className="form-control"
-            id="password"
-            name="password"
-            value={values.password}
-            placeholder="password"
-            required
-          />
-        </div>
-        <div style={{ color: "red", margin: "10px 0" }}>
-          <ul>
-            {errors.map((error, index) => {
-              return <li key={index}>{error}</li>;
-            })}
-          </ul>
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
-    </Layout>
+    </div>
   );
 };
 
