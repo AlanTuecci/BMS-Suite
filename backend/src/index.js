@@ -42,12 +42,15 @@ app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/build", "index.html"));
 });
 
+//exporting the app (for testing)
+module.exports = app;
+
 //app start
 const appStart = async () => {
   try {
     await checkConnect();
     app.listen(SERVER_PORT, () => {
-      console.log(`The server is running at ${SERVER_URL}:${SERVER_PORT}`);
+      console.log(`The server is running at ${SERVER_PORT}`);
       console.log(`The server is using CORS and accepting connections from ${clientUrlString}`);
     });
   } catch (error) {

@@ -53,7 +53,7 @@ exports.companyRegister = async (req, res) => {
 };
 
 exports.companyLogin = async (req, res) => {
-  let user = req.user;
+  let user = req.user || req.body
   let payload = {
     company_id: user.company_id,
     company_admin_email: user.company_admin_email,
