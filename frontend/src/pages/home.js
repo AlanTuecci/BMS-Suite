@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
 import './home.css';
-import hompic from '../media/HomeScreen.png';
-import employeeIcon from '../media/Employee.png';
-import businessIcon from '../media/Business.png';
+import hompic from '../media/homepage/HomeScreen.png';
+import employeeIcon from '../media/homepage/Employee.png';
+import businessIcon from '../media/homepage/Business.png';
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
