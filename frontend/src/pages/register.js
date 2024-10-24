@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { onRegistration } from "../api/auth";
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/navbar";
 import './login.css';
 import registerImage from '../media/Register.png';
@@ -13,6 +14,8 @@ const Register = () => {
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
+  const location = useLocation();
+  const userType = location.state?.userType || "employee";
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -25,7 +28,7 @@ const Register = () => {
       return;
     }
     try {
-      const { data } = await onRegistration(values);
+      const { data } = await onRegistration(values, userType);
       setErrors({});
       setSuccess(data.message);
       setValues({ email: "", password: "", confirmPassword: "", company_ein: "" });
@@ -44,7 +47,7 @@ const Register = () => {
       <Navbar /> 
       <div className="login-container">
         <div className="login-image-container">
-          <img src={registerImage} alt="Register" className="login-image" /> {/* Using register.png */}
+          <img src={registerImage} alt="Register" className="login-image" />
         </div>
         <div className="login-form-container">
           <h1 className="login-title">Create an Account</h1>
