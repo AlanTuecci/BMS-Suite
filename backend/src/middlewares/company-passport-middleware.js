@@ -17,10 +17,11 @@ const otps = {
 };
 
 passport.use(
+  "jwt-company",
   new Strategy(otps, async ({ company_id, company_admin_email }, done) => {
     try {
       const { rows } = await db.query(
-        "SELECT company_id, company_admin_email FROM companies WHERE company_id = $1 AND company_admin_email = $2",
+        "SELECT company_id, company_admin_email FROM company_info WHERE company_id = $1 AND company_admin_email = $2",
         [company_id, company_admin_email]
       );
 
@@ -38,4 +39,4 @@ passport.use(
   })
 );
 
-exports.companyUserAuth = passport.authenticate("jwt", { session: false });
+exports.companyUserAuth = passport.authenticate("jwt-company", { session: false });

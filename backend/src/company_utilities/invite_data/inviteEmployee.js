@@ -12,7 +12,7 @@ exports.inviteEmployee = async (req, res) => {
     service: "gmail",
     host: "smtp.gmail.com",
     port: 587,
-    secure: false,
+    secure: true,
     auth: {
       user: SERVER_EMAIL,
       pass: SERVER_EMAIL_PASSWORD,
@@ -24,7 +24,7 @@ exports.inviteEmployee = async (req, res) => {
     to: employee_email,
     subject: "Your Invite Code to BMS Suite!",
     text: `Your invite code is: ${invite_code}.`,
-    html: `<h1>Welcome to BMS Suite</h1>Your invite code is: <b>${invite_code}</b>.<br><br>Please keep in mind, when creating your account, you must use the email exactly as it appears here: <b>${employee_email}</b>`
+    html: `<h1>Welcome to BMS Suite</h1>Your invite code is: <b>${invite_code}</b>.<br><br>Please keep in mind, when creating your account, you must use the email exactly as it appears here: <b>${employee_email}</b>`,
   };
 
   try {
@@ -59,7 +59,7 @@ exports.inviteEmployee = async (req, res) => {
       errors: [
         {
           type: "Unknown",
-          value: "Unkown",
+          value: "Unknown",
           msg: "Unknown error occurred.",
           path: "Unknown",
           location: "Unknown",
