@@ -20,9 +20,8 @@ const Home = () => {
 
   const handleOptionClick = (userType) => {
     setShowModal(false);
-    navigate(route, { state: { userType } });
+    navigate(`${route}?userType=${userType}`);
   };
-  
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -44,7 +43,7 @@ const Home = () => {
 
   return (
     <div className="background">
-      <Navbar></Navbar>
+      <Navbar />
         <div className={`content_container ${showModal ? 'blurred' : ''}`}>
           <div className="text_container">
             <h1>Designed to Improve <br /> The Efficiency of <br/> Operations</h1>
