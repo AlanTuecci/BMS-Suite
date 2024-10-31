@@ -3,7 +3,7 @@ import { onLogin } from "../api/auth";
 import { useDispatch } from "react-redux";
 import { authenticateUser } from "../redux/slices/authSlice";
 import { useLocation } from "react-router-dom";
-import './login.css';
+import './css/login.css';
 import loginImage from '../media/login/Login.png';
 import Navbar from "../components/navbar";
 
@@ -15,7 +15,8 @@ const Login = () => {
   const [errors, setErrors] = useState([]);
 
   const location = useLocation();
-  const userType = location.state?.userType || "employee";
+  const queryParams = new URLSearchParams(location.search);
+  const userType = queryParams.get("userType") || "employee"
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });

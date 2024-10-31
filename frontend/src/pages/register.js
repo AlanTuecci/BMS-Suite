@@ -2,7 +2,7 @@ import { useState } from "react";
 import { onRegistration } from "../api/auth";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/navbar";
-import './login.css';
+import './css/login.css';
 import registerImage from '../media/register/Register.png';
 
 const Register = () => {
@@ -10,12 +10,16 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    company_ein: ""
+    invite_code: "",
+    companyEin: "",
+    full_name: ""
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
+  
   const location = useLocation();
-  const userType = location.state?.userType || "employee";
+  const queryParams = new URLSearchParams(location.search);
+  const userType = queryParams.get("userType") || "employee";
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -28,10 +32,16 @@ const Register = () => {
       return;
     }
     try {
-      const { data } = await onRegistration(values, userType);
+      const registrationValues = {
+        email: values.email,
+        password: values.password,
+        [userType === "employee" ? "invite_code" : "companyEin"]: userType === "employee" ? values.invite_code : values.companyEin,
+        ...(userType === "employee" && { full_name: values.full_name })
+      };
+      const { data } = await onRegistration(registrationValues, userType);
       setErrors({});
       setSuccess(data.message);
-      setValues({ email: "", password: "", confirmPassword: "", company_ein: "" });
+      setValues({ email: "", password: "", confirmPassword: "", invite_code: "", companyEin: "", full_name: "" });
     } catch (error) {
       let errorObj = {};
       error.response.data.errors.forEach((element) => {
@@ -95,19 +105,41 @@ const Register = () => {
               />
               {errors.confirmPassword && <div style={{ color: "red" }}>{errors.confirmPassword}</div>}
             </div>
+
+            {userType === "employee" && (
+              <div className="mb-3">
+                <label htmlFor="full_name" className="form-label"></label>
+                <input
+                  onChange={onChange}
+                  type="text"
+                  className="form-control line-input"
+                  id="full_name"
+                  name="full_name"
+                  value={values.full_name}
+                  placeholder="Full Name"
+                  required
+                />
+                {errors.full_name && <div style={{ color: "red" }}>{errors.full_name}</div>}
+              </div>
+            )}
+
             <div className="mb-3">
-              <label htmlFor="company_ein" className="form-label"></label>
+              <label htmlFor={userType === "employee" ? "invite_code" : "companyEin"} className="form-label"></label>
               <input
                 onChange={onChange}
                 type="text"
                 className="form-control line-input"
-                id="company_ein"
-                name="company_ein"
-                value={values.company_ein}
-                placeholder="Company EIN"
+                id={userType === "employee" ? "invite_code" : "companyEin"}
+                name={userType === "employee" ? "invite_code" : "companyEin"}
+                value={userType === "employee" ? values.invite_code : values.companyEin}
+                placeholder={userType === "employee" ? "Invite Code" : "Company EIN"}
                 required
               />
-              {errors.company_ein && <div style={{ color: "red" }}>{errors.company_ein}</div>}
+              {errors[userType === "employee" ? "invite_code" : "companyEin"] && (
+                <div style={{ color: "red" }}>
+                  {errors[userType === "employee" ? "invite_code" : "companyEin"]}
+                </div>
+              )}
             </div>
             <div style={{ color: "green", margin: "10px 0" }}>{success}</div>
             <button type="submit" className="button_container">
