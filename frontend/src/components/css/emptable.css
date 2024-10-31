@@ -1,0 +1,16 @@
+table {
+    min-width: 80vw;
+    min-height: 50vh;
+    border-collapse: collapse;
+    border-radius: 20px;
+}
+
+th, td {
+    border: 4px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #E0FAFF;
+}
