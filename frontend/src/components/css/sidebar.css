@@ -26,15 +26,19 @@
 
 .sidebar-icon,
 .logout-icon {
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   margin-bottom: 10px;
-  transition: box-shadow 0.3s ease; /* Smooth transition for shadow effect */
+  transition: box-shadow 0.3s ease;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-icon:hover,
 .logout-icon:hover {
-  box-shadow: 0px 4px 8px rgba(20, 33, 61, 0.3); /* Shadow effect on hover */
+  box-shadow: 0px 4px 8px rgba(20, 33, 61, 0.3); 
 }
 
 .divider {
