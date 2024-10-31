@@ -1,14 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
-import Navbar from "../components/navbar";
+import React from "react";
 import Sidebar from "../components/sidebar";
 import './dashboard.css';
-import { NavLink } from "react-router-dom";
-
 
 function dashboard() {
   return (
     <div className="background">
-        <Navbar></Navbar>
         <Sidebar></Sidebar>
         <div className="text_container_d">
             <h2 className="header_design">Hello Lily</h2>

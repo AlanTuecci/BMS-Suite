@@ -1,25 +1,25 @@
-
-.button_design{
-    border: none;
+.background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
-.grid_container{
-    border: none;
-    position: absolute;
-    top: 210px;
-    left: 100px;
+
+.grid_container {
     display: grid;
-    grid-template-columns: auto auto auto;
-    padding: 10px;
+    grid-template-columns: repeat(3, auto);
     gap: 20px 30px;
     justify-content: center;
-    width: 80%;
+    align-items: center;
+    width: calc(100% - 75px);
+    margin-left: 75px;
 }
 
-.grid_item{
+.grid_item {
     border: none;
     width: 350px;
     height: 265px;
-    background-color:#FFFFFF;
+    background-color: #FFFFFF;
     padding: 20px;
     font-size: 30px;
     text-align: left;
@@ -27,31 +27,30 @@
     box-shadow: 0px 6px 11.5px rgba(3, 150, 166, 0.25);
 }
 
-.text_container_d{
+.text_container_d {
     position: absolute;
-    top: 90px;
+    top: 20px;
     left: 125px;
 }
 
-.header_design{
+.header_design {
     font-size: 48px;
 }
 
-.date_design{
+.date_design {
     font-size: 20px;
 }
 
-.option_header{
+.option_header {
     font-size: 32px;
-    color:#14213D;
-
+    color: #14213D;
 }
 
-.opt_description{
+.opt_description {
     font-size: 20px;
-    color: rgba(20,33,61,0.58);
+    color: rgba(20, 33, 61, 0.58);
 }
 
-span{
+span {
     line-height: 1;
 }

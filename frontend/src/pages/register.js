@@ -10,7 +10,7 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    inviteCode: "",
+    invite_code: "",
     companyEin: "" 
   });
   const [errors, setErrors] = useState({});
@@ -34,12 +34,12 @@ const Register = () => {
       const registrationValues = {
         email: values.email,
         password: values.password,
-        [userType === "employee" ? "inviteCode" : "companyEin"]: userType === "employee" ? values.inviteCode : values.companyEin
+        [userType === "employee" ? "invite_code" : "companyEin"]: userType === "employee" ? values.invite_code : values.companyEin
       };
       const { data } = await onRegistration(registrationValues, userType);
       setErrors({});
       setSuccess(data.message);
-      setValues({ email: "", password: "", confirmPassword: "", inviteCode: "", companyEin: "" });
+      setValues({ email: "", password: "", confirmPassword: "", invite_code: "", companyEin: "" });
     } catch (error) {
       let errorObj = {};
       error.response.data.errors.forEach((element) => {
@@ -104,20 +104,20 @@ const Register = () => {
               {errors.confirmPassword && <div style={{ color: "red" }}>{errors.confirmPassword}</div>}
             </div>
             <div className="mb-3">
-              <label htmlFor={userType === "employee" ? "inviteCode" : "companyEin"} className="form-label"></label>
+              <label htmlFor={userType === "employee" ? "invite_code" : "companyEin"} className="form-label"></label>
               <input
                 onChange={onChange}
                 type="text"
                 className="form-control line-input"
-                id={userType === "employee" ? "inviteCode" : "companyEin"}
-                name={userType === "employee" ? "inviteCode" : "companyEin"}
-                value={userType === "employee" ? values.inviteCode : values.companyEin}
+                id={userType === "employee" ? "invite_code" : "companyEin"}
+                name={userType === "employee" ? "invite_code" : "companyEin"}
+                value={userType === "employee" ? values.invite_code : values.companyEin}
                 placeholder={userType === "employee" ? "Invite Code" : "Company EIN"}
                 required
               />
-              {errors[userType === "employee" ? "inviteCode" : "companyEin"] && (
+              {errors[userType === "employee" ? "invite_code" : "companyEin"] && (
                 <div style={{ color: "red" }}>
-                  {errors[userType === "employee" ? "inviteCode" : "companyEin"]}
+                  {errors[userType === "employee" ? "invite_code" : "companyEin"]}
                 </div>
               )}
             </div>
