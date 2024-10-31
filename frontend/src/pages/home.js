@@ -66,8 +66,8 @@ const Home = () => {
             </div>
             <br />
           </div>
-          <img className="woman-img" src={wmnpg}></img>
-          <img className="man-img" src={menpg}></img>
+          <img className="woman-img" src={wmnpg} alt=""></img>
+          <img className="man-img" src={menpg} alt=""></img>
         </div>
 
         {showModal && (
