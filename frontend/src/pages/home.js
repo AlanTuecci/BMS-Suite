@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
-import './home.css';
+import './css/home.css';
 import wmnpg from '../media/homepage/woman-home.webp';
 import menpg from '../media/homepage/man-homepg.jpg';
 import employeeIcon from '../media/homepage/Employee.png';

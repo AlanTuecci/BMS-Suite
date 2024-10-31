@@ -1,4 +1,8 @@
 import React from 'react';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { onLogout } from "../api/auth";
+import { unAuthenicateUser } from "../redux/slices/authSlice";
 import './css/sidebar.css';
 import homeIcon from '../media/sidebar/Home.svg';
 import suitcaseIcon from '../media/sidebar/Suitcase.svg';
@@ -9,6 +13,16 @@ import settingsIcon from '../media/sidebar/Settings.svg';
 import logoutIcon from '../media/sidebar/LogOut.svg';
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await onLogout();
+    dispatch(unAuthenicateUser());
+    localStorage.removeItem("isAuth");
+    navigate("/");
+  };
+
   return (
     <div className="sidebar">
       <div className="icon-container">
@@ -26,7 +40,12 @@ const Sidebar = () => {
       </div>
 
       <div className="logout-container">
-        <img src={logoutIcon} alt="Logout" className="logout-icon" />
+        <img 
+          src={logoutIcon} 
+          alt="Logout" 
+          className="logout-icon" 
+          onClick={handleLogout}
+        />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { onRegistration } from "../api/auth";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/navbar";
-import './login.css';
+import './css/login.css';
 import registerImage from '../media/register/Register.png';
 
 const Register = () => {

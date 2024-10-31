@@ -1,6 +1,6 @@
 import React from "react";
 import Sidebar from "../components/sidebar";
-import './dashboard.css';
+import './css/dashboard.css';
 
 function Dashboard() {
   const today = new Date();
