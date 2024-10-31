@@ -1,12 +1,12 @@
 import React from 'react';
 import './css/sidebar.css';
-import homeIcon from '../media/sidebar/Home.png';
-import suitcaseIcon from '../media/sidebar/Suitcase.png';
-import binIcon from '../media/sidebar/Bin.png';
-import cashIcon from '../media/sidebar/Cash.png';
-import questionIcon from '../media/sidebar/Question.png';
-import settingsIcon from '../media/sidebar/Settings.png';
-import logoutIcon from '../media/sidebar/LogOut.png';
+import homeIcon from '../media/sidebar/Home.svg';
+import suitcaseIcon from '../media/sidebar/Suitcase.svg';
+import binIcon from '../media/sidebar/Bin.svg';
+import cashIcon from '../media/sidebar/Cash.svg';
+import questionIcon from '../media/sidebar/Question.svg';
+import settingsIcon from '../media/sidebar/Settings.svg';
+import logoutIcon from '../media/sidebar/LogOut.svg';
 
 const Sidebar = () => {
   return (
