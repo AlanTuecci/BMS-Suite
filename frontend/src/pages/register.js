@@ -11,7 +11,8 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     invite_code: "",
-    companyEin: "" 
+    companyEin: "",
+    full_name: ""
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
@@ -34,12 +35,13 @@ const Register = () => {
       const registrationValues = {
         email: values.email,
         password: values.password,
-        [userType === "employee" ? "invite_code" : "companyEin"]: userType === "employee" ? values.invite_code : values.companyEin
+        [userType === "employee" ? "invite_code" : "companyEin"]: userType === "employee" ? values.invite_code : values.companyEin,
+        ...(userType === "employee" && { full_name: values.full_name })
       };
       const { data } = await onRegistration(registrationValues, userType);
       setErrors({});
       setSuccess(data.message);
-      setValues({ email: "", password: "", confirmPassword: "", invite_code: "", companyEin: "" });
+      setValues({ email: "", password: "", confirmPassword: "", invite_code: "", companyEin: "", full_name: "" });
     } catch (error) {
       let errorObj = {};
       error.response.data.errors.forEach((element) => {
@@ -103,6 +105,24 @@ const Register = () => {
               />
               {errors.confirmPassword && <div style={{ color: "red" }}>{errors.confirmPassword}</div>}
             </div>
+
+            {userType === "employee" && (
+              <div className="mb-3">
+                <label htmlFor="full_name" className="form-label"></label>
+                <input
+                  onChange={onChange}
+                  type="text"
+                  className="form-control line-input"
+                  id="full_name"
+                  name="full_name"
+                  value={values.full_name}
+                  placeholder="Full Name"
+                  required
+                />
+                {errors.full_name && <div style={{ color: "red" }}>{errors.full_name}</div>}
+              </div>
+            )}
+
             <div className="mb-3">
               <label htmlFor={userType === "employee" ? "invite_code" : "companyEin"} className="form-label"></label>
               <input

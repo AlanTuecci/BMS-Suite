@@ -25,6 +25,11 @@
     text-align: left;
     border-radius: 24px;
     box-shadow: 0px 6px 11.5px rgba(3, 150, 166, 0.25);
+    transition: box-shadow 0.3s ease;
+}
+
+.grid_item:hover {
+    box-shadow: 0px 10px 20px rgba(69, 79, 225, 0.3);
 }
 
 .text_container_d {
