@@ -5,21 +5,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 50px;
+    padding: 0 80px;
 }
 
 .content_container {
     display: flex;
     align-items: flex-start;
-    gap: 50px;
-    max-width: 1400px;
+    gap: 80px;
+    max-width: 1600px;
     width: 100%;
-    padding: 20px 50px;
+    padding: 20px 60px;
 }
 
 .text_container {
     color: #14213D;
-    max-width: 600px;
+    max-width: 700px;
 }
 
 .text_container h1 {
@@ -35,7 +35,7 @@
 
 .action_buttons {
     display: flex;
-    gap: 15px;
+    gap: 20px;
 }
 
 .action_buttons button {
@@ -57,7 +57,7 @@
 .info_container {
     margin-top: 25px;
     display: flex;
-    gap: 25px;
+    gap: 40px;
 }
 
 ul.info_list {
@@ -89,9 +89,9 @@ ul.info_list li:last-child {
 
 .woman-img {
     position: absolute;
-    width: 550px;
+    width: 600px;
     height: auto;
-    left: 720px;
+    left: 700px;
     top: 30px;
     border-radius: 37px;
     transform: scale(0.8);
@@ -99,10 +99,10 @@ ul.info_list li:last-child {
 
 .man-img {
     position: absolute;
-    width: 530px;
+    width: 580px;
     height: auto;
-    left: 960px;
-    top: 100px;
+    left: 1050px;
+    top: 120px;
     border: 8px solid #F0FAFC;
     border-radius: 39px;
     transform: scale(0.85);
@@ -133,15 +133,15 @@ ul.info_list li:last-child {
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 550px;
+    width: 600px; 
     z-index: 11;
 }
 
 .options_container {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
-    padding: 0 15px;
+    gap: 30px; 
+    padding: 0 20px;
     margin-top: 20px;
 }
 
@@ -156,7 +156,7 @@ ul.info_list li:last-child {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
-    width: 200px;
+    width: 220px;
 }
 
 .option_box:hover {
@@ -164,8 +164,8 @@ ul.info_list li:last-child {
 }
 
 .option_icon {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
     margin-bottom: 15px;
 }
 
