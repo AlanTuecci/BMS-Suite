@@ -2,9 +2,9 @@
 
 By Alan Tuecci, Zakaria Almardaee, and Dainell Baker
 
-### Version 0.2.0
+### Version 0.3.1
 
-Authenticator-Beta-2 -> Overhauled Signin/Signup and Database
+Authenticator-Dev-1 -> Frontend Registration/Login Implementation
 
 ### Dependency Information
 
@@ -25,25 +25,38 @@ Required:
 
 ### Database Setup
 
-In a PostgreSQL shell, copy and paste the entire contents of the database.sql file in the backend directory.
+In a PostgreSQL shell, copy and paste the entire contents of the 'database.sql' file found in the backend directory.
 
 ### Environment Variables
 
 Create a `.env` file in the (backend) project root with the following content:
 
 ```env
-SERVER_PORT={port}
-CLIENT_PORT={port}
-SERVER_URL=http://{url}
-CLIENT_URL=http://{url}
-SECRET={secret_key}
 DB_USER={db_username}
 DB_HOST={db_hostname}
 DB_DATABASE={db_database}
 DB_PASS={db_password}
 DB_PORT={db_port}
+
 SERVER_EMAIL={your_email}@gmail.com
 SERVER_EMAIL_PASSWORD={your_gmail_app_password}
+
+DEV_SERVER_PORT={dev_server_port}
+DEV_CLIENT_URL={dev_client_url}
+DEV_CLIENT_PORT={dev_client_port}
+DEV_SECRET={dev_jwt_secret}
+
+PROD_SERVER_PORT={prod_server_port}
+PROD_CLIENT_URL={prod_client_url}
+PROD_CLIENT_PORT={prod_server_port}
+PROD_SECRET={prod_jwt_secret}
+```
+
+Then, create a '.env' file in the (frontend) project root with the following content:
+
+```env
+REACT_APP_DEV_API_URL={dev_server_url}/api
+REACT_APP_API_URL_PROD={prod_server_url}/api
 ```
 
 Note: Instructions for obtaining an app password from Google can be found at this link [Google - Sign in with app passwords](https://support.google.com/accounts/answer/185833?hl=en)
@@ -54,11 +67,18 @@ Additional documentation of the backend routes can be found in the README.md fil
 
 ### To launch the project in development mode
 
-First, update the CLIENT_URL and CLIENT_PORT environment variables in the backend folder to make sure that you are accepting connections from the local react development server
+First, make sure the environment is running in dev mode by using the following command:
 
-```env
-CLIENT_PORT=5000
-CLIENT_URL=http://localhost
+(For Windows machines)
+
+```bat
+SET NODE_ENV=development
+```
+
+(For linux/mac machines)
+
+```bash
+EXPORT NODE_ENV=development
 ```
 
 Then, launch the ExpressJS server by using the following commands:
@@ -79,20 +99,33 @@ npm start
 
 ### To launch a production build
 
-First run the create-react-app build script by using the following commands:
+First, make sure the environment is running in prod mode by using the following command:
+
+(For Windows machines)
+
+```bat
+SET NODE_ENV=production
+```
+
+(For linux/mac machines)
+
+```bash
+EXPORT NODE_ENV=production
+```
+
+Then build the static frontend files and start the server using the following commands:
 
 ```bash
 cd frontend
 npm run build
-```
-
-Second, in a separate terminal, to launch the ExpressJS server, use the following commands:
-
-```bash
-cd backend
+cd ../backend
 npm start
 ```
 
-Make sure that the production ExpressJS server is serving built react files!
+### Additional Documentation
 
-## This repository may be set to private in later stages in development
+There is additional documentation for the API routes. 
+
+This documentation is located in a readme.md file found in the following directory: /backend/src/routes/readme.md.
+
+This is the URL for the documentation: [BMS-Suite API Documentation](https://github.com/AlanTuecci/BMS-Suite/tree/b475cc68e69685c0866b10e3a8359257fd56d220/backend/src/routes#readme)
