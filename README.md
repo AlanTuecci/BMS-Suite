@@ -25,7 +25,7 @@ Required:
 
 ### Database Setup
 
-In a PostgreSQL shell, copy and paste the entire contents of the 'database.sql' file found in the backend directory.
+In a PostgreSQL shell, copy and paste the entire contents of the `database.sql` file found in the backend directory.
 
 ### Environment Variables
 
@@ -52,7 +52,7 @@ PROD_CLIENT_PORT={prod_server_port}
 PROD_SECRET={prod_jwt_secret}
 ```
 
-Then, create a '.env' file in the (frontend) project root with the following content:
+Then, create a `.env` file in the (frontend) project root with the following content:
 
 ```env
 REACT_APP_DEV_API_URL={dev_server_url}/api
@@ -122,6 +122,6 @@ npm start
 
 There is additional documentation for the API routes. 
 
-This documentation is located in a readme.md file found in the following directory: /backend/src/routes/readme.md.
+This documentation is located in a `readme.md` file found in the following directory: /backend/src/routes/readme.md.
 
 This is the URL for the documentation: [BMS-Suite API Documentation](https://github.com/AlanTuecci/BMS-Suite/tree/b475cc68e69685c0866b10e3a8359257fd56d220/backend/src/routes#readme)
