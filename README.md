@@ -61,10 +61,6 @@ REACT_APP_API_URL_PROD={prod_server_url}/api
 
 Note: Instructions for obtaining an app password from Google can be found at this link [Google - Sign in with app passwords](https://support.google.com/accounts/answer/185833?hl=en)
 
-### Additional Documentation of Backend Routes
-
-Additional documentation of the backend routes can be found in the README.md file found in the following directory: /backend/src/routes
-
 ### To launch the project in development mode
 
 First, make sure the environment is running in dev mode by using the following command:
