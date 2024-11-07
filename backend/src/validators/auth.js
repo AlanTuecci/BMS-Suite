@@ -8,7 +8,9 @@ const password = check("password")
   .withMessage("Password must be between 6 and 15 characters long.");
 
 //companyEIN
-const companyEIN = check("company_ein").isLength({ min: 9, max: 9 }).withMessage("Company EIN must be 9 characters long.");
+const companyEIN = check("company_ein")
+  .isLength({ min: 9, max: 9 })
+  .withMessage("Company EIN must be 9 characters long.");
 
 //email
 const email = check("email").isEmail().withMessage("Please provide a valid email.");
@@ -24,7 +26,7 @@ const employeeEmailExists = check("email").custom(async (value) => {
 
 //check if email exists in company table
 const companyEmailExists = check("email").custom(async (value) => {
-  const { rows } = await db.query("SELECT * from companies WHERE company_admin_email = $1", [value]);
+  const { rows } = await db.query("SELECT * from company_info WHERE company_admin_email = $1", [value]);
 
   if (rows.length) {
     throw new Error("Email already exists.");
@@ -50,7 +52,7 @@ const employeeLoginFieldsCheck = check("email").custom(async (value, { req }) =>
 
 //company login validation
 const companyLoginFieldsCheck = check("email").custom(async (value, { req }) => {
-  const user = await db.query("SELECT * from companies WHERE company_admin_email = $1", [value]);
+  const user = await db.query("SELECT * from company_info WHERE company_admin_email = $1", [value]);
 
   if (!user.rows.length) {
     throw new Error("Email not found.");
@@ -69,5 +71,5 @@ module.exports = {
   employeeRegisterValidation: [email, password, employeeEmailExists],
   employeeLoginValidation: [email, password, employeeLoginFieldsCheck],
   companyRegisterValidation: [email, password, companyEmailExists, companyEIN],
-  companyLoginValidation: [email, password, companyLoginFieldsCheck]
+  companyLoginValidation: [email, password, companyLoginFieldsCheck],
 };

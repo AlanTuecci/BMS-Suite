@@ -4,6 +4,7 @@ import Placeholder from "./pages/placeholder";
 import Register from "./pages/register";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
+import Invite from './pages/invite';
 import { useSelector } from "react-redux";
 
 const PrivateRoutes = () => {
@@ -25,6 +26,7 @@ const App = () => {
         <Route element={<PrivateRoutes />}>
           <Route path="/placeholder" element={<Placeholder />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/invite" element={<Invite />}></Route>
         </Route>
 
         <Route element={<RestrictedRoutes />}>

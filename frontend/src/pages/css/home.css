@@ -5,15 +5,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 100px;
 }
 
 .content_container {
     display: flex;
     align-items: flex-start;
-    gap: 30px;
-    max-width: 1200px;
+    gap: 120px;
+    max-width: 1600px;
     width: 100%;
-    padding: 20px;
+    padding: 20px 60px;
 }
 
 .text_container {
@@ -34,7 +35,7 @@
 
 .action_buttons {
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 
 .action_buttons button {
@@ -56,7 +57,7 @@
 .info_container {
     margin-top: 20px;
     display: flex;
-    gap: 20px;
+    gap: 40px;
 }
 
 ul.info_list {
@@ -88,22 +89,20 @@ ul.info_list li:last-child {
 
 .woman-img {
     position: absolute;
-    width: calc(25vw + 200px);
-    max-width: 517px;
+    width: 600px;
     height: auto;
-    left: 45vw;
-    top: 5vh;
+    left: 900px;
+    top: 30px;
     border-radius: 37px;
     transform: scale(0.85);
 }
 
 .man-img {
     position: absolute;
-    width: calc(24vw + 200px);
-    max-width: 503px;
+    width: 580px;
     height: auto;
-    left: calc(60vw + 100px);
-    top: calc(10vh + 20px);
+    left: 1250px;
+    top: 120px;
     border: 8px solid #F0FAFC;
     border-radius: 39px;
     transform: scale(0.9);
@@ -134,15 +133,15 @@ ul.info_list li:last-child {
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90vw;
-    max-width: 500px;
+    width: 600px;
     z-index: 11;
 }
 
 .options_container {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 30px;
+    padding: 0 20px;
     margin-top: 20px;
 }
 
@@ -157,8 +156,7 @@ ul.info_list li:last-child {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
-    width: calc(25vw + 150px);
-    max-width: 250px;
+    width: 220px;
 }
 
 .option_box:hover {
@@ -166,10 +164,9 @@ ul.info_list li:last-child {
 }
 
 .option_icon {
-    width: calc(5vw + 40px);
-    max-width: 100px;
-    height: auto;
-    margin-bottom: 10px;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
 }
 
 .option_box h3 {

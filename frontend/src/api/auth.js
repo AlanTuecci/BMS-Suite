@@ -17,3 +17,11 @@ export async function onLogout() {
 export async function onRegistration(registrationData, userType) {
   return await axios.post(`${API_URL}/${userType}/register`, registrationData);
 }
+
+export async function onInviteEmployee(emailValue) {
+  return await axios.post(`${API_URL}/company/inviteEmployee`, emailValue);
+}
+
+export async function onGetInvites() {
+  return await axios.post(`${API_URL}/company/getAllInvites`);
+}
