@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { SERVER_PORT, CLIENT_URL, SERVER_URL, CLIENT_PORT } = require("./constants");
+const { NODE_ENV, SERVER_PORT, CLIENT_URL, CLIENT_PORT } = require("./constants");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const cors = require("cors");
@@ -48,9 +48,10 @@ module.exports = app;
 //app start
 const appStart = async () => {
   try {
+    console.log(`Starting app in ${NODE_ENV} mode\n`);
     await checkConnect();
     app.listen(SERVER_PORT, () => {
-      console.log(`The server is running at ${SERVER_PORT}`);
+      console.log(`\nThe server is running on port: ${SERVER_PORT}`);
       console.log(`The server is using CORS and accepting connections from ${clientUrlString}`);
     });
   } catch (error) {

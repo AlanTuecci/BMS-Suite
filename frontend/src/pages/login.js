@@ -3,9 +3,9 @@ import { onLogin } from "../api/auth";
 import { useDispatch } from "react-redux";
 import { authenticateUser } from "../redux/slices/authSlice";
 import { useLocation } from "react-router-dom";
-import './css/login.css';
-import loginImage from '../media/login/Login.png';
-import Navbar from "../components/navbar";
+import "./css/login.css";
+import loginImage from "../media/login/Login.png";
+import Navbar from "../components/Navbar";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -16,7 +16,7 @@ const Login = () => {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const userType = queryParams.get("userType") || "employee"
+  const userType = queryParams.get("userType") || "employee";
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -42,8 +42,9 @@ const Login = () => {
   };
 
   return (
-    <div className="login-background">
-      <Navbar></Navbar> 
+    <div>
+      <Navbar />
+      <div className="login-background">
         <div className="login-container">
           <div className="login-image-container">
             <img src={loginImage} alt="Login" className="login-image" />
@@ -51,7 +52,7 @@ const Login = () => {
           <div className="login-form-container">
             <h1 className="login-title">Welcome Back</h1>
             <p className="login-subtitle">Login to your account below</p>
-            
+
             <form onSubmit={(e) => onSubmit(e)} className="login-form">
               <div className="mb-3">
                 <label htmlFor="email" className="form-label"></label>
@@ -92,6 +93,7 @@ const Login = () => {
             </form>
           </div>
         </div>
+      </div>
     </div>
   );
 };
