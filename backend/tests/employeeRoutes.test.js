@@ -3,6 +3,7 @@ const { employeeRegister, employeeLogin } = require("../src/controllers/employee
 const db = require("../src/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
 
 describe("employeeRegister Controller", () => {
   let req, res, next;
@@ -10,7 +11,7 @@ describe("employeeRegister Controller", () => {
   beforeEach(() => {
     req = {
       body: {
-        invite_code: "valid_code",
+        invite_code: 12345,
         full_name: "John Doe",
         email: "johndoe@example.com",
         password: "securePass123",
@@ -32,6 +33,7 @@ describe("employeeRegister Controller", () => {
       .onFirstCall().resolves({ rows: [{ company_id: 1 }] })
       .onSecondCall().resolves();
     sinon.stub(bcrypt, "hash").resolves("hashedPassword123");
+    sinon.stub(validationResult, "withDefaults").returns(() => ({ isEmpty: () => true, array: () => [] }));
 
     await employeeRegister(req, res, next);
 
@@ -39,6 +41,25 @@ describe("employeeRegister Controller", () => {
     sinon.assert.calledWith(res.json, {
       success: true,
       message: "The registration was successful!",
+    });
+  });
+
+  it("should return an error if the invite code is invalid", async () => {
+    sinon.stub(db, "query").onFirstCall().resolves({ rows: [] });
+  
+    await employeeRegister(req, res, next);
+
+    sinon.assert.calledWith(res.status, 404);
+    sinon.assert.calledWith(res.json, {
+      errors: [
+        {
+          type: "field",
+          value: req.body.email,
+          msg: `Unable to find invite code for email: ${req.body.email}`,
+          path: "email",
+          location: "body",
+        },
+      ],
     });
   });
 });
