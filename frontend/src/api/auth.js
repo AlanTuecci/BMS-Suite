@@ -7,6 +7,7 @@ const API_URL = process.env.NODE_ENV === 'development'
 axios.defaults.withCredentials = true;
 
 export async function onLogin(loginData, userType) {
+  console.log(API_URL)
   return await axios.post(`${API_URL}/${userType}/login`, loginData);
 }
 

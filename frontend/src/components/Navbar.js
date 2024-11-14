@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BsPersonVcard, BsBriefcase } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -52,36 +51,22 @@ const Navbar = () => {
         </Link>
         <div className="hidden md:flex justify-center">
           <ul className="flex font-medium">
-            <li className="p-4 text-xl">
+            <li className="p-4 text-xl hover:underline underline-offset-4 decoration-[#0B1215]">
               <Link to="/">Home</Link>
             </li>
-            <li className="p-4 text-xl">
+            <li className="p-4 text-xl hover:underline underline-offset-4 decoration-[#0B1215]">
               <Link to="/">Contact</Link>
             </li>
-            <li className="p-4 text-xl">
+            <li className="p-4 text-xl hover:underline underline-offset-4 decoration-[#0B1215]">
               <Link to="/">About</Link>
             </li>
-            <li className="p-4 text-xl">
+            <li className="p-4 text-xl hover:underline underline-offset-4 decoration-[#0B1215]">
               <Link to="/">Features</Link>
             </li>
+            <li className="p-4 text-xl hover:underline underline-offset-4 decoration-[#0B1215]">
+              <Link to="/">Learn More</Link>
+            </li>
           </ul>
-        </div>
-        <div className="hidden md:flex justify-end">
-          <button
-            className="px-4 py-2 mx-2 text-xl border-x-2 border-y-2 border-x-[#0B1215] rounded-full border-y-[#0B1215]"
-            onClick={() => handleLoginRegisterClick("/login")}
-          >
-            Login
-          </button>
-          <button
-            className="px-4 py-2 mx-2 text-xl text-[#FBFBFE] bg-[#2F27CE] border-x-2 border-y-2 border-x-[#2F27CE] rounded-full border-y-[#2F27CE]"
-            onClick={() => handleLoginRegisterClick("/register")}
-          >
-            Register
-          </button>
-        </div>
-        <div onClick={handleNav} className="block md:hidden">
-          {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </div>
 
         <div
@@ -106,7 +91,7 @@ const Navbar = () => {
               Login
             </button>
             <button
-              className="px-4 py-2 text-xl text-[#FBFBFE] bg-[#2F27CE] border-x-2 border-y-2 border-x-[#2F27CE] rounded-full border-y-[#2F27CE]"
+              className="px- py-2 text-xl text-[#FBFBFE] bg-[#2F27CE] border-x-2 border-y-2 border-x-[#2F27CE] rounded-full border-y-[#2F27CE]"
               onClick={() => handleLoginRegisterClick("/register")}
             >
               Register
@@ -140,6 +125,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
+      <div className="border-b-4 border-[#14213D]"></div>
     </div>
   );
 };

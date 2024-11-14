@@ -4,13 +4,17 @@ import Placeholder from "./pages/placeholder";
 import Register from "./pages/register";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
-import Invite from './pages/invite';
+import Invite from "./pages/invite";
 import { useSelector } from "react-redux";
 
 const PrivateRoutes = () => {
   const authState = useSelector((state) => state.auth);
-  return <>{authState.isAuth ? <Outlet /> : <Navigate to="/" />}</>;
-};
+
+  if (!authState.isAuth) {
+    return <Navigate to="/" />;
+  }
+  return <Outlet />; 
+}
 
 const RestrictedRoutes = () => {
   const authState = useSelector((state) => state.auth);

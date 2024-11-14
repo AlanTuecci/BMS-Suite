@@ -1,16 +1,13 @@
 import Layout from "../components/layout";
 import { onLogout } from "../api/auth";
-import { unAuthenicateUser } from "../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 import Sidebar from "../components/sidebar";
-import '../components/css/sidebar.css'
 
 const Placeholder = () => {
   const dispatch = useDispatch();
 
   const logout = async () => {
     await onLogout();
-    dispatch(unAuthenicateUser());
     localStorage.removeItem("isAuth");
   };
 
