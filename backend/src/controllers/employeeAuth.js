@@ -1,4 +1,4 @@
-const db = require("../db");
+const pool = require("../db");
 const { hash } = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
 const { SECRET } = require("../constants");
@@ -6,12 +6,15 @@ const { SECRET } = require("../constants");
 exports.employeeRegister = async (req, res) => {
   const { invite_code, full_name, email, password } = req.body;
 
+  const client = await pool.connect();
+
   try {
-    // Check if there an invite that matches the provided invite code and employee email?
-    let { rows } = await db.query("select * from invite_codes where invite_code = $1 and employee_email = $2", [
-      invite_code,
-      email
-    ]);
+    await client.query("BEGIN");
+
+    let { rows } = await client.query(
+      "select * from invite_codes where invite_code = $1 and employee_email = $2",
+      [invite_code, email]
+    );
 
     if (!rows.length) {
       return res.status(404).json({
@@ -27,15 +30,37 @@ exports.employeeRegister = async (req, res) => {
       });
     }
 
-    // Insert the employee registration details with the hashed password
     const hashedPassword = await hash(password, 10);
-    await db.query(
+    await client.query(
       "insert into employee_info(company_id, full_name, employee_email, employee_password) values($1, $2, $3, $4)",
       [rows[0].company_id, full_name, email, hashedPassword]
     );
 
-    // Delete the invite code since it was just used
-    await db.query("delete from invite_codes where invite_code = $1", [invite_code]);
+    const response = await client.query(
+      "select employee_id from employee_info where employee_email = $1",
+      [email]
+    );
+
+    const employee_id = response.rows[0].employee_id;
+
+    await client.query(
+      "insert into inventory_access_info(company_id, employee_id, access_control_level) values($1, $2, $3)",
+      [rows[0].company_id, employee_id, 0]
+    );
+
+    await client.query(
+      "insert into employee_labor_info(company_id, employee_id, hourly_wage, access_control_level) values($1, $2, $3, $4)",
+      [rows[0].company_id, employee_id, 0, 0]
+    );
+
+    await client.query(
+      "insert into cash_access_info(company_id, employee_id, access_control_level) values($1, $2, $3)",
+      [rows[0].company_id, employee_id, 0]
+    );
+
+    await client.query("delete from invite_codes where invite_code = $1", [invite_code]);
+
+    await client.query("COMMIT");
 
     return res.status(201).json({
       success: true,
@@ -43,6 +68,8 @@ exports.employeeRegister = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    await client.query("ROLLBACK");
+    
     return res.status(500).json({
       errors: [
         {
@@ -55,6 +82,8 @@ exports.employeeRegister = async (req, res) => {
       ],
       error: error,
     });
+  } finally {
+    client.release();
   }
 };
 

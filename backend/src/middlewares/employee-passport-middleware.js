@@ -1,7 +1,7 @@
 const passport = require("passport");
 const { Strategy } = require("passport-jwt");
 const { SECRET } = require("../constants");
-const db = require("../db");
+const pool = require("../db");
 
 const cookieExtracter = (req) => {
   let token = null;
@@ -20,7 +20,7 @@ passport.use(
   "jwt-employee",
   new Strategy(otps, async ({ company_id, employee_id }, done) => {
     try {
-      const { rows } = await db.query(
+      const { rows } = await pool.query(
         "SELECT company_id, employee_id, employee_email FROM employee_info WHERE company_id = $1 AND employee_id = $2",
         [company_id, employee_id]
       );
