@@ -28,7 +28,7 @@ const Sidebar = () => {
     { icon: binIcon, label: "Product Management", path: "/product-management" },
     { icon: cashIcon, label: "Cash Control", path: "/cash-control" },
   ];
-  
+
   const utilityItems = [
     { icon: questionIcon, label: "Help", path: "/help" },
     { icon: settingsIcon, label: "Settings", path: "/settings" },
@@ -56,9 +56,7 @@ const Sidebar = () => {
               alt={item.label}
               className="w-6 h-6 z-10 hover:scale-110 transition duration-300"
             />
-            <span
-              className="hidden group-hover:inline-block text-gray-800 text-sm z-10 font-bold relative whitespace-nowrap"
-            >
+            <span className="hidden group-hover:inline-block text-gray-800 text-sm z-10 font-bold relative whitespace-nowrap">
               {item.label}
             </span>
           </div>
@@ -77,9 +75,7 @@ const Sidebar = () => {
               alt={item.label}
               className="w-6 h-6 z-10 hover:scale-110 transition duration-300"
             />
-            <span
-              className="hidden group-hover:inline-block text-gray-800 text-sm z-10 font-bold relative whitespace-nowrap"
-            >
+            <span className="hidden group-hover:inline-block text-gray-800 text-sm z-10 font-bold relative whitespace-nowrap">
               {item.label}
             </span>
           </div>
@@ -98,7 +94,6 @@ const Sidebar = () => {
           Logout
         </span>
       </div>
-
     </div>
   );
 };

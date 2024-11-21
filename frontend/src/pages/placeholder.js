@@ -13,7 +13,7 @@ const Placeholder = () => {
 
   return (
     <Layout>
-      < Sidebar/>
+      <Sidebar />
       <h1>BMS-Suite Site Prototype</h1>
 
       <br></br>
@@ -22,7 +22,11 @@ const Placeholder = () => {
 
       <br></br>
 
-      <button onClick={() => logout()} className="btn btn-primary" style={{ margin: "10px 10px 0 0" }}>
+      <button
+        onClick={() => logout()}
+        className="btn btn-primary"
+        style={{ margin: "10px 10px 0 0" }}
+      >
         Logout
       </button>
     </Layout>

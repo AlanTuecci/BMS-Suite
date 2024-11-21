@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from '../components/Sidebar'
+import Sidebar from "../components/Sidebar";
 
 const TimeManagement = () => {
   return (
@@ -29,8 +29,12 @@ const TimeManagement = () => {
       </div>
       <div className="flex justify-between items-center mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">September 2024</h3>
-          <p className="text-sm text-blue-600">September 10, 2024 - September 17, 2024</p>
+          <h3 className="text-lg font-semibold text-gray-900">
+            September 2024
+          </h3>
+          <p className="text-sm text-blue-600">
+            September 10, 2024 - September 17, 2024
+          </p>
         </div>
         <button className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700 transition">
           <span className="text-xl">+</span> Insert Time
@@ -41,14 +45,16 @@ const TimeManagement = () => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr>
-              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, index) => (
-                <th
-                  key={index}
-                  className="p-4 text-gray-600 border-b border-gray-200 font-medium text-center"
-                >
-                  {day}
-                </th>
-              ))}
+              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
+                (day, index) => (
+                  <th
+                    key={index}
+                    className="p-4 text-gray-600 border-b border-gray-200 font-medium text-center"
+                  >
+                    {day}
+                  </th>
+                ),
+              )}
             </tr>
           </thead>
           <tbody>

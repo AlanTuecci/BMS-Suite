@@ -12,12 +12,21 @@ const EmployeePermissions = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [permissions, setPermissions] = useState({
+    view: false,
+    readAndInsert: false,
+    readInsertUpdate: false,
+    readInsertUpdateDelete: false,
+  });
+
   const fetchEmployees = async () => {
     try {
       const response = await onGetEmployees();
       const employeeData = response.data.map((employee) => ({
         ...employee,
-        employee_register_date: new Date(employee.employee_register_date).toLocaleDateString(),
+        employee_register_date: new Date(
+          employee.employee_register_date,
+        ).toLocaleDateString(),
       }));
       setEmployees(employeeData);
       setFilteredEmployees(employeeData);
@@ -37,7 +46,7 @@ const EmployeePermissions = () => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
     const filtered = employees.filter((employee) =>
-      employee.full_name.toLowerCase().includes(term)
+      employee.full_name.toLowerCase().includes(term),
     );
     setFilteredEmployees(filtered);
   };
@@ -52,10 +61,16 @@ const EmployeePermissions = () => {
     setSelectedEmployee(null);
   };
 
+  const togglePermission = (key) => {
+    setPermissions((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
   if (loading)
     return <p className="text-center text-gray-600">Loading employees...</p>;
-  if (error)
-    return <p className="text-center text-red-500">{error}</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!employees.length)
     return <p className="text-center text-gray-600">No employees found.</p>;
 
@@ -82,7 +97,9 @@ const EmployeePermissions = () => {
           isSidebarOpen ? "ml-64" : "ml-16"
         }`}
       >
-        <h1 className="text-3xl font-semibold text-gray-800">Employee Permissions</h1>
+        <h1 className="text-5xl font-light text-gray-800 mb-4 mt-4 leading-tight">
+          Employee Permissions
+        </h1>
         <p className="text-gray-600 mb-6">Manage Employee Permissions Here</p>
 
         <div className="mb-6">
@@ -115,7 +132,7 @@ const EmployeePermissions = () => {
               <span className="w-1/4">{employee.employee_email}</span>
               <span className="w-1/4">{employee.employee_register_date}</span>
               <button
-                className="text-blue-500 ml-2"
+                className="text-blue-600 ml-2 text-2xl hover:text-blue-800"
                 onClick={() => openModal(employee)}
               >
                 ⋮
@@ -126,50 +143,76 @@ const EmployeePermissions = () => {
 
         {isModalVisible && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg p-6 shadow-lg w-96">
-              <h2 className="text-xl font-semibold mb-4">User Permissions</h2>
-              <p className="mb-6">
-                Managing permissions for:{" "}
-                <span className="font-bold">{selectedEmployee?.full_name}</span>
-              </p>
-              <div className="space-y-4">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="mr-2 text-blue-500 focus:ring-blue-500"
-                  />
-                  View
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="mr-2 text-blue-500 focus:ring-blue-500"
-                  />
-                  Read And Insert
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="mr-2 text-blue-500 focus:ring-blue-500"
-                  />
-                  Read, Insert, And Update
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="mr-2 text-blue-500 focus:ring-blue-500"
-                  />
-                  Read, Insert, Update, And Delete
-                </label>
+            <div className="bg-white rounded-3xl p-8 shadow-lg w-[40rem] max-w-full">
+              <h2 className="text-2xl font-semibold mb-6 text-center">
+                User Permissions
+              </h2>
+
+              <div className="space-y-6">
+                {[
+                  {
+                    key: "view",
+                    title: "View",
+                    description:
+                      "Allows Viewing Data Only. No Modifications Are Permitted.",
+                  },
+                  {
+                    key: "readAndInsert",
+                    title: "Read And Insert",
+                    description:
+                      "Permits Viewing And Inserting Data, But No Updates Or Deletions.",
+                  },
+                  {
+                    key: "readInsertUpdate",
+                    title: "Read, Insert, And Update",
+                    description:
+                      "Grants Permissions For Viewing, Inserting, And Updating Data, But Not Deleting.",
+                  },
+                  {
+                    key: "readInsertUpdateDelete",
+                    title: "Read, Insert, Update And Delete",
+                    description:
+                      "Provides Full Access, Including Viewing, Inserting, Updating, And Deleting Data.",
+                  },
+                ].map((perm) => (
+                  <div
+                    key={perm.key}
+                    className="flex justify-between items-center w-full p-3"
+                  >
+                    <div className="flex-grow">
+                      <p className="font-semibold">{perm.title}</p>
+                      <p className="text-sm text-gray-500">
+                        {perm.description}
+                      </p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="sr-only peer"
+                        checked={permissions[perm.key]}
+                        onChange={() => togglePermission(perm.key)}
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#454FE1] rounded-full peer peer-checked:bg-[#454FE1] peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                    </label>
+                  </div>
+                ))}
               </div>
-              <div className="mt-6 flex justify-end space-x-4">
+
+              <div className="mt-6 flex justify-center gap-4">
                 <button
-                  className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+                  className="px-6 py-2 bg-white text-[#454FE1] border-2 border-[#454FE1] rounded-lg hover:bg-gray-100"
                   onClick={closeModal}
                 >
                   Cancel
                 </button>
-                <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+
+                <button
+                  className="px-6 py-2 bg-[#454FE1] text-white rounded-lg hover:bg-[#333ACC]"
+                  onClick={() => {
+                    console.log("Permissions Saved:", permissions);
+                    closeModal();
+                  }}
+                >
                   Save Changes
                 </button>
               </div>

@@ -44,7 +44,9 @@ const Search = () => {
           placeholder="Email address"
           required
         />
-        {errors.employee_email && <div style={{ color: "red" }}>{errors.employee_email}</div>}
+        {errors.employee_email && (
+          <div style={{ color: "red" }}>{errors.employee_email}</div>
+        )}
       </div>
 
       <div style={{ color: "green", margin: "10px 0" }}>{success}</div>

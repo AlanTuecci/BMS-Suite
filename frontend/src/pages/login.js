@@ -1,10 +1,10 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { onLogin } from "../api/auth";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import loginImage from "../media/login/Login.png";
 import { useDispatch } from "react-redux";
-import { authenticateUser } from '../redux/slices/authSlice';
+import { authenticateUser } from "../redux/slices/authSlice";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -38,10 +38,9 @@ const Login = () => {
         email: "",
         password: "",
       });
-  
+
       dispatch(authenticateUser(userType));
       localStorage.setItem("isAuth", true);
-      
     } catch (error) {
       let errorObj = {};
       error.response.data.errors.forEach((element) => {
@@ -51,7 +50,6 @@ const Login = () => {
       setSuccess("");
     }
   };
-  
 
   return (
     <div className="bg-[#F0FAFC] min-h-screen">
@@ -66,7 +64,9 @@ const Login = () => {
         </div>
         <div className="w-full lg:w-2/5 bg-white p-8 rounded-lg shadow-lg space-y-6">
           <div className="text-center lg:text-left">
-            <h1 className="text-3xl font-extrabold text-gray-900">Log In To Your Account</h1>
+            <h1 className="text-3xl font-extrabold text-gray-900">
+              Log In To Your Account
+            </h1>
           </div>
           <form onSubmit={onSubmit} className="space-y-6">
             <div>
@@ -80,7 +80,9 @@ const Login = () => {
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors.email && <div className="text-red-600 text-sm">{errors.email}</div>}
+              {errors.email && (
+                <div className="text-red-600 text-sm">{errors.email}</div>
+              )}
             </div>
 
             <div>
@@ -94,7 +96,9 @@ const Login = () => {
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors.password && <div className="text-red-600 text-sm">{errors.password}</div>}
+              {errors.password && (
+                <div className="text-red-600 text-sm">{errors.password}</div>
+              )}
             </div>
             {success && <div className="text-green-600 text-sm">{success}</div>}
             <div>

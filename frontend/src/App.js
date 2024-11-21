@@ -1,4 +1,10 @@
-import { BrowserRouter, Navigate, Routes, Route, Outlet } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import Placeholder from "./pages/Placeholder";
 import Register from "./pages/Register";
@@ -9,15 +15,14 @@ import TimeManagement from "./pages/TimeManagement";
 import EmployeePermissions from "./pages/EmployeePermissions";
 import { useSelector } from "react-redux";
 
-
 const PrivateRoutes = () => {
   const authState = useSelector((state) => state.auth);
 
   if (!authState.isAuth) {
     return <Navigate to="/" />;
   }
-  return <Outlet />; 
-}
+  return <Outlet />;
+};
 
 const RestrictedRoutes = () => {
   const authState = useSelector((state) => state.auth);
@@ -35,7 +40,10 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/invite" element={<Invite />}></Route>
           <Route path="/time-management" element={<TimeManagement />}></Route>
-          <Route path="/employee-permissions" element={<EmployeePermissions />}></Route>
+          <Route
+            path="/employee-permissions"
+            element={<EmployeePermissions />}
+          ></Route>
         </Route>
 
         <Route element={<RestrictedRoutes />}>

@@ -79,7 +79,9 @@ const Navbar = () => {
           <h1 className="w-full text-3xl font-bold m-4 pt-3">BMS Suite</h1>
           <ul className="p-2">
             <li className="p-4 border-b-2 text-lg border-b-[#0B1215]">About</li>
-            <li className="p-4 border-b-2 text-lg border-b-[#0B1215]">Features</li>
+            <li className="p-4 border-b-2 text-lg border-b-[#0B1215]">
+              Features
+            </li>
             <li className="p-4 border-b-2 text-lg border-b-[#0B1215]">Home</li>
             <li className="p-4 text-lg">Contact</li>
           </ul>

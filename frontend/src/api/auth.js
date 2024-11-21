@@ -1,13 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = process.env.NODE_ENV === 'development'
-  ? process.env.REACT_APP_DEV_API_URL
-  : process.env.REACT_APP_API_URL_PROD;
+const API_URL =
+  process.env.NODE_ENV === "development"
+    ? process.env.REACT_APP_DEV_API_URL
+    : process.env.REACT_APP_API_URL_PROD;
 
 axios.defaults.withCredentials = true;
 
 export async function onLogin(loginData, userType) {
-  console.log(API_URL)
+  console.log(API_URL);
   return await axios.post(`${API_URL}/${userType}/login`, loginData);
 }
 
