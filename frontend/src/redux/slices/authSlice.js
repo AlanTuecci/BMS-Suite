@@ -7,17 +7,20 @@ const userAuthFromLocalStorage = () => {
 
 const initialState = {
   isAuth: userAuthFromLocalStorage(),
+  userType: null,
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    authenticateUser: (state) => {
+    authenticateUser: (state, action) => {
       state.isAuth = true;
+      state.userType = action.payload;
     },
     unAuthenicateUser: (state) => {
       state.isAuth = false;
+      state.userType = null;
     },
   },
 });

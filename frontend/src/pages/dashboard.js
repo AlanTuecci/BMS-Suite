@@ -1,9 +1,11 @@
 import React from "react";
-import Sidebar from "../components/sidebar";
-import './css/dashboard.css';
-import {NavLink} from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import DashboardCard from "../components/DashboardCard";
+import { useSelector } from "react-redux";
 
 function Dashboard() {
+  const userType = useSelector((state) => state.auth.userType);
+
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-US", {
     day: "2-digit",
@@ -12,23 +14,51 @@ function Dashboard() {
   });
 
   return (
-    <div className="background">
-        <Sidebar />
-        <div className="text_container_d">
-            <h2 className="header_design">Hello</h2>
-            <p className="date_design">{formattedDate}</p>
+    <div className="flex flex-col md:flex-row h-screen bg-gradient-to-r from-[#F0FAFC] via-[#D1E6F0] to-[#A3CEDF]">
+      <Sidebar />
+      <div className="flex flex-col items-center justify-center flex-grow p-4">
+        <div className="text-center mb-4 md:mb-8">
+          <h2 className="text-2xl md:text-5xl font-bold text-[#14213D]">
+            Hello
+          </h2>
+          <p className="text-sm md:text-lg text-gray-600">{formattedDate}</p>
         </div>
-        <div className="grid_container">
-            <button className="grid_item"><span className="option_header">Timekeeping</span><br/><p className="opt_description">Log your hours for <br/> the work week.</p></button>
-            <button className="grid_item"><span className="option_header">Product <br/> Management</span><br/><p className="opt_description">Manage and Update Your <br/> Inventory</p></button>
-            <button className="grid_item"><span className="option_header">Cash control</span> <p className="opt_description">Monitor and manage your <br/>revenue stream</p></button>
-          <NavLink to = "/invite">
-            <button className="grid_item">
-              <span className="option_header">Employees</span>
-              <p className="opt_description"> Encountering a challenge? <br/> Seek assistance here.</p>
-          </button>
-          </NavLink>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-screen-xl">
+          <DashboardCard
+            title="Timekeeping"
+            description="Log your hours for the work week."
+            link="timekeeping"
+          />
+          <DashboardCard
+            title="Product Management"
+            description="Manage and update your inventory."
+            link="product-management"
+          />
+          <DashboardCard
+            title="Cash Control"
+            description="Monitor and manage your revenue stream."
+            link="cash-control"
+          />
+          <DashboardCard
+            title="Employees"
+            description="Encountering a challenge? Seek assistance here."
+            link="invite"
+          />
+          {userType === "company" ? (
+            <DashboardCard
+              title="Manage Employees"
+              description="Oversee and manage employee information."
+              link="employee-permissions"
+            />
+          ) : (
+            <DashboardCard
+              title="My Info"
+              description="View and update your personal information."
+              link="my-info"
+            />
+          )}
         </div>
+      </div>
     </div>
   );
 }
