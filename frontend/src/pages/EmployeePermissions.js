@@ -4,11 +4,13 @@ import Sidebar from "../components/Sidebar";
 
 const EmployeePermissions = () => {
   const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchEmployees = async () => {
     try {
@@ -18,6 +20,7 @@ const EmployeePermissions = () => {
         employee_register_date: new Date(employee.employee_register_date).toLocaleDateString(),
       }));
       setEmployees(employeeData);
+      setFilteredEmployees(employeeData);
     } catch (err) {
       console.error("Error fetching employees:", err);
       setError("Failed to fetch employee data");
@@ -29,6 +32,15 @@ const EmployeePermissions = () => {
   useEffect(() => {
     fetchEmployees();
   }, []);
+
+  const handleSearch = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    const filtered = employees.filter((employee) =>
+      employee.full_name.toLowerCase().includes(term)
+    );
+    setFilteredEmployees(filtered);
+  };
 
   const openModal = (employee) => {
     setSelectedEmployee(employee);
@@ -76,20 +88,22 @@ const EmployeePermissions = () => {
         <div className="mb-6">
           <input
             type="text"
+            value={searchTerm}
+            onChange={handleSearch}
             placeholder="Search Employees..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-1/4 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
 
         <div className="font-mono text-gray-800">
-          <div className="mb-4 text-gray-500 w-full flex">
-            <span className="w-1/4">Employee ID</span>
-            <span className="w-1/4">Employee Name</span>
-            <span className="w-1/4">Email</span>
-            <span className="w-1/4">Date Added</span>
+          <div className="mb-4 text-gray-800 w-full flex bg-gray-100 rounded-lg p-3">
+            <span className="w-1/4 font-semibold">Employee ID</span>
+            <span className="w-1/4 font-semibold">Employee Name</span>
+            <span className="w-1/4 font-semibold">Email</span>
+            <span className="w-1/4 font-semibold">Date Added</span>
           </div>
 
-          {employees.map((employee, index) => (
+          {filteredEmployees.map((employee, index) => (
             <div
               key={employee.employee_id}
               className={`mb-2 w-full flex items-center p-2 ${
