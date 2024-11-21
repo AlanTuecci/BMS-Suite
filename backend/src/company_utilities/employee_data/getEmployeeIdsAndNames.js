@@ -4,7 +4,9 @@ exports.getEmployeeIdsAndNames = async (req, res) => {
   const { company_id } = req.user;
 
   try {
-    let { rows } = await pool.query("select * from employee_info where company_id = $1", [company_id]);
+    let { rows } = await pool.query("select * from employee_info where company_id = $1 and employee_id > 0", [
+      company_id,
+    ]);
 
     let fieldToRemove = [
       "company_id",

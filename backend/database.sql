@@ -1,3 +1,11 @@
+--schema_version TABLE
+CREATE TABLE schema_version(
+    version varchar(6) NOT NULL
+);
+
+--Current minimum supported backend version is v4.0
+insert into schema_version values('4');
+
 --company_info TABLE
 CREATE TABLE company_info(
     company_id serial PRIMARY KEY,
@@ -46,6 +54,7 @@ CREATE TABLE product_info(
 CREATE TABLE product_counts(
     company_id serial NOT NULL,
     product_sku integer NOT NULL,
+    product_count_id serial NOT NULL,
     employee_id serial NOT NULL,
     count_date date DEFAULT current_date,
     count_time time DEFAULT current_time,
@@ -53,7 +62,8 @@ CREATE TABLE product_counts(
     on_hand_tray_count integer,
     on_hand_case_count integer,
     FOREIGN KEY (company_id, employee_id) REFERENCES employee_info(company_id, employee_id),
-    FOREIGN KEY (company_id, product_sku) REFERENCES product_info(company_id, product_sku)
+    FOREIGN KEY (company_id, product_sku) REFERENCES product_info(company_id, product_sku),
+    PRIMARY KEY (company_id, product_sku, product_count_id)
 );
 
 --employee_labor_info TABLE

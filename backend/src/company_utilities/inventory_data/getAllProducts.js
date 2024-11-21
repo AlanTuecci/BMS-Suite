@@ -1,20 +1,13 @@
 const pool = require("../../db");
 
-exports.getAllEmployeeInfo = async (req, res) => {
+exports.getAllProducts = async (req, res) => {
   const { company_id } = req.user;
 
   try {
-    let { rows } = await pool.query("select * from employee_info where company_id = $1 and employee_id > 1", [
-      company_id,
-    ]);
-
-    let fieldToRemove = ["company_id", "employee_password"];
-
-    rows.forEach((obj) => {
-      fieldToRemove.forEach((field) => {
-        delete obj[field];
-      });
-    });
+    const { rows } = await pool.query(
+      "select product_sku, product_name, product_description from product_info where company_id = $1",
+      [company_id]
+    );
 
     return res.status(200).json(rows);
   } catch (error) {

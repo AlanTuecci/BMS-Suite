@@ -28,6 +28,7 @@ const authRoutes = require("./routes/auth");
 
 //database connection check
 const checkConnect = require("./db/connectCheck");
+const { checkVersion } = require("./db/checkVersion");
 
 //initilize routes
 app.use("/api", authRoutes);
@@ -50,8 +51,9 @@ const appStart = async () => {
   try {
     console.log(`Starting app in ${NODE_ENV} mode\n`);
     await checkConnect();
+    await checkVersion(4);
     app.listen(SERVER_PORT, () => {
-      console.log(`\nThe server is running on port: ${SERVER_PORT}`);
+      console.log(`The server is running on port: ${SERVER_PORT}`);
       console.log(`The server is using CORS and accepting connections from ${clientUrlString}`);
     });
   } catch (error) {

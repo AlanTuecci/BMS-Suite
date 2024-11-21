@@ -2,7 +2,13 @@ const pool = require("../../db");
 
 exports.assignLaborAccessControl = async (req, res) => {
   const { company_id } = req.user;
-  const { employee_id, access_control_level, hourly_wage } = req.body;
+  const { employee_id, access_control_level } = req.body;
+
+  let hourly_wage = req.body.hourly_wage;
+
+  if (!hourly_wage) {
+    hourly_wage = 0;
+  }
 
   try {
     const { rows } = await pool.query("select * from employee_labor_info where company_id = $1 and employee_id = $2", [
@@ -24,7 +30,7 @@ exports.assignLaborAccessControl = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Hourly wage and permission level set!`,
+      message: `Labor access level and/or wage set!`,
     });
   } catch (error) {
     return res.status(500).json({
