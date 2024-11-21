@@ -26,3 +26,7 @@ export async function onInviteEmployee(emailValue) {
 export async function onGetInvites() {
   return await axios.post(`${API_URL}/company/getAllInvites`);
 }
+
+export async function onGetEmployees() {
+  return await axios.post(`${API_URL}/company/getAllEmployeeInfo`);
+}

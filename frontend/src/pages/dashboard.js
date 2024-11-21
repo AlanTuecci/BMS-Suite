@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../components/Sidebar";
 import DashboardCard from "../components/DashboardCard";
 import { useSelector } from "react-redux";
 
@@ -46,7 +46,7 @@ function Dashboard() {
             <DashboardCard 
               title="Manage Employees" 
               description="Oversee and manage employee information." 
-              link="manage-employees" 
+              link="employee-permissions" 
             />
           ) : (
             <DashboardCard 

@@ -1,8 +1,8 @@
 import React from 'react'
 import './css/invite.css';
-import Sidebar from '../components/sidebar';
-import Emptable from '../components/emptable';
-import Search from '../components/search';
+import Sidebar from '../components/Sidebar';
+import Emptable from '../components/Emptable';
+import Search from '../components/Search';
 
 
 function invite() {
