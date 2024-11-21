@@ -30,7 +30,7 @@ function Dashboard() {
           <DashboardCard 
             title="Product Management" 
             description="Manage and update your inventory." 
-            link="product-management" 
+            link="prdmgmt" 
           />
           <DashboardCard 
             title="Cash Control" 

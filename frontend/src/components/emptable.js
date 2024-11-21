@@ -27,11 +27,11 @@ function Emptable() {
   return (
     <div className="container">
       <h2>Active Invites:</h2>
-      <table>
+      <table className="table">
         <thead>
-          <tr>
-            <th>Email</th>
-            <th>Invite Code</th>
+          <tr className="tr">
+            <th className="th">Email</th>
+            <th className="th">Invite Code</th>
           </tr>
         </thead>
         <tbody>
