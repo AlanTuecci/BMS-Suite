@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { onGetEmployees } from "../api/auth";
+import {
+  onGetEmployees,
+  onSetMinCashAccessControl,
+  onSetMinLaborAccessControl,
+  onSetMinInventoryAccessControl,
+} from "../api/auth";
 import Sidebar from "../components/Sidebar";
 
 const EmployeePermissions = () => {
@@ -18,6 +23,8 @@ const EmployeePermissions = () => {
     readInsertUpdate: false,
     readInsertUpdateDelete: false,
   });
+
+  const [feedbackMessage, setFeedbackMessage] = useState(null);
 
   const fetchEmployees = async () => {
     try {
@@ -53,12 +60,19 @@ const EmployeePermissions = () => {
 
   const openModal = (employee) => {
     setSelectedEmployee(employee);
+    setPermissions({
+      view: false,
+      readAndInsert: false,
+      readInsertUpdate: false,
+      readInsertUpdateDelete: false,
+    });
     setIsModalVisible(true);
   };
 
   const closeModal = () => {
     setIsModalVisible(false);
     setSelectedEmployee(null);
+    setFeedbackMessage(null);
   };
 
   const togglePermission = (key) => {
@@ -66,6 +80,18 @@ const EmployeePermissions = () => {
       ...prev,
       [key]: !prev[key],
     }));
+  };
+
+  const savePermissions = async () => {
+    try {
+      if (permissions.view) await onSetMinInventoryAccessControl();
+      if (permissions.readAndInsert) await onSetMinLaborAccessControl();
+      if (permissions.readInsertUpdate) await onSetMinCashAccessControl();
+
+      setFeedbackMessage({ success: true, text: "Permissions updated successfully!" });
+    } catch (error) {
+      setFeedbackMessage({ success: false, text: "Failed to update permissions!" });
+    }
   };
 
   if (loading)
@@ -198,6 +224,18 @@ const EmployeePermissions = () => {
                 ))}
               </div>
 
+              {feedbackMessage && (
+                <p
+                  className={`mt-4 text-center ${
+                    feedbackMessage.success
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {feedbackMessage.text}
+                </p>
+              )}
+
               <div className="mt-6 flex justify-center gap-4">
                 <button
                   className="px-6 py-2 bg-white text-[#454FE1] border-2 border-[#454FE1] rounded-lg hover:bg-gray-100"
@@ -208,10 +246,7 @@ const EmployeePermissions = () => {
 
                 <button
                   className="px-6 py-2 bg-[#454FE1] text-white rounded-lg hover:bg-[#333ACC]"
-                  onClick={() => {
-                    console.log("Permissions Saved:", permissions);
-                    closeModal();
-                  }}
+                  onClick={savePermissions}
                 >
                   Save Changes
                 </button>

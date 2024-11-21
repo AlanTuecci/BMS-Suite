@@ -31,3 +31,15 @@ export async function onGetInvites() {
 export async function onGetEmployees() {
   return await axios.post(`${API_URL}/company/getAllEmployeeInfo`);
 }
+
+export async function onSetMinInventoryAccessControl() {
+  return await axios.post(`${API_URL}/company/setMinInventoryAccessControl`);
+}
+
+export async function onSetMinLaborAccessControl() {
+  return await axios.post(`${API_URL}/company/setMinLaborAccessControl`);
+}
+
+export async function onSetMinCashAccessControl() {
+  return await axios.post(`${API_URL}/company/setMinCashAccessControl`);
+}
