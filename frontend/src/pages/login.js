@@ -1,96 +1,128 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { onLogin } from "../api/auth";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import loginImage from "../media/login/Login.png";
 import { useDispatch } from "react-redux";
 import { authenticateUser } from "../redux/slices/authSlice";
-import { useLocation } from "react-router-dom";
-import './login.css';
-import loginImage from '../media/login/Login.png';
-import Navbar from "../components/navbar";
 
 const Login = () => {
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState(false);
 
   const location = useLocation();
-  const userType = location.state?.userType || "employee";
+  const queryParams = new URLSearchParams(location.search);
+  const userType = queryParams.get("userType") || "employee";
+
+  const dispatch = useDispatch();
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const dispatch = useDispatch();
-
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await onLogin(values, userType);
-      dispatch(authenticateUser());
-      localStorage.setItem("isAuth", "true");
+      const loginValues = {
+        email: values.email,
+        password: values.password,
+      };
+      const { data } = await onLogin(loginValues, userType);
+      setErrors({});
+      setSuccess(data.message);
+      setValues({
+        email: "",
+        password: "",
+      });
+
+      dispatch(authenticateUser(userType));
+      localStorage.setItem("isAuth", true);
     } catch (error) {
-      let errorArray = [];
-      if (error.response && error.response.data.errors) {
-        error.response.data.errors.forEach((element) => {
-          errorArray.push(element.msg);
-        });
-      }
-      setErrors(errorArray);
+      let errorObj = {};
+      error.response.data.errors.forEach((element) => {
+        errorObj[element.path] = element.msg;
+      });
+      setErrors(errorObj);
+      setSuccess("");
     }
   };
 
   return (
-    <div className="login-background">
-      <Navbar></Navbar> 
-        <div className="login-container">
-          <div className="login-image-container">
-            <img src={loginImage} alt="Login" className="login-image" />
+    <div className="bg-[#F0FAFC] min-h-screen">
+      <Navbar />
+      <div className="flex flex-col lg:flex-row items-center justify-center lg:space-x-12 py-12 px-6 lg:px-16">
+        <div className="w-full lg:w-3/5 flex justify-center lg:justify-end mb-10 lg:mb-0">
+          <img
+            src={loginImage}
+            alt="Login"
+            className="w-4/5 lg:w-full object-contain rounded-3xl shadow-lg"
+          />
+        </div>
+        <div className="w-full lg:w-2/5 bg-white p-8 rounded-lg shadow-lg space-y-6">
+          <div className="text-center lg:text-left">
+            <h1 className="text-3xl font-extrabold text-gray-900">
+              Log In To Your Account
+            </h1>
           </div>
-          <div className="login-form-container">
-            <h1 className="login-title">Welcome Back</h1>
-            <p className="login-subtitle">Login to your account below</p>
-            
-            <form onSubmit={(e) => onSubmit(e)} className="login-form">
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label"></label>
-                <input
-                  onChange={(e) => onChange(e)}
-                  type="email"
-                  className="form-control line-input"
-                  id="email"
-                  name="email"
-                  value={values.email}
-                  placeholder="Email address"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label"></label>
-                <input
-                  onChange={(e) => onChange(e)}
-                  type="password"
-                  className="form-control line-input"
-                  id="password"
-                  name="password"
-                  value={values.password}
-                  placeholder="Password"
-                  required
-                />
-              </div>
-              <div className="error-messages">
-                <ul>
-                  {errors.map((error, index) => (
-                    <li key={index}>{error}</li>
-                  ))}
-                </ul>
-              </div>
-              <button type="submit" className="button_container">
-                Login
+          <form onSubmit={onSubmit} className="space-y-6">
+            <div>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                onChange={onChange}
+                value={values.email}
+                placeholder="Email address"
+                className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
+                required
+              />
+              {errors.email && (
+                <div className="text-red-600 text-sm">{errors.email}</div>
+              )}
+            </div>
+
+            <div>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                onChange={onChange}
+                value={values.password}
+                placeholder="Password"
+                className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
+                required
+              />
+              {errors.password && (
+                <div className="text-red-600 text-sm">{errors.password}</div>
+              )}
+            </div>
+            {success && <div className="text-green-600 text-sm">{success}</div>}
+            <div>
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#14213D] text-white rounded-lg font-semibold hover:bg-[#454FE1] transition duration-200"
+              >
+                Log In
               </button>
-            </form>
+            </div>
+          </form>
+          <div className="text-center mt-4">
+            <p className="text-gray-600">
+              Don't have an account?{" "}
+              <Link
+                to={`/register?userType=${userType}`}
+                className="text-[#454FE1] font-semibold hover:underline"
+              >
+                Sign up here
+              </Link>
+            </p>
           </div>
         </div>
+      </div>
     </div>
   );
 };

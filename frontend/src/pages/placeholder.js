@@ -1,22 +1,19 @@
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import { onLogout } from "../api/auth";
-import { unAuthenicateUser } from "../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
-import Sidebar from "../components/sidebar";
-import '../components/css/sidebar.css'
+import Sidebar from "../components/Sidebar";
 
 const Placeholder = () => {
   const dispatch = useDispatch();
 
   const logout = async () => {
     await onLogout();
-    dispatch(unAuthenicateUser());
     localStorage.removeItem("isAuth");
   };
 
   return (
     <Layout>
-      < Sidebar/>
+      <Sidebar />
       <h1>BMS-Suite Site Prototype</h1>
 
       <br></br>
@@ -25,7 +22,11 @@ const Placeholder = () => {
 
       <br></br>
 
-      <button onClick={() => logout()} className="btn btn-primary" style={{ margin: "10px 10px 0 0" }}>
+      <button
+        onClick={() => logout()}
+        className="btn btn-primary"
+        style={{ margin: "10px 10px 0 0" }}
+      >
         Logout
       </button>
     </Layout>
