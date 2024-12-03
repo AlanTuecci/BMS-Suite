@@ -1,33 +1,30 @@
 const pool = require("../../db");
 
-exports.deleteInvite = async (req, res) => {
+exports.getLatestProductCounts = async (req, res) => {
   const { company_id } = req.user;
-  const { employee_email } = req.body;
+  const { product_sku } = req.body;
 
   try {
-    const { rowCount } = await pool.query(
-      "delete from invite_codes where company_id = $1 and employee_email = $2",
-      [company_id, employee_email]
+    const { rows } = await pool.query(
+      "select * from product_counts where company_id = $1 and product_sku = $2 order by count_date desc, count_time desc limit 1",
+      [company_id, product_sku]
     );
 
-    if (rowCount > 0) {
-      return res.status(200).json({
-        success: true,
-        message: `Invite deleted!`,
-      });
-    } else {
+    if (rows.length == 0) {
       return res.status(500).json({
         errors: [
           {
             type: "field",
-            value: employee_email,
-            msg: `Unable to delete invite for ${employee_email}.`,
-            path: "employee_info",
+            value: product_sku,
+            msg: "Product not found.",
+            path: "product_sku",
             location: "body",
           },
         ],
       });
     }
+
+    return res.status(200).json(rows);
   } catch (error) {
     return res.status(500).json({
       errors: [

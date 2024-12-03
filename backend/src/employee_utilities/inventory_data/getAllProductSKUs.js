@@ -1,10 +1,10 @@
 const pool = require("../../db");
 
-exports.getAllInvites = async (req, res) => {
+exports.getAllProductSKUs = async (req, res) => {
   const { company_id } = req.user;
 
   try {
-    const { rows } = await pool.query("select * from invite_codes where company_id = $1", [
+    const { rows } = await pool.query("select product_sku, product_name from product_info where company_id = $1", [
       company_id,
     ]);
 

@@ -1,6 +1,6 @@
 const pool = require("../../db");
 
-exports.addProduct = async (req, res) => {
+exports.updateProductDescription = async (req, res) => {
   const { company_id } = req.user;
   const { product_sku, product_name, product_description } = req.body;
 
@@ -14,39 +14,42 @@ exports.addProduct = async (req, res) => {
       product_sku,
     ]);
 
-    if (rows.length != 0) {
+    if (rows.length == 0) {
       return res.status(500).json({
         errors: [
           {
             type: "field",
             value: product_sku,
-            msg: "Product already exists.",
+            msg: "Product not found.",
             path: "product_sku",
             location: "body",
           },
         ],
       });
     } else {
-      await client.query(
-        "insert into product_info(company_id, product_sku, product_name, product_description) values($1, $2, $3, $4)",
-        [company_id, product_sku, product_name, product_description]
-      );
-      await client.query(
-        "insert into product_counts(company_id, product_sku, employee_id, on_hand_loose_unit_count, on_hand_tray_count, on_hand_case_count) values($1, $2, 0, $3, $4, $5)",
-        [company_id, product_sku, 0, 0, 0]
-      );
+      if (product_name) {
+        await client.query("UPDATE product_info SET product_name = $1 WHERE company_id = $2 AND product_sku = $3", [
+          product_name,
+          company_id,
+          product_sku,
+        ]);
+      }
+      if (product_description) {
+        await client.query(
+          "UPDATE product_info SET product_description = $1 WHERE company_id = $2 AND product_sku = $3",
+          [product_description, company_id, product_sku]
+        );
+      }
     }
 
     await client.query("COMMIT");
 
     return res.status(200).json({
       success: true,
-      message: `Product added!`,
+      message: `Product details updated!`,
     });
   } catch (error) {
-    console.log(error);
     await client.query("ROLLBACK");
-
     return res.status(500).json({
       errors: [
         {

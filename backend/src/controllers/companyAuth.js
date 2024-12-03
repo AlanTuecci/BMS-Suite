@@ -1,4 +1,4 @@
-const db = require("../db");
+const pool = require("../db");
 const { hash } = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
 const { SECRET } = require("../constants");
@@ -6,9 +6,14 @@ const { SECRET } = require("../constants");
 exports.companyRegister = async (req, res) => {
   const { email, password, company_ein } = req.body;
 
+  const client = await pool.connect();
+
   try {
-    // Is the company EIN unused?
-    let { rows } = await db.query("select * from company_info where company_ein = $1", [company_ein]);
+    await client.query("BEGIN");
+
+    const { rows } = await client.query("select * from company_info where company_ein = $1", [
+      company_ein,
+    ]);
 
     if (rows.length) {
       return res.status(404).json({
@@ -24,19 +29,32 @@ exports.companyRegister = async (req, res) => {
       });
     }
 
-    // Insert the company registration details with the hashed password
     const hashedPassword = await hash(password, 10);
-    await db.query(
+    await client.query(
       "insert into company_info(company_admin_email, company_admin_password, company_ein) values($1, $2, $3)",
       [email, hashedPassword, company_ein]
     );
+
+    const result = await client.query(
+      "select company_id from company_info where company_admin_email = $1",
+      [email]
+    );
+
+    await client.query(
+      "insert into employee_info(company_id, employee_id, full_name, employee_email, employee_password, employee_register_date) values($1, 0, 'EMPTY', 'EMPTY', 'EMPTY', current_date)",
+      [result.rows[0].company_id]
+    );
+
+    await client.query("COMMIT");
 
     return res.status(201).json({
       success: true,
       message: "The registration was successful!",
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
+    await client.query("ROLLBACK");
+
     return res.status(500).json({
       errors: [
         {
@@ -49,11 +67,13 @@ exports.companyRegister = async (req, res) => {
       ],
       error: error,
     });
+  } finally {
+    client.release();
   }
 };
 
 exports.companyLogin = async (req, res) => {
-  let user = req.user || req.body
+  let user = req.user || req.body;
   let payload = {
     company_id: user.company_id,
     company_admin_email: user.company_admin_email,

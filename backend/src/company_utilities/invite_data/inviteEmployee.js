@@ -1,10 +1,12 @@
-const db = require("../../db");
+const pool = require("../../db");
 const { SERVER_EMAIL, SERVER_EMAIL_PASSWORD } = require("../../constants");
 const nodemailer = require("nodemailer");
 
 exports.inviteEmployee = async (req, res) => {
   const { employee_email } = req.body;
   const { company_id } = req.user;
+
+  const client = await pool.connect();
 
   const invite_code = Math.floor(Math.random() * 999999) + 1;
 
@@ -28,33 +30,42 @@ exports.inviteEmployee = async (req, res) => {
   };
 
   try {
-    let query = await db.query("select * from invite_codes where invite_code = $1", [invite_code]);
+    await client.query("BEGIN");
+    let query = await client.query("select * from invite_codes where invite_code = $1", [
+      invite_code,
+    ]);
     if (query.rows.length) {
       return res.status(500).json({
         error: "Unable to generate unique invite code! Please try again.",
       });
     }
 
-    query = await db.query("select * from invite_codes where employee_email = $1", [employee_email]);
+    query = await client.query("select * from invite_codes where employee_email = $1", [
+      employee_email,
+    ]);
     if (query.rows.length) {
       return res.status(404).json({
         error: `There is already an invite for employee with email ${employee_email}! Please use a different email.`,
       });
     }
 
+    await client.query(
+      "insert into invite_codes(company_id, invite_code, employee_email) values($1, $2, $3)",
+      [company_id, invite_code, employee_email]
+    );
+
     await transporter.sendMail(mail_options);
 
-    await db.query("insert into invite_codes(company_id, invite_code, employee_email) values($1, $2, $3)", [
-      company_id,
-      invite_code,
-      employee_email,
-    ]);
+    await client.query("COMMIT");
 
     return res.status(201).json({
       success: true,
       message: `Invite sent to ${employee_email}!`,
     });
   } catch (error) {
+    console.log(error);
+    await client.query("ROLLBACK");
+
     return res.status(500).json({
       errors: [
         {
@@ -67,5 +78,7 @@ exports.inviteEmployee = async (req, res) => {
       ],
       error: error,
     });
+  } finally {
+    client.release();
   }
 };
