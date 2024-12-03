@@ -2,12 +2,17 @@ const pool = require("../../db");
 
 exports.getProductCountHistory = async (req, res) => {
   const { company_id } = req.user;
-  const { product_sku, num_entries } = req.body;
+  const { product_sku } = req.body;
+  const num_entries = req.body.num_entries ?? 10;
+  const min_entry_num = req.body.min_entry_num ?? 0;
 
   try {
     const { rows } = await pool.query(
-      "select * from product_counts where company_id = $1 and product_sku = $2 order by count_date desc, count_time desc limit $3",
-      [company_id, product_sku, num_entries]
+      `SELECT * FROM product_counts 
+       WHERE company_id = $1 AND product_sku = $2 
+       ORDER BY count_date DESC, count_time DESC 
+       LIMIT $3 OFFSET $4`,
+      [company_id, product_sku, num_entries, min_entry_num]
     );
 
     if (rows.length == 0) {

@@ -1,8 +1,8 @@
 const pool = require("../../db");
 
-exports.updateProductCounts = async (req, res) => {
-  const { company_id, employee_id } = req.user;
-  const { product_sku, product_count_id } = req.body;
+exports.addProductCounts = async (req, res) => {
+  const { company_id } = req.user;
+  const { product_sku } = req.body;
 
   const on_hand_loose_unit_count = req.body.on_hand_loose_unit_count ?? 0;
   const on_hand_tray_count = req.body.on_hand_tray_count ?? 0;
@@ -12,27 +12,6 @@ exports.updateProductCounts = async (req, res) => {
 
   try {
     await client.query("BEGIN");
-
-    let response = await client.query(
-      "select access_control_level from inventory_access_info where company_id = $1 and employee_id = $2",
-      [company_id, employee_id]
-    );
-
-    const accessLevel = response.rows[0].access_control_level;
-
-    if (accessLevel < 2) {
-      return res.status(401).json({
-        errors: [
-          {
-            type: "field",
-            value: employee_id,
-            msg: "Unauthorized operation.",
-            path: "employee_id",
-            location: "user",
-          },
-        ],
-      });
-    }
 
     response = await client.query("select product_sku from product_info where company_id = $1 and product_sku = $2", [
       company_id,
@@ -56,23 +35,15 @@ exports.updateProductCounts = async (req, res) => {
     }
 
     await client.query(
-      "UPDATE product_counts SET employee_id = $1, count_date = current_date, count_time = current_time, on_hand_loose_unit_count = $2, on_hand_tray_count = $3, on_hand_case_count = $4 WHERE company_id = $5 AND product_sku = $6 AND product_count_id = $7",
-      [
-        employee_id,
-        on_hand_loose_unit_count,
-        on_hand_tray_count,
-        on_hand_case_count,
-        company_id,
-        product_sku,
-        product_count_id,
-      ]
+      "insert into product_counts(company_id, product_sku, employee_id, on_hand_loose_unit_count, on_hand_tray_count, on_hand_case_count) values($1, $2, 0, $3, $4, $5)",
+      [company_id, product_sku, on_hand_loose_unit_count, on_hand_tray_count, on_hand_case_count]
     );
 
     await client.query("COMMIT");
 
     return res.status(200).json({
       success: true,
-      message: `Product counts updated!`,
+      message: `Product counts recorded!`,
     });
   } catch (error) {
     await client.query("ROLLBACK");

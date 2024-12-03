@@ -1,8 +1,8 @@
 const pool = require("../../db");
 
-exports.updateProductCounts = async (req, res) => {
+exports.recordProductCounts = async (req, res) => {
   const { company_id, employee_id } = req.user;
-  const { product_sku, product_count_id } = req.body;
+  const { product_sku } = req.body;
 
   const on_hand_loose_unit_count = req.body.on_hand_loose_unit_count ?? 0;
   const on_hand_tray_count = req.body.on_hand_tray_count ?? 0;
@@ -20,7 +20,7 @@ exports.updateProductCounts = async (req, res) => {
 
     const accessLevel = response.rows[0].access_control_level;
 
-    if (accessLevel < 2) {
+    if (accessLevel < 1) {
       return res.status(401).json({
         errors: [
           {
@@ -56,23 +56,15 @@ exports.updateProductCounts = async (req, res) => {
     }
 
     await client.query(
-      "UPDATE product_counts SET employee_id = $1, count_date = current_date, count_time = current_time, on_hand_loose_unit_count = $2, on_hand_tray_count = $3, on_hand_case_count = $4 WHERE company_id = $5 AND product_sku = $6 AND product_count_id = $7",
-      [
-        employee_id,
-        on_hand_loose_unit_count,
-        on_hand_tray_count,
-        on_hand_case_count,
-        company_id,
-        product_sku,
-        product_count_id,
-      ]
+      "insert into product_counts(company_id, product_sku, employee_id, on_hand_loose_unit_count, on_hand_tray_count, on_hand_case_count) values($1, $2, $3, $4, $5, $6)",
+      [company_id, product_sku, employee_id, on_hand_loose_unit_count, on_hand_tray_count, on_hand_case_count]
     );
 
     await client.query("COMMIT");
 
     return res.status(200).json({
       success: true,
-      message: `Product counts updated!`,
+      message: `Product counts recorded!`,
     });
   } catch (error) {
     await client.query("ROLLBACK");

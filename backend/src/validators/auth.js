@@ -61,7 +61,7 @@ const companyLoginFieldsCheck = check("email").custom(async (value, { req }) => 
   const validPassword = await compare(req.body.password, user.rows[0].company_admin_password);
 
   if (!validPassword) {
-    throw new Error("Invalid password for inputted email.");
+    throw new Error("Invalid password.");
   }
 
   req.user = user.rows[0];
