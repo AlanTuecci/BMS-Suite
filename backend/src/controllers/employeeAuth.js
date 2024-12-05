@@ -90,6 +90,7 @@ exports.employeeRegister = async (req, res) => {
 exports.employeeLogin = async (req, res) => {
   let user = req.user;
   let payload = {
+    user_type: "employee",
     company_id: user.company_id,
     employee_id: user.employee_id,
     employee_email: user.employee_email,

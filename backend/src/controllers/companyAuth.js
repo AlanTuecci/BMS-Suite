@@ -11,9 +11,7 @@ exports.companyRegister = async (req, res) => {
   try {
     await client.query("BEGIN");
 
-    const { rows } = await client.query("select * from company_info where company_ein = $1", [
-      company_ein,
-    ]);
+    const { rows } = await client.query("select * from company_info where company_ein = $1", [company_ein]);
 
     if (rows.length) {
       return res.status(404).json({
@@ -35,13 +33,10 @@ exports.companyRegister = async (req, res) => {
       [email, hashedPassword, company_ein]
     );
 
-    const result = await client.query(
-      "select company_id from company_info where company_admin_email = $1",
-      [email]
-    );
+    const result = await client.query("select company_id from company_info where company_admin_email = $1", [email]);
 
     await client.query(
-      "insert into employee_info(company_id, employee_id, full_name, employee_email, employee_password, employee_register_date) values($1, 0, 'EMPTY', 'EMPTY', 'EMPTY', current_date)",
+      "insert into employee_info(company_id, employee_id, full_name, employee_email, employee_password) values($1, 0, 'EMPTY', 'EMPTY', 'EMPTY')",
       [result.rows[0].company_id]
     );
 
@@ -75,6 +70,7 @@ exports.companyRegister = async (req, res) => {
 exports.companyLogin = async (req, res) => {
   let user = req.user || req.body;
   let payload = {
+    user_type: "company",
     company_id: user.company_id,
     company_admin_email: user.company_admin_email,
   };

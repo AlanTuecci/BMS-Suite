@@ -8,9 +8,17 @@ exports.getProductCountHistory = async (req, res) => {
 
   try {
     const { rows } = await pool.query(
-      `SELECT * FROM product_counts 
+      `SELECT 
+        product_sku, 
+        product_count_id, 
+        employee_id, 
+        count_timestamp, 
+        on_hand_loose_unit_count, 
+        on_hand_tray_count, 
+        on_hand_case_count 
+       FROM product_counts 
        WHERE company_id = $1 AND product_sku = $2 
-       ORDER BY count_date DESC, count_time DESC 
+       ORDER BY count_timestamp DESC 
        LIMIT $3 OFFSET $4`,
       [company_id, product_sku, num_entries, min_entry_num]
     );

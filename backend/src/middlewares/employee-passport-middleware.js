@@ -30,6 +30,7 @@ passport.use(
       }
 
       let user = {
+        user_type: "employee",
         company_id: rows[0].company_id,
         employee_id: rows[0].employee_id,
         employee_email: rows[0].employee_email,

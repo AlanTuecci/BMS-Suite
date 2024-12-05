@@ -6,7 +6,17 @@ exports.getLatestProductCounts = async (req, res) => {
 
   try {
     const { rows } = await pool.query(
-      "select * from product_counts where company_id = $1 and product_sku = $2 order by count_date desc, count_time desc limit 1",
+      `SELECT 
+          product_sku,
+          product_count_id,
+          employee_id,
+          count_timestamp,
+          on_hand_loose_unit_count,
+          on_hand_tray_count,
+          on_hand_case_count
+        FROM product_counts 
+        WHERE company_id = $1 AND product_sku = $2 
+        ORDER BY count_timestamp DESC LIMIT 1`,
       [company_id, product_sku]
     );
 
