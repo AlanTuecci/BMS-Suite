@@ -1,7 +1,8 @@
 const pool = require("../../db");
 
 exports.recordProductCounts = async (req, res) => {
-  const { company_id, employee_id } = req.user;
+  const { user_type, company_id } = req.user;
+  const employee_id = req.user.employee_id ?? 0;
   const { product_sku } = req.body;
 
   const on_hand_loose_unit_count = req.body.on_hand_loose_unit_count ?? 0;
@@ -13,31 +14,37 @@ exports.recordProductCounts = async (req, res) => {
   try {
     await client.query("BEGIN");
 
-    let response = await client.query(
-      "select access_control_level from inventory_access_info where company_id = $1 and employee_id = $2",
-      [company_id, employee_id]
-    );
+    if (user_type !== "company") {
+      let response = await client.query(
+        `SELECT access_control_level
+         FROM inventory_access_info
+         WHERE company_id = $1 AND employee_id = $`,
+        [company_id, employee_id]
+      );
 
-    const accessLevel = response.rows[0].access_control_level;
+      const accessLevel = response.rows[0].access_control_level;
 
-    if (accessLevel < 1) {
-      return res.status(401).json({
-        errors: [
-          {
-            type: "field",
-            value: employee_id,
-            msg: "Unauthorized operation.",
-            path: "employee_id",
-            location: "user",
-          },
-        ],
-      });
+      if (accessLevel < 1) {
+        return res.status(401).json({
+          errors: [
+            {
+              type: "field",
+              value: employee_id,
+              msg: "Unauthorized operation.",
+              path: "employee_id",
+              location: "user",
+            },
+          ],
+        });
+      }
     }
 
-    response = await client.query("select product_sku from product_info where company_id = $1 and product_sku = $2", [
-      company_id,
-      product_sku,
-    ]);
+    response = await client.query(
+      `SELECT product_sku
+       FROM product_info 
+       WHERE company_id = $1 AND product_sku = $2`,
+      [company_id, product_sku]
+    );
 
     const productExists = response.rows[0];
 

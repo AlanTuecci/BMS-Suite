@@ -17,22 +17,27 @@ const { assignCashAccessControl } = require("../company_utilities/cash_data/assi
 const { assignInventoryAccessControl } = require("../company_utilities/inventory_data/assignInventoryAccessControl");
 const { getEmployeeIdsAndNames } = require("../company_utilities/employee_data/getEmployeeIdsAndNames");
 const { addProduct } = require("../company_utilities/inventory_data/addProduct");
-const { getAllProductSKUs } = require("../employee_utilities/inventory_data/getAllProductSKUs");
-const { getLatestProductCounts } = require("../employee_utilities/inventory_data/getLatestProductCounts");
-const { recordProductCounts } = require("../employee_utilities/inventory_data/recordProductCounts");
-const { updateProductDescription } = require("../company_utilities/inventory_data/updateProductDescription");
-const { getProductCountHistory } = require("../company_utilities/inventory_data/getProductCountHistory");
+const { getAllProductSKUs } = require("../shared_utilities/inventory_data/getAllProductSKUs");
+const { getLatestProductCounts } = require("../shared_utilities/inventory_data/getLatestProductCounts");
+const { recordProductCounts } = require("../shared_utilities/inventory_data/recordProductCounts");
+const { updateProduct } = require("../company_utilities/inventory_data/updateProduct");
+const { getProductCountHistory } = require("../shared_utilities/inventory_data/getProductCountHistory");
 const { deleteProduct } = require("../company_utilities/inventory_data/deleteProduct");
 const { getAllInventoryAccessControl } = require("../company_utilities/inventory_data/getAllInventoryAccessControl");
 const { getAllLaborAccessControl } = require("../company_utilities/labor_data/getAllLaborAccessControl");
 const { getAllCashAccessControl } = require("../company_utilities/cash_data/getAllCashAccessControl");
-const { getAllProducts } = require("../company_utilities/inventory_data/getAllProducts");
-const { deleteProductCounts } = require("../employee_utilities/inventory_data/deleteProductCounts");
-const { updateProductCounts } = require("../employee_utilities/inventory_data/updateProductCounts");
-const { getAllLatestProductCounts } = require("../employee_utilities/inventory_data/getAllLatestProductCounts");
-const { modifyProductCounts } = require("../company_utilities/inventory_data/modifyProductCounts");
-const { removeProductCounts } = require("../company_utilities/inventory_data/removeProductCounts");
-const { addProductCounts } = require("../company_utilities/inventory_data/addProductCounts");
+const { getAllProducts } = require("../shared_utilities/inventory_data/getAllProducts");
+const { deleteProductCounts } = require("../shared_utilities/inventory_data/deleteProductCounts");
+const { updateProductCounts } = require("../shared_utilities/inventory_data/updateProductCounts");
+const { getAllLatestProductCounts } = require("../shared_utilities/inventory_data/getAllLatestProductCounts");
+const { recordDeposit } = require("../shared_utilities/cash_deposits_data/recordDeposit");
+const { updateDeposit } = require("../shared_utilities/cash_deposits_data/updateDeposit");
+const { deleteDeposit } = require("../shared_utilities/cash_deposits_data/deleteDeposit");
+const { getLatestDeposits } = require("../shared_utilities/cash_deposits_data/getLatestDeposits");
+const { getLatestSafeCounts } = require("../shared_utilities/cash_safe_data/getLatestSafeCounts");
+const { recordSafeCount } = require("../shared_utilities/cash_safe_data/recordSafeCount");
+const { updateSafeCount } = require("../shared_utilities/cash_safe_data/updateSafeCount");
+const { deleteSafeCount } = require("../shared_utilities/cash_safe_data/deleteSafeCount");
 
 const router = Router();
 
@@ -42,15 +47,30 @@ router.post("/employee/register", employeeRegisterValidation, validationMiddlewa
 router.post("/employee/login", employeeLoginValidation, validationMiddleware, employeeLogin);
 //----Product Management Routes
 //------Control 0 --> Read
+router.post("/employee/getAllProducts", employeeUserAuth, getAllProducts);
 router.post("/employee/getAllProductSKUs", employeeUserAuth, getAllProductSKUs);
 router.post("/employee/getAllLatestProductCounts", employeeUserAuth, getAllLatestProductCounts);
 router.post("/employee/getLatestProductCounts", employeeUserAuth, getLatestProductCounts);
+router.post("/employee/getProductCountHistory", employeeUserAuth, getProductCountHistory);
 //------Control 1 --> Read, Insert
 router.post("/employee/recordProductCounts", employeeUserAuth, recordProductCounts);
 //------Control 2 --> Read, Insert, Update
 router.post("/employee/updateProductCounts", employeeUserAuth, updateProductCounts);
 //------Control 3 --> Read, Insert, Update, Delete
 router.delete("/employee/deleteProductCounts", employeeUserAuth, deleteProductCounts);
+//----Cash Management Routes
+//------Control 0 --> Read
+router.post("/employee/getLatestDeposits", employeeUserAuth, getLatestDeposits);
+router.post("/employee/getLatestSafeCounts", employeeUserAuth, getLatestSafeCounts);
+//------Control 1 --> Read, Insert
+router.post("/employee/recordDeposit", employeeUserAuth, recordDeposit);
+router.post("/employee/recordSafeCount", employeeUserAuth, recordSafeCount);
+//------Control 2 --> Read, Insert, Update
+router.post("/employee/updateDeposit", employeeUserAuth, updateDeposit);
+router.post("/employee/updateSafeCount", employeeUserAuth, updateSafeCount);
+//------Control 3 --> Read, Insert, Update, Delete
+router.delete("/employee/deleteDeposit", employeeUserAuth, deleteDeposit);
+router.delete("/employee/deleteSafeCount", employeeUserAuth, deleteSafeCount);
 
 //--Company Routes
 //----Signin/Signup Routes
@@ -72,15 +92,34 @@ router.post("/company/getAllInventoryAccessControl", companyUserAuth, getAllInve
 router.post("/company/getAllLaborAccessControl", companyUserAuth, getAllLaborAccessControl);
 router.post("/company/getAllCashAccessControl", companyUserAuth, getAllCashAccessControl);
 //----Product Management Routes
-router.post("/company/addProduct", companyUserAuth, addProduct);
-router.post("/company/addProductCounts", companyUserAuth, addProductCounts);
-router.post("/company/updateProductDescription", companyUserAuth, updateProductDescription);
-router.post("/company/updateProductCounts", companyUserAuth, modifyProductCounts);
+//------Read
 router.post("/company/getAllProducts", companyUserAuth, getAllProducts);
+router.post("/company/getAllProductSKUs", companyUserAuth, getAllProductSKUs);
 router.post("/company/getAllLatestProductCounts", companyUserAuth, getAllLatestProductCounts);
+router.post("/company/getLatestProductCounts", companyUserAuth, getLatestProductCounts);
 router.post("/company/getProductCountHistory", companyUserAuth, getProductCountHistory);
+//------Read, Insert
+router.post("/company/addProduct", companyUserAuth, addProduct);
+router.post("/company/recordProductCounts", companyUserAuth, recordProductCounts);
+//------Read, Insert, Update
+router.post("/company/updateProduct", companyUserAuth, updateProduct);
+router.post("/company/updateProductCounts", companyUserAuth, updateProductCounts);
+//------Read, Insert, Delete
 router.delete("/company/deleteProduct", companyUserAuth, deleteProduct);
-router.delete("/company/deleteProductCounts", companyUserAuth, removeProductCounts);
+router.delete("/company/deleteProductCounts", companyUserAuth, deleteProductCounts);
+//----Cash Management Routes
+//------Read
+router.post("/company/getLatestDeposits", companyUserAuth, getLatestDeposits);
+router.post("/company/getLatestSafeCounts", companyUserAuth, getLatestSafeCounts);
+//------Read, Insert
+router.post("/company/recordDeposit", companyUserAuth, recordDeposit);
+router.post("/company/recordSafeCount", companyUserAuth, recordSafeCount);
+//------Read, Insert, Update
+router.post("/company/updateDeposit", companyUserAuth, updateDeposit);
+router.post("/company/updateSafeCount", companyUserAuth, updateSafeCount);
+//------Read, Insert, Update, Delete
+router.delete("/company/deleteDeposit", companyUserAuth, deleteDeposit);
+router.delete("/company/deleteSafeCount", companyUserAuth, deleteSafeCount);
 
 router.post("/logout", logout);
 

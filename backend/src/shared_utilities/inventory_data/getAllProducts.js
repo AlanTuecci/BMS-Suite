@@ -5,7 +5,12 @@ exports.getAllProducts = async (req, res) => {
 
   try {
     const { rows } = await pool.query(
-      "select product_sku, product_name, product_description from product_info where company_id = $1",
+      `SELECT 
+        product_sku, 
+        product_name, 
+        product_description 
+       FROM product_info 
+       WHERE company_id = $1`,
       [company_id]
     );
 

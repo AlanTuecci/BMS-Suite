@@ -2,7 +2,8 @@ const pool = require("../../db");
 
 exports.addProduct = async (req, res) => {
   const { company_id } = req.user;
-  const { product_sku, product_name, product_description } = req.body;
+  const { product_sku, product_name } = req.body;
+  const product_description = req.body.product_description ?? "";
 
   const client = await pool.connect();
 

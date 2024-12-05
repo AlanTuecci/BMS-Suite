@@ -1,6 +1,6 @@
 const pool = require("../../db");
 
-exports.updateProductDescription = async (req, res) => {
+exports.updateProduct = async (req, res) => {
   const { company_id } = req.user;
   const { product_sku, product_name, product_description } = req.body;
 
@@ -9,10 +9,12 @@ exports.updateProductDescription = async (req, res) => {
   try {
     await client.query("BEGIN");
 
-    const { rows } = await client.query("select * from product_info where company_id = $1 and product_sku = $2", [
-      company_id,
-      product_sku,
-    ]);
+    const { rows } = await client.query(
+      `SELECT * 
+       FROM product_info 
+       WHERE company_id = $1 AND product_sku = $2`,
+      [company_id, product_sku]
+    );
 
     if (rows.length == 0) {
       return res.status(500).json({
@@ -28,15 +30,18 @@ exports.updateProductDescription = async (req, res) => {
       });
     } else {
       if (product_name) {
-        await client.query("UPDATE product_info SET product_name = $1 WHERE company_id = $2 AND product_sku = $3", [
-          product_name,
-          company_id,
-          product_sku,
-        ]);
+        await client.query(
+          `UPDATE product_info 
+           SET product_name = $1
+           WHERE company_id = $2 AND product_sku = $3`,
+          [product_name, company_id, product_sku]
+        );
       }
       if (product_description) {
         await client.query(
-          "UPDATE product_info SET product_description = $1 WHERE company_id = $2 AND product_sku = $3",
+          `UPDATE product_info 
+           SET product_description = $1 
+           WHERE company_id = $2 AND product_sku = $3`,
           [product_description, company_id, product_sku]
         );
       }
