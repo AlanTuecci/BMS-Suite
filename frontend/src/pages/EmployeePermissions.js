@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
   onGetEmployees,
-  onSetMinCashAccessControl,
-  onSetMinLaborAccessControl,
-  onSetMinInventoryAccessControl,
+  onGetInventoryAccessControl,
+  onGetLaborAccessControl,
+  onGetCashAccessControl,
+  onAssignInventoryAccessControl,
+  onAssignLaborAccessControl,
+  onAssignCashAccessControl,
 } from "../api/auth";
 import Sidebar from "../components/Sidebar";
 
@@ -11,6 +14,7 @@ const EmployeePermissions = () => {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modalLoading, setModalLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -18,10 +22,9 @@ const EmployeePermissions = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [permissions, setPermissions] = useState({
-    view: false,
-    readAndInsert: false,
-    readInsertUpdate: false,
-    readInsertUpdateDelete: false,
+    inventory: 0,
+    labor: 0,
+    cash: 0,
   });
 
   const [feedbackMessage, setFeedbackMessage] = useState(null);
@@ -32,7 +35,7 @@ const EmployeePermissions = () => {
       const employeeData = response.data.map((employee) => ({
         ...employee,
         employee_register_date: new Date(
-          employee.employee_register_date,
+          employee.employee_register_date
         ).toLocaleDateString(),
       }));
       setEmployees(employeeData);
@@ -45,6 +48,42 @@ const EmployeePermissions = () => {
     }
   };
 
+  const fetchEmployeePermissions = async (employee_id) => {
+    try {
+      setModalLoading(true);
+
+      const [
+        inventoryResponse,
+        laborResponse,
+        cashResponse,
+      ] = await Promise.all([
+        onGetInventoryAccessControl(),
+        onGetLaborAccessControl(),
+        onGetCashAccessControl(),
+      ]);
+
+      const inventoryPerm = inventoryResponse.data.find(
+        (perm) => perm.employee_id === employee_id
+      );
+      const laborPerm = laborResponse.data.find(
+        (perm) => perm.employee_id === employee_id
+      );
+      const cashPerm = cashResponse.data.find(
+        (perm) => perm.employee_id === employee_id
+      );
+
+      setPermissions({
+        inventory: inventoryPerm ? inventoryPerm.access_control_level : 0,
+        labor: laborPerm ? laborPerm.access_control_level : 0,
+        cash: cashPerm ? cashPerm.access_control_level : 0,
+      });
+    } catch (error) {
+      console.error("Error fetching permissions:", error);
+    } finally {
+      setModalLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -53,44 +92,65 @@ const EmployeePermissions = () => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
     const filtered = employees.filter((employee) =>
-      employee.full_name.toLowerCase().includes(term),
+      employee.full_name.toLowerCase().includes(term)
     );
     setFilteredEmployees(filtered);
   };
 
-  const openModal = (employee) => {
+  const openModal = async (employee) => {
     setSelectedEmployee(employee);
-    setPermissions({
-      view: false,
-      readAndInsert: false,
-      readInsertUpdate: false,
-      readInsertUpdateDelete: false,
-    });
+    await fetchEmployeePermissions(employee.employee_id);
     setIsModalVisible(true);
   };
 
   const closeModal = () => {
     setIsModalVisible(false);
     setSelectedEmployee(null);
+    setPermissions({
+      inventory: 0,
+      labor: 0,
+      cash: 0,
+    });
     setFeedbackMessage(null);
   };
 
-  const togglePermission = (key) => {
-    setPermissions((prev) => ({
-      ...prev,
-      [key]: !prev[key],
+  const handlePermissionChange = (section, level) => {
+    setPermissions((prevPermissions) => ({
+      ...prevPermissions,
+      [section]: level,
     }));
   };
 
   const savePermissions = async () => {
     try {
-      if (permissions.view) await onSetMinInventoryAccessControl();
-      if (permissions.readAndInsert) await onSetMinLaborAccessControl();
-      if (permissions.readInsertUpdate) await onSetMinCashAccessControl();
+      const assignFunctions = {
+        inventory: onAssignInventoryAccessControl,
+        labor: onAssignLaborAccessControl,
+        cash: onAssignCashAccessControl,
+      };
 
-      setFeedbackMessage({ success: true, text: "Permissions updated successfully!" });
+      await Promise.all(
+        Object.keys(permissions).map(async (section) => {
+          const assignFunction = assignFunctions[section];
+          const accessControlLevel = permissions[section];
+
+          await assignFunction({
+            employee_id: selectedEmployee.employee_id,
+            access_control_level: accessControlLevel,
+          });
+        })
+      );
+
+      setFeedbackMessage({
+        success: true,
+        text: "Permissions updated successfully!",
+      });
     } catch (error) {
-      setFeedbackMessage({ success: false, text: "Failed to update permissions!" });
+      console.error("Error updating permissions:", error);
+      setFeedbackMessage({
+        success: false,
+        text: "Failed to update permissions!",
+      });
     }
   };
 
@@ -100,17 +160,24 @@ const EmployeePermissions = () => {
   if (!employees.length)
     return <p className="text-center text-gray-600">No employees found.</p>;
 
+  const permissionLevels = [
+    { level: 1, label: "View" },
+    { level: 2, label: "Read and Insert" },
+    { level: 3, label: "Full Access" },
+    { level: 4, label: "Delete" },
+  ];
+
   return (
     <div className="flex h-screen bg-white">
       <div
-        className={`fixed top-0 left-0 h-full bg-gray-800 text-white transition-all duration-300 ${
+        className={`fixed top-0 left-0 h-full bg-gray-800 transition-all duration-300 ${
           isSidebarOpen ? "w-64" : "w-16"
         }`}
       >
         <div className="p-4">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white text-2xl"
+            className="text-2xl"
           >
             {isSidebarOpen ? "Close" : "Open"}
           </button>
@@ -168,89 +235,81 @@ const EmployeePermissions = () => {
         </div>
 
         {isModalVisible && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-3xl p-8 shadow-lg w-[40rem] max-w-full">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-3xl p-6 w-full max-w-3xl">
               <h2 className="text-2xl font-semibold mb-6 text-center">
-                User Permissions
+                Permissions for {selectedEmployee.full_name}
               </h2>
 
-              <div className="space-y-6">
-                {[
-                  {
-                    key: "view",
-                    title: "View",
-                    description:
-                      "Allows Viewing Data Only. No Modifications Are Permitted.",
-                  },
-                  {
-                    key: "readAndInsert",
-                    title: "Read And Insert",
-                    description:
-                      "Permits Viewing And Inserting Data, But No Updates Or Deletions.",
-                  },
-                  {
-                    key: "readInsertUpdate",
-                    title: "Read, Insert, And Update",
-                    description:
-                      "Grants Permissions For Viewing, Inserting, And Updating Data, But Not Deleting.",
-                  },
-                  {
-                    key: "readInsertUpdateDelete",
-                    title: "Read, Insert, Update And Delete",
-                    description:
-                      "Provides Full Access, Including Viewing, Inserting, Updating, And Deleting Data.",
-                  },
-                ].map((perm) => (
-                  <div
-                    key={perm.key}
-                    className="flex justify-between items-center w-full p-3"
-                  >
-                    <div className="flex-grow">
-                      <p className="font-semibold">{perm.title}</p>
-                      <p className="text-sm text-gray-500">
-                        {perm.description}
-                      </p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        checked={permissions[perm.key]}
-                        onChange={() => togglePermission(perm.key)}
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#454FE1] rounded-full peer peer-checked:bg-[#454FE1] peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                    </label>
-                  </div>
-                ))}
-              </div>
-
-              {feedbackMessage && (
-                <p
-                  className={`mt-4 text-center ${
-                    feedbackMessage.success
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {feedbackMessage.text}
+              {modalLoading ? (
+                <p className="text-center text-gray-600">
+                  Loading permissions...
                 </p>
+              ) : (
+                <>
+                  <div className="flex flex-col space-y-4">
+                    {["inventory", "labor", "cash"].map((section) => (
+                      <div key={section} className="flex flex-col">
+                        <div className="flex items-center justify-between p-3 bg-gray-100 text-gray-800 rounded-lg">
+                          <h3 className="text-lg font-medium capitalize">
+                            {section}
+                          </h3>
+                        </div>
+
+                        <div className="flex justify-between items-center mt-2">
+                          {permissionLevels.map((level) => (
+                            <label
+                              key={level.level}
+                              className="flex flex-col items-center w-1/4 cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name={section}
+                                value={level.level}
+                                checked={permissions[section] === level.level}
+                                onChange={() =>
+                                  handlePermissionChange(section, level.level)
+                                }
+                                className="form-radio text-blue-600"
+                              />
+                              <span className="mt-1 text-gray-600 text-sm">
+                                {level.label}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {feedbackMessage && (
+                    <p
+                      className={`mt-4 text-center ${
+                        feedbackMessage.success
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {feedbackMessage.text}
+                    </p>
+                  )}
+
+                  <div className="mt-6 flex justify-center gap-4">
+                    <button
+                      className="px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-gray-100"
+                      onClick={closeModal}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="px-4 py-2 bg-[#454FE1] text-white rounded-lg hover:bg-blue-700"
+                      onClick={savePermissions}
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </>
               )}
-
-              <div className="mt-6 flex justify-center gap-4">
-                <button
-                  className="px-6 py-2 bg-white text-[#454FE1] border-2 border-[#454FE1] rounded-lg hover:bg-gray-100"
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-
-                <button
-                  className="px-6 py-2 bg-[#454FE1] text-white rounded-lg hover:bg-[#333ACC]"
-                  onClick={savePermissions}
-                >
-                  Save Changes
-                </button>
-              </div>
             </div>
           </div>
         )}

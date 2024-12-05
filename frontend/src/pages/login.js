@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { onLogin } from "../api/auth";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import loginImage from "../media/login/Login.png";
 import { useDispatch } from "react-redux";

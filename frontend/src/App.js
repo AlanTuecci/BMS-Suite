@@ -6,13 +6,13 @@ import {
   Outlet,
 } from "react-router-dom";
 import Home from "./pages/Home";
-import Placeholder from "./pages/Placeholder";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Invite from "./pages/Invite";
 import TimeManagement from "./pages/TimeManagement";
 import EmployeePermissions from "./pages/EmployeePermissions";
+import ProductManagement from './pages/ProductManagement';
 import { useSelector } from "react-redux";
 
 const PrivateRoutes = () => {
@@ -36,8 +36,8 @@ const App = () => {
         <Route exact path="/" element={<Home />}></Route>
 
         <Route element={<PrivateRoutes />}>
-          <Route path="/placeholder" element={<Placeholder />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/product-management" element={<ProductManagement />}></Route>
           <Route path="/invite" element={<Invite />}></Route>
           <Route path="/time-management" element={<TimeManagement />}></Route>
           <Route
