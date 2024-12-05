@@ -3,15 +3,11 @@ import { BsPersonVcard, BsBriefcase } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [nav, setNav] = useState(false);
+  const [nav] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
   const [route, setRoute] = useState("/login");
   const navigate = useNavigate();
-
-  const handleNav = () => {
-    setNav(!nav);
-  };
 
   const handleLoginRegisterClick = (path) => {
     setRoute(path);

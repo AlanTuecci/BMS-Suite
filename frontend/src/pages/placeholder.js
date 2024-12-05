@@ -1,10 +1,8 @@
 import Layout from "../components/Layout";
 import { onLogout } from "../api/auth";
-import { useDispatch } from "react-redux";
 import Sidebar from "../components/Sidebar";
 
 const Placeholder = () => {
-  const dispatch = useDispatch();
 
   const logout = async () => {
     await onLogout();

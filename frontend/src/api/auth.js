@@ -32,14 +32,26 @@ export async function onGetEmployees() {
   return await axios.post(`${API_URL}/company/getAllEmployeeInfo`);
 }
 
-export async function onSetMinInventoryAccessControl() {
-  return await axios.post(`${API_URL}/company/setMinInventoryAccessControl`);
+export async function onGetInventoryAccessControl(data) {
+  return await axios.post(`${API_URL}/company/getAllInventoryAccessControl`, data);
 }
 
-export async function onSetMinLaborAccessControl() {
-  return await axios.post(`${API_URL}/company/setMinLaborAccessControl`);
+export async function onGetLaborAccessControl(data) {
+  return await axios.post(`${API_URL}/company/getAllLaborAccessControl`, data);
 }
 
-export async function onSetMinCashAccessControl() {
-  return await axios.post(`${API_URL}/company/setMinCashAccessControl`);
+export async function onGetCashAccessControl(data) {
+  return await axios.post(`${API_URL}/company/getAllCashAccessControl`, data);
+}
+
+export async function onAssignInventoryAccessControl(data) {
+  return await axios.post(`${API_URL}/company/assignInventoryAccessControl`, data);
+}
+
+export async function onAssignLaborAccessControl(data) {
+  return await axios.post(`${API_URL}/company/assignLaborAccessControl`, data);
+}
+
+export async function onAssignCashAccessControl(data) {
+  return await axios.post(`${API_URL}/company/assignCashAccessControl`, data);
 }

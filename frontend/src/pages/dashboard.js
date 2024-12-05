@@ -27,7 +27,7 @@ function Dashboard() {
           <DashboardCard
             title="Timekeeping"
             description="Log your hours for the work week."
-            link="timekeeping"
+            link="time-management"
           />
           <DashboardCard
             title="Product Management"
@@ -42,14 +42,21 @@ function Dashboard() {
           <DashboardCard
             title="Employees"
             description="Encountering a challenge? Seek assistance here."
-            link="invite"
+            link="employee-assistance"
           />
           {userType === "company" ? (
-            <DashboardCard
-              title="Manage Employees"
-              description="Oversee and manage employee information."
-              link="employee-permissions"
-            />
+            <>
+              <DashboardCard
+                title="Employees"
+                description="Oversee and manage employee information."
+                link="employee-permissions"
+              />
+              <DashboardCard
+                title="Invite Employees"
+                description="Invite new employees to join your company."
+                link="invite"
+              />
+            </>
           ) : (
             <DashboardCard
               title="My Info"
