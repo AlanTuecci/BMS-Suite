@@ -170,14 +170,14 @@ const EmployeePermissions = () => {
   return (
     <div className="flex h-screen bg-white">
       <div
-        className={`fixed top-0 left-0 h-full bg-gray-800 text-white transition-all duration-300 ${
+        className={`fixed top-0 left-0 h-full bg-gray-800 transition-all duration-300 ${
           isSidebarOpen ? "w-64" : "w-16"
         }`}
       >
         <div className="p-4">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white text-2xl"
+            className="text-2xl"
           >
             {isSidebarOpen ? "Close" : "Open"}
           </button>
