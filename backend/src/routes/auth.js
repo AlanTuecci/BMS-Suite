@@ -38,6 +38,9 @@ const { getLatestSafeCounts } = require("../shared_utilities/cash_safe_data/getL
 const { recordSafeCount } = require("../shared_utilities/cash_safe_data/recordSafeCount");
 const { updateSafeCount } = require("../shared_utilities/cash_safe_data/updateSafeCount");
 const { deleteSafeCount } = require("../shared_utilities/cash_safe_data/deleteSafeCount");
+const { getInventoryAccessControlById } = require("../company_utilities/inventory_data/getInventoryAccessControlById");
+const { getLaborAccessControlById } = require("../company_utilities/labor_data/getLaborAccessControlById");
+const { getCashAccessControlById } = require("../company_utilities/cash_data/getCashAccessControlById");
 
 const router = Router();
 
@@ -85,12 +88,18 @@ router.post("/company/getAllEmployeeInfo", companyUserAuth, getAllEmployeeInfo);
 router.post("/company/getEmployeeById", companyUserAuth, getEmployeeById);
 router.post("/company/getEmployeeIdsAndNames", companyUserAuth, getEmployeeIdsAndNames);
 //----Employee Access Control Routes
-router.post("/company/assignInventoryAccessControl", companyUserAuth, assignInventoryAccessControl);
-router.post("/company/assignLaborAccessControl", companyUserAuth, assignLaborAccessControl);
-router.post("/company/assignCashAccessControl", companyUserAuth, assignCashAccessControl);
+//------Inventory
 router.post("/company/getAllInventoryAccessControl", companyUserAuth, getAllInventoryAccessControl);
+router.post("/company/getInventoryAccessControlById", companyUserAuth, getInventoryAccessControlById);
+router.post("/company/assignInventoryAccessControl", companyUserAuth, assignInventoryAccessControl);
+//------Labor
 router.post("/company/getAllLaborAccessControl", companyUserAuth, getAllLaborAccessControl);
+router.post("/company/getLaborAccessControlById", companyUserAuth, getLaborAccessControlById);
+router.post("/company/assignLaborAccessControl", companyUserAuth, assignLaborAccessControl);
+//------Cash
 router.post("/company/getAllCashAccessControl", companyUserAuth, getAllCashAccessControl);
+router.post("/company/getCashAccessControlById", companyUserAuth, getCashAccessControlById);
+router.post("/company/assignCashAccessControl", companyUserAuth, assignCashAccessControl);
 //----Product Management Routes
 //------Read
 router.post("/company/getAllProducts", companyUserAuth, getAllProducts);
