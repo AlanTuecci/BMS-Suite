@@ -44,7 +44,7 @@ const Home = () => {
   }, [showModal]);
 
   return (
-    <div className="bg-[#F0FAFC] min-h-screen text-white">
+    <div className="bg-bkgd min-h-screen text-white"> 
       <Navbar />
       <div className="flex space-x-0 sm:max-w-[90%] mx-auto justify-center py-8">
         <div className="lg:w-4/6 px-4 lg:pt-0 py-2 flex flex-col justify-center text-center text-[#FBFBFE]">
@@ -70,16 +70,16 @@ const Home = () => {
           </p>
           <div className="pt-8 justify-center">
             <button
-               className="px-5 py-2.5 mx-2 text-xl text-[#FBFBFE] bg-[#14213D] hover:bg-[#454FE1] transition duration-200 rounded-full"
+               className="px-5 py-2.5 mx-2 text-xl text-bkgd bg-compblue transition duration-200 rounded-full hover:shadow-xl hover:shadow-[#cdccf4] hover:scale-105"
               onClick={() => handleLoginRegisterClick("/register")}
             >
-              Register
+              Get Started
             </button>
             <button 
-              className="px-5 py-2.5 mx-2 text-xl text-[#FBFBFE] bg-[#14213D] hover:bg-[#454FE1] transition duration-200 rounded-full"
+              className="px-5 py-2.5 mx-2 text-xl text-[#14213D] transition duration-200 rounded-full border-3 border-[#14213D] hover:scale-105"
               onClick={() => handleLoginRegisterClick("/Login")}
             >
-              Login
+              Learn More
             </button>
           </div>
         </div>
@@ -91,7 +91,7 @@ const Home = () => {
           />
         </div>
       </div>
-      <div className="bg-[#14213D] text-[#FBFBFE] md:mt-4 mt-16 py-12 pb-20">
+      <div className="bg-darker_purple text-bkgd md:mt-4 mt-16 py-12 pb-20">
         <div className="w-[90%] mx-auto">
           <h1 className="font-medium text-4xl">
             Optimize your time and effortlessly manage your team with our tools
@@ -103,6 +103,9 @@ const Home = () => {
           </div>
         </div>
       </div>
+      /* i want to add the customized plan thing here and a footer*/
+      <div></div> 
+      
       {showModal && (
         <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center z-[10]">
           <div
