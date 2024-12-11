@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { BsPersonVcard, BsBriefcase } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 
-
 const Navbar = () => {
     const [nav, setNav] = useState(false);
     const [showModal, setShowModal] = useState(false);
