@@ -15,6 +15,7 @@ import EmployeePermissions from "./pages/EmployeePermissions";
 import ProductManagement from './pages/ProductManagement';
 import { useSelector } from "react-redux";
 
+
 const PrivateRoutes = () => {
   const authState = useSelector((state) => state.auth);
 
