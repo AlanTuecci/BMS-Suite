@@ -1,7 +1,6 @@
 import React from "react";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../components/Sidebar";
 import DashboardCard from "../components/DashboardCard";
-import DashboardNavbar from "../components/DashboardNavbar";
 import { useSelector } from "react-redux";
 import personIcon from "../media/dashboard/person_24dp_14213D_FILL0_wght400_GRAD0_opsz24.svg";
 import groupIcon from '../media/dashboard/group_24dp_14213D_FILL0_wght400_GRAD0_opsz24.svg'
@@ -24,7 +23,6 @@ function Dashboard() {
     <div className="flex flex-col md:flex-row h-screen bg-bkgdb overflow-x-auto relative">
       <Sidebar />
       <div className="relative flex flex-col items-center justify-center flex-grow p-4">
-        <div class=" absolute top-1 w-full md:max-w-7xl flex justify-center z-10"><DashboardNavbar/></div>
         <div className="items-start justify-start text-center mb-4 md:mb-8 mt-10">
           <h2 className="text-2xl md:text-3xl font-bold text-[#14213D]">Hello</h2>
           <p className="text-sm md:text-lg text-gray-600">{formattedDate}</p>
