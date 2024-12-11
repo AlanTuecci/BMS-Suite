@@ -108,7 +108,6 @@ const Home = () => {
         </div>
       </div>
 
-      /* i want to add the customized plan thing here and a footer*/
       <div class="relative">
         <div class="flex flex-col justify-center items-center bg-bkgd md:mt-4 mt-16 py-12 pb-20">
           <h1 class="items-center text-txt_color text-4xl font-bold text-center mb-2">Customized Plans <br/> For Your Business Needs</h1>

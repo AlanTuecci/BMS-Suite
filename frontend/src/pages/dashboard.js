@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar";
 import DashboardCard from "../components/DashboardCard";
 import DashboardNavbar from "../components/DashboardNavbar";
 import { useSelector } from "react-redux";
@@ -31,26 +31,26 @@ function Dashboard() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-screen-xl">
           <DashboardCard 
-            title="Timekeeping" 
+            title="Time Management" 
             description="Log your hours for the work week." 
-            link="timekeeping" 
+            link="time-management" 
             photo = {timeIcon}
           />
           <DashboardCard 
             title="Product Management" 
             description="Manage and update your inventory." 
-            link="prdmgmt" 
+            link="product-management" 
             photo={binIcon}
           />
           <DashboardCard 
             title="Cash Control" 
             description="Monitor and manage your revenue stream." 
-            link="navbar2"
+            link="cash-control"
             photo={cashIcon}
 
           />
           <DashboardCard 
-            title="Employees" 
+            title="Invite Employees" 
             description="Encountering a challenge? Seek assistance here." 
             link="invite" 
             photo={groupIcon}
@@ -59,7 +59,7 @@ function Dashboard() {
             <DashboardCard 
               title="Manage Employees" 
               description="Oversee and manage employee information." 
-              link="manage-employees" 
+              link="employee-permissions" 
               photo={groupIcon}
             />
           ) : (
@@ -70,6 +70,12 @@ function Dashboard() {
               photo={personIcon}
             />
           )}
+            <DashboardCard 
+              title="About us" 
+              description="An about us page" 
+              link="About-us" 
+              photo={personIcon}
+            />
         </div>
       </div>
     </div>

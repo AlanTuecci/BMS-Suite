@@ -188,7 +188,7 @@ const TimeManagement = () => {
                         className={`border border-gray-200 text-center ${
                           day
                             ? isToday
-                              ? "bg-blue-100"
+                              ? "bg-[#F0FAFC]"
                               : "bg-white hover:bg-[#F0FAFC]"
                             : "bg-gray-100"
                         } transition`}

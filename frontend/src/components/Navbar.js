@@ -48,12 +48,11 @@ const Navbar = () => {
         <div
         className={`relative max-w-7xl w-full grid md:grid-cols-12 items-center px-4 md:px-6 md:px-8 mx-auto ${showModal} ? "opacity-50 ease-in-out duration-300 pointer-events-none" : ""}`}
         >
-          {/* Logo */}
+
           <div class="md:col-span-3 text-txt_color text-3xl font-bold flex justify-start items-center font-bold">
             BMS Suite
           </div>
   
-          {/* Navigation Links */}
           <div class="hidden md:flex md:col-span-6 justify-center items-center">
             <ul class="flex gap-7">
               <li class="relative py-2 px-2 inline-block text-black focus:outline-none before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-lime-400 dark:text-white">
@@ -71,7 +70,6 @@ const Navbar = () => {
             </ul>
           </div>
   
-          {/* Buttons */}
           <div class="flex items-center gap-x-2 justify-end md:col-span-3">
             <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-3xl bg-transparent border border-txt_color text-txt_color hover:scale-105" onClick={() => handleLoginRegisterClick("/login")}>
               Log in
@@ -79,8 +77,7 @@ const Navbar = () => {
             <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-3xl bg-compblue border border-compblue text-bkgd hover:shadow-2xl hover:shadow-dashboard_shadow hover:scale-105" onClick={() => handleLoginRegisterClick("/register")}>
               Sign Up
             </button>
-  
-            {/* Hamburger Menu for Small Screens */}
+
             <div class="md:hidden">
               <button
                 type="button"
