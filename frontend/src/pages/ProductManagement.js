@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import PrdBox from "../components/PrdBox";
-import PrdSearch from "../components/PrdSearch";
-import { onGetAllProductSKUs } from "../api/auth";
+import { onGetAllProductSKUs, onAddProduct } from "../api/auth";
 
 function ProductManagement() {
   const [prdBx, setPrdBx] = useState(false);
@@ -12,6 +10,12 @@ function ProductManagement() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const [productSku, setProductSku] = useState("");
+  const [productName, setProductName] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
 
   const fetchProducts = async () => {
     try {
@@ -38,7 +42,34 @@ function ProductManagement() {
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
 
-  
+  const handleAddProduct = async (e) => {
+    e.preventDefault();
+    try {
+      const productData = {
+        product_sku: productSku,
+        product_name: productName,
+        product_description: productDescription,
+      };
+
+      await onAddProduct(productData);
+      setSuccessMessage("Product added successfully!");
+      setErrors({});
+      fetchProducts();
+      setPrdBx(false);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.errors) {
+        const errorObj = {};
+        error.response.data.errors.forEach((err) => {
+          errorObj[err.path] = err.msg;
+        });
+        setErrors(errorObj);
+      } else {
+        console.error("Error adding product:", error);
+        setErrors({ general: "Failed to add product" });
+      }
+    }
+  };
+
   if (loading)
     return <p className="text-center text-gray-600">Loading products...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
@@ -47,7 +78,6 @@ function ProductManagement() {
 
   return (
     <div className="flex h-screen bg-white">
-      {/* Sidebar */}
       <div
         className={`fixed top-0 left-0 h-full bg-gray-800 transition-all duration-300 ${
           isSidebarOpen ? "w-64" : "w-16"
@@ -64,7 +94,6 @@ function ProductManagement() {
         <Sidebar isSidebarOpen={isSidebarOpen} />
       </div>
 
-      {/* Main Content */}
       <div
         className={`flex-grow p-8 transition-all duration-300 ${
           isSidebarOpen ? "ml-64" : "ml-16"
@@ -77,7 +106,6 @@ function ProductManagement() {
           Track and manage your product inventory here.
         </p>
 
-        {/* Search Bar and Button */}
         <div className="mb-6 flex items-center gap-4">
           <input
             type="text"
@@ -94,7 +122,6 @@ function ProductManagement() {
           </button>
         </div>
 
-        {/* Product Table */}
         <div className="font-mono text-gray-800">
           <div className="mb-4 text-gray-800 w-full flex bg-gray-100 rounded-lg p-3">
             <span className="w-1/2 font-semibold">Product SKU</span>
@@ -114,12 +141,73 @@ function ProductManagement() {
           ))}
         </div>
 
-        {/* Modal for Product Creation */}
         {prdBx && (
-          <PrdBox
-            closePrdBx={() => setPrdBx(false)}
-            refreshProducts={fetchProducts}
-          />
+          <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="rounded-lg p-8 bg-white w-[25em]">
+              <form onSubmit={handleAddProduct}>
+                <div className="leading-tight">
+                  <h2 className="px-3 text-xl font-medium">
+                    Enter Product Information
+                  </h2>
+                  <p className="px-3 text-sm font-regular text-compgray">
+                    Add Your Product Details
+                  </p>
+                </div>
+                <div className="px-3 py-2">
+                  <label>Product SKU</label>
+                  <input
+                    className="border-2 border-lightsilver placeholder-slate-400 w-full px-2 py-1"
+                    type="text"
+                    value={productSku}
+                    onChange={(e) => setProductSku(e.target.value)}
+                    required
+                  />
+                  {errors.product_sku && (
+                    <p className="text-red-500 text-sm">{errors.product_sku}</p>
+                  )}
+                </div>
+                <div className="px-3 py-2">
+                  <label>Product Name</label>
+                  <input
+                    className="border-2 border-lightsilver placeholder-lightsilver w-full px-2 py-1"
+                    type="text"
+                    value={productName}
+                    onChange={(e) => setProductName(e.target.value)}
+                    required
+                  />
+                  {errors.product_name && (
+                    <p className="text-red-500 text-sm">{errors.product_name}</p>
+                  )}
+                </div>
+                <div className="px-3 py-2">
+                  <label>Product Description</label>
+                  <textarea
+                    className="border-2 border-lightsilver placeholder-lightsilver w-full px-2 py-1"
+                    value={productDescription}
+                    onChange={(e) => setProductDescription(e.target.value)}
+                  />
+                </div>
+                {errors.general && (
+                  <p className="text-red-500 text-sm">{errors.general}</p>
+                )}
+                <div className="relative py-4">
+                  <button
+                    type="button"
+                    className="absolute right-5 mr-20 px-4 py-1 border border-compblue text-compblue rounded-xl transform hover:scale-105"
+                    onClick={() => setPrdBx(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="absolute right-0 text-white bg-compblue rounded-xl px-4 py-1 transform hover:scale-105 hover:shadow-2xl"
+                  >
+                    Enter
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         )}
       </div>
     </div>
