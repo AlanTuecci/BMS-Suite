@@ -95,7 +95,7 @@ const Invite = () => {
             />
             <button
               type="submit"
-              className="px-6 py-2 bg-[#454FE1] text-white rounded-r-md hover:bg-blue-700"
+              className="px-6 py-2 bg-compblue text-white rounded-r-md hover:bg-blue-700"
             >
               Send Invite
             </button>

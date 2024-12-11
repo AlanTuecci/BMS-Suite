@@ -52,7 +52,7 @@ router.post("/employee/login", employeeLoginValidation, validationMiddleware, em
 //------Control 0 --> Read
 router.post("/employee/getAllProducts", employeeUserAuth, getAllProducts);
 router.post("/employee/getAllProductSKUs", employeeUserAuth, getAllProductSKUs);
-router.post("/employee/getAllLatestProductCounts", employeeUserAuth, getAllLatestProductCounts);
+a
 router.post("/employee/getLatestProductCounts", employeeUserAuth, getLatestProductCounts);
 router.post("/employee/getProductCountHistory", employeeUserAuth, getProductCountHistory);
 //------Control 1 --> Read, Insert

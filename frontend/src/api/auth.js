@@ -55,3 +55,11 @@ export async function onAssignLaborAccessControl(data) {
 export async function onAssignCashAccessControl(data) {
   return await axios.post(`${API_URL}/company/assignCashAccessControl`, data);
 }
+
+export async function onGetAllProductSKUs() {
+  return await axios.post(`${API_URL}/company/getAllProductSKUs`);
+}
+
+export async function onAddProduct(productData) {
+  return await axios.post(`${API_URL}/company/addProduct`, productData);
+}

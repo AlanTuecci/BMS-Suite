@@ -1,15 +1,16 @@
-import React from 'react'
-import searchIcon from '../media/product/search_24dp_A5A5A5_FILL0_wght400_GRAD0_opsz24.svg'
+import React from 'react';
 
-function PrdSearch() {
+function PrdSearch({ onSearch }) {
   return (
     <div>
-        <div>
-            <input type="search" placeholder="  Search Products..." class="px-4 py-2 bg-lightsilver border-1 border-compgray/50 placeholder-compgray rounded-lg"/>
-        </div>
+      <input
+        type="search"
+        placeholder="  Search Products..."
+        className="px-4 py-2 bg-lightsilver border border-compgray/50 placeholder-compgray rounded-lg"
+        onChange={(e) => onSearch(e.target.value)}
+      />
     </div>
-    
-  )
+  );
 }
 
-export default PrdSearch
+export default PrdSearch;

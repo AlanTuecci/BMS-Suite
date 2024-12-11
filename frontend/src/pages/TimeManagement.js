@@ -119,19 +119,19 @@ const TimeManagement = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <div className="bg-white shadow-md rounded-xl p-4 text-center">
             <p className="text-gray-600">Total Hours</p>
-            <h2 className="text-xl font-bold text-[#454FE1]">250 hours</h2>
+            <h2 className="text-xl font-bold text-compblue">250 hours</h2>
           </div>
           <div className="bg-white shadow-md rounded-xl p-4 text-center">
             <p className="text-gray-600">Total Work Hours</p>
-            <h2 className="text-xl font-bold text-[#454FE1]">220 hours</h2>
+            <h2 className="text-xl font-bold text-compblue">220 hours</h2>
           </div>
           <div className="bg-white shadow-md rounded-xl p-4 text-center">
             <p className="text-gray-600">Overtime Hours</p>
-            <h2 className="text-xl font-bold text-[#454FE1]">5 hours</h2>
+            <h2 className="text-xl font-bold text-compblue">5 hours</h2>
           </div>
           <div className="bg-white shadow-md rounded-xl p-4 text-center">
             <p className="text-gray-600">Total Paid Break Hours</p>
-            <h2 className="text-xl font-bold text-[#454FE1]">12 hours</h2>
+            <h2 className="text-xl font-bold text-compblue">12 hours</h2>
           </div>
         </div>
 
@@ -154,7 +154,7 @@ const TimeManagement = () => {
               })}
             </p>
           </div>
-          <button className="bg-[#454FE1] text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700 transition">
+          <button className="bg-compblue text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700 transition">
             <span className="text-xl">+</span> Insert Time
           </button>
         </div>

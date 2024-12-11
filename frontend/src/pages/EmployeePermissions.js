@@ -35,7 +35,7 @@ const EmployeePermissions = () => {
       const employeeData = response.data.map((employee) => ({
         ...employee,
         employee_register_date: new Date(
-          employee.employee_register_date
+          employee.employee_register_timestamp
         ).toLocaleDateString(),
       }));
       setEmployees(employeeData);
@@ -46,7 +46,7 @@ const EmployeePermissions = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   const fetchEmployeePermissions = async (employee_id) => {
     try {
@@ -296,13 +296,13 @@ const EmployeePermissions = () => {
 
                   <div className="mt-6 flex justify-center gap-4">
                     <button
-                      className="px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-gray-100"
+                      className="px-4 py-2 bg-white text-compblue border border-compblue rounded-lg hover:bg-gray-100"
                       onClick={closeModal}
                     >
                       Cancel
                     </button>
                     <button
-                      className="px-4 py-2 bg-[#454FE1] text-white rounded-lg hover:bg-blue-700"
+                      className="px-4 py-2 bg-compblue text-white rounded-lg hover:bg-blue-700"
                       onClick={savePermissions}
                     >
                       Save Changes
