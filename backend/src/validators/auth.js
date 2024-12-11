@@ -1,5 +1,5 @@
 const { check } = require("express-validator");
-const db = require("../db");
+const pool = require("../db");
 const { compare } = require("bcryptjs");
 
 //password
@@ -17,7 +17,7 @@ const email = check("email").isEmail().withMessage("Please provide a valid email
 
 //check if email exists in employees table
 const employeeEmailExists = check("email").custom(async (value) => {
-  const { rows } = await db.query("SELECT * from employee_info WHERE employee_email = $1", [value]);
+  const { rows } = await pool.query("SELECT * from employee_info WHERE employee_email = $1", [value]);
 
   if (rows.length) {
     throw new Error("Email already exists.");
@@ -26,7 +26,7 @@ const employeeEmailExists = check("email").custom(async (value) => {
 
 //check if email exists in company table
 const companyEmailExists = check("email").custom(async (value) => {
-  const { rows } = await db.query("SELECT * from company_info WHERE company_admin_email = $1", [value]);
+  const { rows } = await pool.query("SELECT * from company_info WHERE company_admin_email = $1", [value]);
 
   if (rows.length) {
     throw new Error("Email already exists.");
@@ -35,7 +35,7 @@ const companyEmailExists = check("email").custom(async (value) => {
 
 //employee login validation
 const employeeLoginFieldsCheck = check("email").custom(async (value, { req }) => {
-  const user = await db.query("SELECT * from employee_info WHERE employee_email = $1", [value]);
+  const user = await pool.query("SELECT * from employee_info WHERE employee_email = $1", [value]);
 
   if (!user.rows.length) {
     throw new Error("Email not found.");
@@ -52,7 +52,7 @@ const employeeLoginFieldsCheck = check("email").custom(async (value, { req }) =>
 
 //company login validation
 const companyLoginFieldsCheck = check("email").custom(async (value, { req }) => {
-  const user = await db.query("SELECT * from company_info WHERE company_admin_email = $1", [value]);
+  const user = await pool.query("SELECT * from company_info WHERE company_admin_email = $1", [value]);
 
   if (!user.rows.length) {
     throw new Error("Email not found.");
@@ -61,7 +61,7 @@ const companyLoginFieldsCheck = check("email").custom(async (value, { req }) => 
   const validPassword = await compare(req.body.password, user.rows[0].company_admin_password);
 
   if (!validPassword) {
-    throw new Error("Invalid password for inputted email.");
+    throw new Error("Invalid password.");
   }
 
   req.user = user.rows[0];

@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../components/Sidebar";
 import DashboardCard from "../components/DashboardCard";
 import DashboardNavbar from "../components/DashboardNavbar";
 import { useSelector } from "react-redux";

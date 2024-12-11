@@ -52,7 +52,11 @@ const Home = () => {
             Designed to improve the efficiency of business operations
           </h1>
           <div className="flex p-8 mx-4 items-center justify-center rounded-md lg:hidden">
-            <img src={menpg} alt="Business Management" className="object-fit h-auto rounded-3xl" />
+            <img
+              src={menpg}
+              alt="Business Management"
+              className="object-fit h-auto rounded-3xl"
+            />
           </div>
           <h1 className="lg:pt-14 lg:text-3xl text-2xl font-bold text-[#14213D]">
             An online business management software suite
@@ -154,7 +158,9 @@ const Home = () => {
             className="bg-[#F0FAFC] max-w-[95%] p-12 rounded-xl text-center shadow-md z-[11]"
             ref={modalRef}
           >
-            <h2 className="text-3xl text-[#14213D] bg-[#F0FAFC] font-bold">Select Your Role</h2>
+            <h2 className="text-3xl text-[#14213D] bg-[#F0FAFC] font-bold">
+              Select Your Role
+            </h2>
             <div className="flex justify-center gap-7 px-5 mt-5">
               <div
                 className="flex flex-col justify-center cursor-pointer p-9 bg-[#14213D] text-[#F0FAFC] rounded-xl shadow-md hover:shadow-lg ease-in-out duration-300"

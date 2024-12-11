@@ -12,7 +12,9 @@ const client = new Client({
 const checkConnect = async () => {
   try {
     await client.connect();
-    console.log(`Connected to PostgreSQl database as: ${client.user}@${client.host}:${client.port}/${client.database}`);
+    console.log(
+      `Connected to PostgreSQl database as: ${client.user}@${client.host}:${client.port}/${client.database}\n`
+    );
     await client.end();
   } catch (error) {
     throw new Error("Could not connect to database", error);

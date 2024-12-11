@@ -12,7 +12,7 @@ const Register = () => {
     invite_code: "",
     company_ein: "",
     full_name: "",
-    company_info: ""
+    company_info: "",
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
@@ -52,7 +52,7 @@ const Register = () => {
         invite_code: "",
         company_ein: "",
         full_name: "",
-        company_info: ""
+        company_info: "",
       });
     } catch (error) {
       let errorObj = {};
@@ -79,7 +79,9 @@ const Register = () => {
         </div>
         <div className="w-full lg:w-2/5 bg-white p-8 rounded-lg shadow-lg space-y-6">
           <div className="text-center lg:text-left">
-            <h1 className="text-3xl font-extrabold text-[#14213D]">Create an Account</h1>
+            <h1 className="text-3xl font-extrabold text-[#14213D]">
+              Create an Account
+            </h1>
             <p className="text-[#14213D] mt-2">Register your account below</p>
           </div>
           <form onSubmit={onSubmit} className="space-y-6">
@@ -94,7 +96,9 @@ const Register = () => {
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors.email && <div className="text-red-600 text-sm">{errors.email}</div>}
+              {errors.email && (
+                <div className="text-red-600 text-sm">{errors.email}</div>
+              )}
             </div>
 
             {userType === "company" && (
@@ -110,7 +114,9 @@ const Register = () => {
                   required
                 />
                 {errors.company_info && (
-                  <div className="text-red-600 text-sm">{errors.company_info}</div>
+                  <div className="text-red-600 text-sm">
+                    {errors.company_info}
+                  </div>
                 )}
               </div>
             )}
@@ -144,7 +150,9 @@ const Register = () => {
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors.password && <div className="text-red-600 text-sm">{errors.password}</div>}
+              {errors.password && (
+                <div className="text-red-600 text-sm">{errors.password}</div>
+              )}
             </div>
 
             <div>
@@ -161,7 +169,9 @@ const Register = () => {
                 required
               />
               {errors.confirmPassword && (
-                <div className="text-red-600 text-sm">{errors.confirmPassword}</div>
+                <div className="text-red-600 text-sm">
+                  {errors.confirmPassword}
+                </div>
               )}
             </div>
 
@@ -171,14 +181,26 @@ const Register = () => {
                 name={userType === "employee" ? "invite_code" : "company_ein"}
                 id={userType === "employee" ? "invite_code" : "company_ein"}
                 onChange={onChange}
-                value={userType === "employee" ? values.invite_code : values.company_ein}
-                placeholder={userType === "employee" ? "Invite Code" : "Company EIN"}
+                value={
+                  userType === "employee"
+                    ? values.invite_code
+                    : values.company_ein
+                }
+                placeholder={
+                  userType === "employee" ? "Invite Code" : "Company EIN"
+                }
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors[userType === "employee" ? "invite_code" : "company_ein"] && (
+              {errors[
+                userType === "employee" ? "invite_code" : "company_ein"
+              ] && (
                 <div className="text-red-600 text-sm">
-                  {errors[userType === "employee" ? "invite_code" : "company_ein"]}
+                  {
+                    errors[
+                      userType === "employee" ? "invite_code" : "company_ein"
+                    ]
+                  }
                 </div>
               )}
             </div>

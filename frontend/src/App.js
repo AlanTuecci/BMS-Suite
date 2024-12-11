@@ -1,11 +1,18 @@
-import { BrowserRouter, Navigate, Routes, Route, Outlet } from "react-router-dom";
-import Home from "./pages/home";
-import Placeholder from "./pages/placeholder";
-import Register from "./pages/register";
-import Login from "./pages/login";
-import Dashboard from "./pages/dashboard";
-import Invite from "./pages/invite";
-import PrdMgmt from './pages/prodmgmt';
+import {
+  BrowserRouter,
+  Navigate,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Invite from "./pages/Invite";
+import TimeManagement from "./pages/TimeManagement";
+import EmployeePermissions from "./pages/EmployeePermissions";
+import ProductManagement from './pages/ProductManagement';
 import { useSelector } from "react-redux";
 
 
@@ -15,8 +22,8 @@ const PrivateRoutes = () => {
   if (!authState.isAuth) {
     return <Navigate to="/" />;
   }
-  return <Outlet />; 
-}
+  return <Outlet />;
+};
 
 const RestrictedRoutes = () => {
   const authState = useSelector((state) => state.auth);
@@ -30,10 +37,14 @@ const App = () => {
         <Route exact path="/" element={<Home />}></Route>
 
         <Route element={<PrivateRoutes />}>
-          <Route path="/placeholder" element={<Placeholder />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
-          <Route path="/prdmgmt" element={<PrdMgmt />}></Route>
+          <Route path="/product-management" element={<ProductManagement />}></Route>
           <Route path="/invite" element={<Invite />}></Route>
+          <Route path="/time-management" element={<TimeManagement />}></Route>
+          <Route
+            path="/employee-permissions"
+            element={<EmployeePermissions />}
+          ></Route>
         </Route>
 
         <Route element={<RestrictedRoutes />}>

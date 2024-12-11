@@ -6,7 +6,9 @@ const Timekeeping = () => {
     <div className="2xl:max-w-[50%] lg:max-w-[33%] sm:max-w-[50%] max-w-[80%] rounded-3xl mt-8 mx-4 p-4 bg-lighter_purple">
       <AiOutlineFieldTime size={80} />
       <h1 className="font-bold lg:text-2xl text-lg mx-2 mt-2">Timekeeping</h1>
-      <h2 className="font-normal lg:text-lg text-base mx-2 mb-2">Record and track work hours</h2>
+      <h2 className="font-normal lg:text-lg text-base mx-2 mb-2">
+        Record and track work hours
+      </h2>
     </div>
   );
 };
