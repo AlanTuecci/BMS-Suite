@@ -3,11 +3,15 @@ import { BsPersonVcard, BsBriefcase } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [nav] = useState(false);
+  const [nav, setNav] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
   const [route, setRoute] = useState("/login");
   const navigate = useNavigate();
+
+  const handleNav = () => {
+    setNav(!nav);
+  };
 
   const handleLoginRegisterClick = (path) => {
     setRoute(path);
@@ -75,9 +79,7 @@ const Navbar = () => {
           <h1 className="w-full text-3xl font-bold m-4 pt-3">BMS Suite</h1>
           <ul className="p-2">
             <li className="p-4 border-b-2 text-lg border-b-[#0B1215]">About</li>
-            <li className="p-4 border-b-2 text-lg border-b-[#0B1215]">
-              Features
-            </li>
+            <li className="p-4 border-b-2 text-lg border-b-[#0B1215]">Features</li>
             <li className="p-4 border-b-2 text-lg border-b-[#0B1215]">Home</li>
             <li className="p-4 text-lg">Contact</li>
           </ul>
