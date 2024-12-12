@@ -45,10 +45,10 @@ const Navbar = () => {
     return (
       <header class="flex flex-wrap md:flex-nowrap z-50 w-full py-7">
         <div
-        className={`relative max-w-7xl w-full grid md:grid-cols-12 items-center px-4 md:px-6 md:px-8 mx-auto ${showModal} ? "opacity-50 ease-in-out duration-300 pointer-events-none" : ""}`}
+        className={`relative max-w-7xl w-full grid md:grid-cols-12 items-center px-4 md:px-7 mx-auto ${showModal} ? "opacity-50 ease-in-out duration-300 pointer-events-none" : ""}`}
         >
 
-          <div class="md:col-span-3 text-txt_color text-3xl font-bold flex justify-start items-center font-bold">
+          <div class="md:col-span-3 text-txt_color text-3xl flex justify-start items-center font-bold">
             BMS Suite
           </div>
   

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { onGetAllProductSKUs, onAddProduct } from "../api/auth";
 
 function ProductManagement() {
   const userType = useSelector((state) => state.auth.userType);
+  const navigate = useNavigate();
   const [prdBx, setPrdBx] = useState(false);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -73,6 +75,10 @@ function ProductManagement() {
     }
   };
 
+  const navigateToProductCount = (product) => {
+    navigate("/product-count", { state: { product } });
+  };
+
   if (loading) return <p className="text-center text-gray-600">Loading products...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!products.length) return <p className="text-center text-gray-600">No products found.</p>;
@@ -96,18 +102,21 @@ function ProductManagement() {
             placeholder="Search Products..."
             className="w-1/4 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
-          <button
-            className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            onClick={() => setPrdBx(true)}
-          >
-            + Create Product
-          </button>
+          {userType === "company" && (
+            <button
+              className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              onClick={() => setPrdBx(true)}
+            >
+              + Create Product
+            </button>
+          )}
         </div>
 
         <div className="font-mono text-gray-800">
           <div className="mb-4 w-full flex bg-gray-100 rounded-lg p-3">
-            <span className="w-1/2 font-semibold">Product SKU</span>
-            <span className="w-1/2 font-semibold">Product Name</span>
+            <span className="w-1/3 font-semibold">Product SKU</span>
+            <span className="w-1/3 font-semibold">Product Name</span>
+            <span className="w-1/3 text-right font-semibold">Options</span>
           </div>
 
           {filteredProducts.map((product, index) => (
@@ -117,8 +126,16 @@ function ProductManagement() {
                 index % 2 === 0 ? "" : "bg-gray-100 rounded-md"
               }`}
             >
-              <span className="w-1/2">#{product.product_sku}</span>
-              <span className="w-1/2">{product.product_name || "N/A"}</span>
+              <span className="w-1/3">#{product.product_sku}</span>
+              <span className="w-1/3">{product.product_name || "N/A"}</span>
+              <div className="w-1/3 text-right">
+                <button
+                  className="text-blue-600 ml-2 text-2xl hover:text-blue-800"
+                  onClick={() => navigateToProductCount(product)}
+                >
+                  ⋮
+                </button>
+              </div>
             </div>
           ))}
         </div>
