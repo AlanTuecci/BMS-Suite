@@ -56,8 +56,8 @@ export async function onAssignCashAccessControl(data) {
   return await axios.post(`${API_URL}/company/assignCashAccessControl`, data);
 }
 
-export async function onGetAllProductSKUs() {
-  return await axios.post(`${API_URL}/company/getAllProductSKUs`);
+export async function onGetAllProductSKUs(userType) {
+  return await axios.post(`${API_URL}/${userType}/getAllProductSKUs`);
 }
 
 export async function onAddProduct(productData) {

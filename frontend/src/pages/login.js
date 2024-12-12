@@ -39,7 +39,15 @@ const Login = () => {
         password: "",
       });
 
-      dispatch(authenticateUser(userType));
+      dispatch(
+        authenticateUser({
+          userType,
+          inventoryAccessLevel: data.inventory_access_level || 0,
+          laborAccessLevel: data.labor_access_level || 0,
+          cashAccessLevel: data.cash_access_level || 0,
+        })
+      );
+
       localStorage.setItem("isAuth", true);
     } catch (error) {
       let errorObj = {};

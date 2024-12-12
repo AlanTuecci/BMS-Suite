@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Sidebar from "../components/Sidebar";
 import { onGetAllProductSKUs, onAddProduct } from "../api/auth";
 
 function ProductManagement() {
+  const userType = useSelector((state) => state.auth.userType);
   const [prdBx, setPrdBx] = useState(false);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -18,7 +20,7 @@ function ProductManagement() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await onGetAllProductSKUs();
+      const response = await onGetAllProductSKUs(userType);
       setProducts(response.data);
       setFilteredProducts(response.data);
     } catch (error) {
@@ -30,8 +32,10 @@ function ProductManagement() {
   };
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    if (userType) {
+      fetchProducts();
+    }
+  }, [userType]);
 
   useEffect(() => {
     const filtered = products.filter((product) =>
