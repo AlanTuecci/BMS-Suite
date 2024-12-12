@@ -18,15 +18,12 @@ const EmployeePermissions = () => {
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [permissions, setPermissions] = useState({
     inventory: 0,
     labor: 0,
     cash: 0,
   });
-
   const [feedbackMessage, setFeedbackMessage] = useState(null);
 
   const fetchEmployees = async () => {
@@ -46,7 +43,7 @@ const EmployeePermissions = () => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   const fetchEmployeePermissions = async (employee_id) => {
     try {
@@ -169,27 +166,8 @@ const EmployeePermissions = () => {
 
   return (
     <div className="flex h-screen bg-white">
-      <div
-        className={`fixed top-0 left-0 h-full bg-gray-800 transition-all duration-300 ${
-          isSidebarOpen ? "w-64" : "w-16"
-        }`}
-      >
-        <div className="p-4">
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-2xl"
-          >
-            {isSidebarOpen ? "Close" : "Open"}
-          </button>
-        </div>
-        <Sidebar isSidebarOpen={isSidebarOpen} />
-      </div>
-
-      <div
-        className={`flex-grow p-8 transition-all duration-300 ${
-          isSidebarOpen ? "ml-64" : "ml-16"
-        }`}
-      >
+      <Sidebar />
+      <div className="flex-grow p-8 ml-16">
         <h1 className="text-5xl font-light text-gray-800 mb-4 mt-4 leading-tight">
           Employee Permissions
         </h1>

@@ -9,8 +9,6 @@ function ProductManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const [productSku, setProductSku] = useState("");
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
@@ -19,6 +17,7 @@ function ProductManagement() {
 
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       const response = await onGetAllProductSKUs();
       setProducts(response.data);
       setFilteredProducts(response.data);
@@ -57,7 +56,7 @@ function ProductManagement() {
       fetchProducts();
       setPrdBx(false);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.errors) {
+      if (error.response?.data?.errors) {
         const errorObj = {};
         error.response.data.errors.forEach((err) => {
           errorObj[err.path] = err.msg;
@@ -70,36 +69,15 @@ function ProductManagement() {
     }
   };
 
-  if (loading)
-    return <p className="text-center text-gray-600">Loading products...</p>;
+  if (loading) return <p className="text-center text-gray-600">Loading products...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (!products.length)
-    return <p className="text-center text-gray-600">No products found.</p>;
+  if (!products.length) return <p className="text-center text-gray-600">No products found.</p>;
 
   return (
     <div className="flex h-screen bg-white">
-      <div
-        className={`fixed top-0 left-0 h-full bg-gray-800 transition-all duration-300 ${
-          isSidebarOpen ? "w-64" : "w-16"
-        }`}
-      >
-        <div className="p-4">
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-2xl text-white"
-          >
-            {isSidebarOpen ? "Close" : "Open"}
-          </button>
-        </div>
-        <Sidebar isSidebarOpen={isSidebarOpen} />
-      </div>
-
-      <div
-        className={`flex-grow p-8 transition-all duration-300 ${
-          isSidebarOpen ? "ml-64" : "ml-16"
-        }`}
-      >
-        <h1 className="text-5xl font-light text-gray-800 mb-4 mt-4 leading-tight">
+      <Sidebar />
+      <div className="flex-grow p-8 ml-16">
+        <h1 className="text-5xl font-light text-gray-800 mb-4 leading-tight">
           Product Inventory
         </h1>
         <p className="text-gray-600 mb-6">
@@ -123,7 +101,7 @@ function ProductManagement() {
         </div>
 
         <div className="font-mono text-gray-800">
-          <div className="mb-4 text-gray-800 w-full flex bg-gray-100 rounded-lg p-3">
+          <div className="mb-4 w-full flex bg-gray-100 rounded-lg p-3">
             <span className="w-1/2 font-semibold">Product SKU</span>
             <span className="w-1/2 font-semibold">Product Name</span>
           </div>
@@ -145,18 +123,14 @@ function ProductManagement() {
           <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="rounded-lg p-8 bg-white w-[25em]">
               <form onSubmit={handleAddProduct}>
-                <div className="leading-tight">
-                  <h2 className="px-3 text-xl font-medium">
-                    Enter Product Information
-                  </h2>
-                  <p className="px-3 text-sm font-regular text-compgray">
-                    Add Your Product Details
-                  </p>
+                <div className="leading-tight mb-4">
+                  <h2 className="text-xl font-medium">Enter Product Information</h2>
+                  <p className="text-sm text-gray-600">Add Your Product Details</p>
                 </div>
-                <div className="px-3 py-2">
-                  <label>Product SKU</label>
+                <div className="mb-4">
+                  <label className="block mb-2">Product SKU</label>
                   <input
-                    className="border-2 border-lightsilver placeholder-slate-400 w-full px-2 py-1"
+                    className="w-full px-2 py-1 border border-gray-300 rounded-md"
                     type="text"
                     value={productSku}
                     onChange={(e) => setProductSku(e.target.value)}
@@ -166,10 +140,10 @@ function ProductManagement() {
                     <p className="text-red-500 text-sm">{errors.product_sku}</p>
                   )}
                 </div>
-                <div className="px-3 py-2">
-                  <label>Product Name</label>
+                <div className="mb-4">
+                  <label className="block mb-2">Product Name</label>
                   <input
-                    className="border-2 border-lightsilver placeholder-lightsilver w-full px-2 py-1"
+                    className="w-full px-2 py-1 border border-gray-300 rounded-md"
                     type="text"
                     value={productName}
                     onChange={(e) => setProductName(e.target.value)}
@@ -179,10 +153,10 @@ function ProductManagement() {
                     <p className="text-red-500 text-sm">{errors.product_name}</p>
                   )}
                 </div>
-                <div className="px-3 py-2">
-                  <label>Product Description</label>
+                <div className="mb-4">
+                  <label className="block mb-2">Product Description</label>
                   <textarea
-                    className="border-2 border-lightsilver placeholder-lightsilver w-full px-2 py-1"
+                    className="w-full px-2 py-1 border border-gray-300 rounded-md"
                     value={productDescription}
                     onChange={(e) => setProductDescription(e.target.value)}
                   />
@@ -190,17 +164,17 @@ function ProductManagement() {
                 {errors.general && (
                   <p className="text-red-500 text-sm">{errors.general}</p>
                 )}
-                <div className="relative py-4">
+                <div className="flex justify-between">
                   <button
                     type="button"
-                    className="absolute right-5 mr-20 px-4 py-1 border border-compblue text-compblue rounded-xl transform hover:scale-105"
+                    className="px-4 py-2 border border-gray-500 text-gray-500 rounded-md hover:bg-gray-200"
                     onClick={() => setPrdBx(false)}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="absolute right-0 text-white bg-compblue rounded-xl px-4 py-1 transform hover:scale-105 hover:shadow-2xl"
+                    className="px-4 py-2 bg-compblue text-white rounded-md hover:bg-blue-700"
                   >
                     Enter
                   </button>

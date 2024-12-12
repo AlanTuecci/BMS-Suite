@@ -7,7 +7,6 @@ const Invite = () => {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -54,34 +53,14 @@ const Invite = () => {
 
   return (
     <div className="flex h-screen bg-white">
-      <div
-        className={`fixed top-0 left-0 h-full bg-gray-100 rounded-md text-white transition-all duration-300 ${
-          isSidebarOpen ? "w-64" : "w-16"
-        }`}
-      >
-        <div className="p-4">
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white text-2xl"
-          >
-            {isSidebarOpen ? "Close" : "Open"}
-          </button>
-        </div>
-        <Sidebar isSidebarOpen={isSidebarOpen} />
-      </div>
-
-      <div
-        className={`flex-grow p-8 transition-all duration-300 ${
-          isSidebarOpen ? "ml-64" : "ml-16"
-        }`}
-      >
+      <Sidebar />
+      <div className="flex-grow p-8 ml-16">
         <h1 className="text-5xl font-light text-gray-800 mb-4 mt-4 leading-tight">
           Invite Users
         </h1>
         <p className="text-gray-600 mb-6">
           Invite new employees to join your company.
         </p>
-
         <div className="mb-6">
           <h3 className="text-xl font-semibold mb-2">Send invite to email:</h3>
           <form onSubmit={handleInvite} className="flex">
@@ -103,11 +82,8 @@ const Invite = () => {
           {errors.employee_email && (
             <div className="text-red-600 mt-2">{errors.employee_email}</div>
           )}
-          {success && (
-            <div className="text-green-600 mt-2">{success}</div>
-          )}
+          {success && <div className="text-green-600 mt-2">{success}</div>}
         </div>
-
         <div className="font-mono text-gray-800">
           <div className="mb-4 w-full flex bg-gray-100 text-gray-800 rounded-lg p-3">
             <span className="w-1/2 font-semibold">Email</span>
