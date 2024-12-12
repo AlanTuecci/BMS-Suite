@@ -13,6 +13,7 @@ import Invite from "./pages/Invite";
 import TimeManagement from "./pages/TimeManagement";
 import EmployeePermissions from "./pages/EmployeePermissions";
 import ProductManagement from './pages/ProductManagement';
+import ProductCount from './pages/ProductCount';
 import { useSelector } from "react-redux";
 
 
@@ -45,6 +46,7 @@ const App = () => {
             path="/employee-permissions"
             element={<EmployeePermissions />}
           ></Route>
+          <Route path="/product-count" element={<ProductCount />}></Route>
         </Route>
 
         <Route element={<RestrictedRoutes />}>
