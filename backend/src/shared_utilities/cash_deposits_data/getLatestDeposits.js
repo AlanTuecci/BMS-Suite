@@ -11,7 +11,6 @@ exports.getLatestDeposits = async (req, res) => {
         depositor_employee_id,
         depositee_employee_id,
         deposit_id,
-        extern_deposit_id,
         deposit_amount,
         deposit_timestamp  
        FROM register_deposits_record 

@@ -6,7 +6,6 @@ exports.updateDeposit = async (req, res) => {
   const { deposit_id, deposit_amount } = req.body;
   const depositor_employee_id = req.body.depositor_employee_id ?? 0;
   const depositee_employee_id = req.body.depositee_employee_id ?? 0;
-  const extern_deposit_id = req.body.extern_deposit_id ?? null;
 
   const client = await pool.connect();
 
@@ -66,10 +65,9 @@ exports.updateDeposit = async (req, res) => {
        SET deposit_amount = $1, 
            deposit_timestamp = now(), 
            depositor_employee_id = $2, 
-           depositee_employee_id = $3, 
-           extern_deposit_id = $4 
-       WHERE company_id = $5 AND deposit_id = $6`,
-      [deposit_amount, depositor_employee_id, depositee_employee_id, extern_deposit_id, company_id, deposit_id]
+           depositee_employee_id = $3
+       WHERE company_id = $4 AND deposit_id = $5`,
+      [deposit_amount, depositor_employee_id, depositee_employee_id, company_id, deposit_id]
     );
 
     await client.query("COMMIT");
