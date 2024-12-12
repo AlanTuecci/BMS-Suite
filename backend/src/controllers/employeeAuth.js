@@ -11,10 +11,10 @@ exports.employeeRegister = async (req, res) => {
   try {
     await client.query("BEGIN");
 
-    let { rows } = await client.query(
-      "select * from invite_codes where invite_code = $1 and employee_email = $2",
-      [invite_code, email]
-    );
+    let { rows } = await client.query("select * from invite_codes where invite_code = $1 and employee_email = $2", [
+      invite_code,
+      email,
+    ]);
 
     if (!rows.length) {
       return res.status(404).json({
@@ -36,10 +36,7 @@ exports.employeeRegister = async (req, res) => {
       [rows[0].company_id, full_name, email, hashedPassword]
     );
 
-    const response = await client.query(
-      "select employee_id from employee_info where employee_email = $1",
-      [email]
-    );
+    const response = await client.query("select employee_id from employee_info where employee_email = $1", [email]);
 
     const employee_id = response.rows[0].employee_id;
 
@@ -69,7 +66,7 @@ exports.employeeRegister = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     await client.query("ROLLBACK");
-    
+
     return res.status(500).json({
       errors: [
         {
@@ -97,11 +94,51 @@ exports.employeeLogin = async (req, res) => {
   };
 
   try {
+    let inventory_access_level = 0;
+    let labor_access_level = 0;
+    let cash_access_level = 0;
+
+    let response = await pool.query(
+      `SELECT access_control_level
+       FROM inventory_access_info
+       WHERE company_id = $1
+        AND employee_id = $2`,
+      [user.company_id, user.employee_id]
+    );
+    if (response.rows.length != 0) {
+      inventory_access_level = response.rows[0].access_control_level;
+    }
+
+    response = await pool.query(
+      `SELECT access_control_level
+       FROM employee_labor_info
+       WHERE company_id = $1
+        AND employee_id = $2`,
+      [user.company_id, user.employee_id]
+    );
+    if (response.rows.length != 0) {
+      labor_access_level = response.rows[0].access_control_level;
+    }
+
+    response = await pool.query(
+      `SELECT access_control_level
+       FROM cash_access_info
+       WHERE company_id = $1
+        AND employee_id = $2`,
+      [user.company_id, user.employee_id]
+    );
+    if (response.rows.length != 0) {
+      cash_access_level = response.rows[0].access_control_level;
+    }
+
     const token = sign(payload, SECRET);
 
     return res.status(200).cookie("token", token, { httpOnly: true }).json({
       success: true,
       message: "Login successful.",
+      inventory_access_level: inventory_access_level,
+      labor_access_level: labor_access_level,
+      cash_access_level: cash_access_level,
     });
   } catch (error) {
     console.log(error.message);
