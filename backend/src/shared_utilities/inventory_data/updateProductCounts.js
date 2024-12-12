@@ -18,7 +18,8 @@ exports.updateProductCounts = async (req, res) => {
       let response = await client.query(
         `SELECT access_control_level 
          FROM inventory_access_info 
-         WHERE company_id = $1 AND employee_id = $2`,
+         WHERE company_id = $1 
+          AND employee_id = $2`,
         [company_id, employee_id]
       );
 
@@ -42,7 +43,8 @@ exports.updateProductCounts = async (req, res) => {
     response = await client.query(
       `SELECT product_sku
        FROM product_info
-       WHERE company_id = $1 AND product_sku = $2`,
+       WHERE company_id = $1 
+        AND product_sku = $2`,
       [company_id, product_sku]
     );
 
@@ -64,21 +66,14 @@ exports.updateProductCounts = async (req, res) => {
 
     await client.query(
       `UPDATE product_counts 
-       SET employee_id = $1, 
-           count_timestamp = now(), 
-           on_hand_loose_unit_count = $2, 
-           on_hand_tray_count = $3, 
-           on_hand_case_count = $4 
-       WHERE company_id = $5 AND product_sku = $6 AND product_count_id = $7`,
-      [
-        employee_id,
-        on_hand_loose_unit_count,
-        on_hand_tray_count,
-        on_hand_case_count,
-        company_id,
-        product_sku,
-        product_count_id,
-      ]
+       SET count_timestamp = now(), 
+           on_hand_loose_unit_count = $1, 
+           on_hand_tray_count = $2, 
+           on_hand_case_count = $3 
+       WHERE company_id = $4 
+        AND product_sku = $5 
+        AND product_count_id = $6`,
+      [on_hand_loose_unit_count, on_hand_tray_count, on_hand_case_count, company_id, product_sku, product_count_id]
     );
 
     await client.query("COMMIT");

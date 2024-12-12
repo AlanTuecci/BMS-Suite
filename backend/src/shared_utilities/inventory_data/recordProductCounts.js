@@ -18,7 +18,7 @@ exports.recordProductCounts = async (req, res) => {
       let response = await client.query(
         `SELECT access_control_level
          FROM inventory_access_info
-         WHERE company_id = $1 AND employee_id = $`,
+         WHERE company_id = $1 AND employee_id = $2`,
         [company_id, employee_id]
       );
 
