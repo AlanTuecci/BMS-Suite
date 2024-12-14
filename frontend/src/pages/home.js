@@ -44,7 +44,7 @@ const Home = () => {
   }, [showModal]);
 
   return (
-    <div className="bg-[#F0FAFC] min-h-screen text-white">
+    <div className="bg-bkgd min-h-screen text-white overflow-y-auto"> 
       <Navbar />
       <div className="flex space-x-0 sm:max-w-[90%] mx-auto justify-center py-8">
         <div className="lg:w-4/6 px-4 lg:pt-0 py-2 flex flex-col justify-center text-center text-[#FBFBFE]">
@@ -74,16 +74,16 @@ const Home = () => {
           </p>
           <div className="pt-8 justify-center">
             <button
-              className="px-5 py-2.5 mx-2 text-xl text-[#FBFBFE] bg-[#14213D] hover:bg-[#454FE1] transition duration-200 rounded-full"
+               className="px-5 py-2.5 mx-2 text-xl text-bkgd bg-compblue transition duration-200 rounded-full hover:shadow-xl hover:shadow-[#cdccf4] hover:scale-105"
               onClick={() => handleLoginRegisterClick("/register")}
             >
-              Register
+              Get Started
             </button>
-            <button
-              className="px-5 py-2.5 mx-2 text-xl text-[#FBFBFE] bg-[#14213D] hover:bg-[#454FE1] transition duration-200 rounded-full"
+            <button 
+              className="px-5 py-2.5 mx-2 text-xl text-[#14213D] transition duration-200 rounded-full border-3 border-[#14213D] hover:scale-105"
               onClick={() => handleLoginRegisterClick("/Login")}
             >
-              Login
+              Learn More
             </button>
           </div>
         </div>
@@ -95,7 +95,7 @@ const Home = () => {
           />
         </div>
       </div>
-      <div className="bg-[#14213D] text-[#FBFBFE] md:mt-4 mt-16 py-12 pb-20">
+      <div className="bg-darker_purple text-bkgd md:mt-4 mt-16 py-12 pb-20">
         <div className="w-[90%] mx-auto">
           <h1 className="font-medium text-4xl">
             Optimize your time and effortlessly manage your team with our tools
@@ -107,6 +107,50 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <div class="relative">
+        <div class="flex flex-col justify-center items-center bg-bkgd md:mt-4 mt-16 py-12 pb-20">
+          <h1 class="items-center text-txt_color text-4xl font-bold text-center mb-2">Customized Plans <br/> For Your Business Needs</h1>
+          <p class="text-txt_color text-base mb-2">Flexible Pricing For Any Business Size</p>
+
+          <div class="py-5 text-txt_color">
+            <ul class="flex gap-10">
+              <li class="text-center px-4">
+                <h2 class="text-4xl font-bold mb-2">300</h2>
+                <p class="text-base font-medium">Active Users</p>
+              </li>
+              <li class="text-center px-4">
+                <h2 class="text-4xl font-bold mb-2">35%</h2>
+                <p class="text-base font-medium">Boosts <br/> Productivity</p>
+              </li>
+              <li class="text-center px-4">
+                <h2 class="text-4xl font-bold mb-2">4.8/5</h2>
+                <p class="text-base font-medium">From User <br/> Feedback Survey</p>
+              </li>
+            </ul>
+          </div>
+        </div> 
+
+        <footer class="bg-[#E5E4FF] w-full mt-16 py-12 pb-20 z-10">
+          <div class="flex flex-col justify-center items-center text-txt_color">
+          </div>
+        </footer>
+
+        <div class="flex justify-center items-center">
+          <div class=" flex justify-between bg-[#17118A] w-[60%] h-180 absolute bottom-75 z-20 rounded-3xl text-bkgd ">
+            <div class ="flex flex-col justify-center px-4">
+              <h2 class="text-2xl font-semibold"> Ready to Take Control <br/> Of Your Business with Ease?</h2>
+              <p class="text-sm font-medium">Transforming Business Management with and All-In-One Solution</p>
+            </div>
+            <div class="flex justify-center items-center w-auto px-4">
+              <button className="px-5 py-2.5 mx-2 text-xl text-bkgd bg-compblue transition duration-200 rounded-full hover:shadow-xl hover:scale-105"
+              onClick={() => handleLoginRegisterClick("/register")}> Get Started </button>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
       {showModal && (
         <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center z-[10]">
           <div

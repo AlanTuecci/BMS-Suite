@@ -119,19 +119,19 @@ const TimeManagement = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <div className="bg-white shadow-md rounded-xl p-4 text-center">
             <p className="text-gray-600">Total Hours</p>
-            <h2 className="text-xl font-bold text-blue-600">250 hours</h2>
+            <h2 className="text-xl font-bold text-compblue">250 hours</h2>
           </div>
           <div className="bg-white shadow-md rounded-xl p-4 text-center">
             <p className="text-gray-600">Total Work Hours</p>
-            <h2 className="text-xl font-bold text-blue-600">220 hours</h2>
+            <h2 className="text-xl font-bold text-compblue">220 hours</h2>
           </div>
           <div className="bg-white shadow-md rounded-xl p-4 text-center">
             <p className="text-gray-600">Overtime Hours</p>
-            <h2 className="text-xl font-bold text-blue-600">5 hours</h2>
+            <h2 className="text-xl font-bold text-compblue">5 hours</h2>
           </div>
           <div className="bg-white shadow-md rounded-xl p-4 text-center">
             <p className="text-gray-600">Total Paid Break Hours</p>
-            <h2 className="text-xl font-bold text-blue-600">12 hours</h2>
+            <h2 className="text-xl font-bold text-compblue">12 hours</h2>
           </div>
         </div>
 
@@ -140,7 +140,7 @@ const TimeManagement = () => {
             <h3 className="text-lg font-semibold text-gray-900">
               {currentMonthName} {currentYear}
             </h3>
-            <p className="text-sm text-blue-600">
+            <p className="text-sm text-[#454FE1]">
               {weekStart.toLocaleDateString(undefined, {
                 month: "long",
                 day: "numeric",
@@ -154,7 +154,7 @@ const TimeManagement = () => {
               })}
             </p>
           </div>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700 transition">
+          <button className="bg-compblue text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700 transition">
             <span className="text-xl">+</span> Insert Time
           </button>
         </div>
@@ -188,7 +188,7 @@ const TimeManagement = () => {
                         className={`border border-gray-200 text-center ${
                           day
                             ? isToday
-                              ? "bg-blue-100"
+                              ? "bg-[#F0FAFC]"
                               : "bg-white hover:bg-[#F0FAFC]"
                             : "bg-gray-100"
                         } transition`}
