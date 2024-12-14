@@ -1,11 +1,9 @@
 const { Router } = require("express");
-const { logout } = require("../controllers/auth");
+const { logout, returnAllUserTypeAndPermissionLevels, timeSignEmployeeOut } = require("../controllers/auth");
 const { employeeRegister, employeeLogin } = require("../controllers/employeeAuth");
 const { employeeRegisterValidation, employeeLoginValidation } = require("../validators/auth");
 const { companyRegisterValidation, companyLoginValidation } = require("../validators/auth");
 const { validationMiddleware } = require("../middlewares/validations-middleware");
-const { employeeUserAuth } = require("../middlewares/employee-passport-middleware");
-const { companyUserAuth } = require("../middlewares/company-passport-middleware");
 const { companyRegister, companyLogin } = require("../controllers/companyAuth");
 const { getAllInvites } = require("../company_utilities/invite_data/getAllInvites");
 const { inviteEmployee } = require("../company_utilities/invite_data/inviteEmployee");
@@ -41,94 +39,118 @@ const { deleteSafeCount } = require("../shared_utilities/cash_safe_data/deleteSa
 const { getInventoryAccessControlById } = require("../company_utilities/inventory_data/getInventoryAccessControlById");
 const { getLaborAccessControlById } = require("../company_utilities/labor_data/getLaborAccessControlById");
 const { getCashAccessControlById } = require("../company_utilities/cash_data/getCashAccessControlById");
+const { timeLogin } = require("../controllers/timeAdminAuth");
+const { timeUserAuth } = require("../middlewares/time-user-passport-middleware");
+const { updatePin } = require("../employee_utilities/updatePin");
+const { checkEmployeePin } = require("../time_utilities/checkEmployeePin");
+const { clockIn } = require("../time_utilities/clockIn");
+const { breakStart } = require("../time_utilities/breakStart");
+const { breakEnd } = require("../time_utilities/breakEnd");
+const { clockOut } = require("../time_utilities/clockOut");
+const { userAuth } = require("../middlewares/auth-passport-middleware");
+const { restrictAccess } = require("../controllers/restrictAccess");
 
 const router = Router();
+
+//--Auth Route
+router.post("/auth", userAuth, returnAllUserTypeAndPermissionLevels);
 
 //--Employee Routes
 //----Signin/Signup Routes
 router.post("/employee/register", employeeRegisterValidation, validationMiddleware, employeeRegister);
 router.post("/employee/login", employeeLoginValidation, validationMiddleware, employeeLogin);
+//----Time Management Routes
+router.post("/employee/updatePin", userAuth, restrictAccess, updatePin);
 //----Product Management Routes
 //------Control 0 --> Read
-router.post("/employee/getAllProducts", employeeUserAuth, getAllProducts);
-router.post("/employee/getAllProductSKUs", employeeUserAuth, getAllProductSKUs);
-router.post("/employee/getAllLatestProductCounts", employeeUserAuth, getAllLatestProductCounts);
-router.post("/employee/getLatestProductCounts", employeeUserAuth, getLatestProductCounts);
-router.post("/employee/getProductCountHistory", employeeUserAuth, getProductCountHistory);
+router.post("/employee/getAllProducts", userAuth, restrictAccess, getAllProducts);
+router.post("/employee/getAllProductSKUs", userAuth, restrictAccess, getAllProductSKUs);
+router.post("/employee/getAllLatestProductCounts", userAuth, restrictAccess, getAllLatestProductCounts);
+router.post("/employee/getLatestProductCounts", userAuth, restrictAccess, getLatestProductCounts);
+router.post("/employee/getProductCountHistory", userAuth, restrictAccess, getProductCountHistory);
 //------Control 1 --> Read, Insert
-router.post("/employee/recordProductCounts", employeeUserAuth, recordProductCounts);
+router.post("/employee/recordProductCounts", userAuth, restrictAccess, recordProductCounts);
 //------Control 2 --> Read, Insert, Update
-router.post("/employee/updateProductCounts", employeeUserAuth, updateProductCounts);
+router.post("/employee/updateProductCounts", userAuth, restrictAccess, updateProductCounts);
 //------Control 3 --> Read, Insert, Update, Delete
-router.delete("/employee/deleteProductCounts", employeeUserAuth, deleteProductCounts);
+router.delete("/employee/deleteProductCounts", userAuth, restrictAccess, deleteProductCounts);
 //----Cash Management Routes
 //------Control 0 --> Read
-router.post("/employee/getLatestDeposits", employeeUserAuth, getLatestDeposits);
-router.post("/employee/getLatestSafeCounts", employeeUserAuth, getLatestSafeCounts);
+router.post("/employee/getLatestDeposits", userAuth, restrictAccess, getLatestDeposits);
+router.post("/employee/getLatestSafeCounts", userAuth, restrictAccess, getLatestSafeCounts);
 //------Control 1 --> Read, Insert
-router.post("/employee/recordDeposit", employeeUserAuth, recordDeposit);
-router.post("/employee/recordSafeCount", employeeUserAuth, recordSafeCount);
+router.post("/employee/recordDeposit", userAuth, restrictAccess, recordDeposit);
+router.post("/employee/recordSafeCount", userAuth, restrictAccess, recordSafeCount);
 //------Control 2 --> Read, Insert, Update
-router.post("/employee/updateDeposit", employeeUserAuth, updateDeposit);
-router.post("/employee/updateSafeCount", employeeUserAuth, updateSafeCount);
+router.post("/employee/updateDeposit", userAuth, updateDeposit);
+router.post("/employee/updateSafeCount", userAuth, updateSafeCount);
 //------Control 3 --> Read, Insert, Update, Delete
-router.delete("/employee/deleteDeposit", employeeUserAuth, deleteDeposit);
-router.delete("/employee/deleteSafeCount", employeeUserAuth, deleteSafeCount);
+router.delete("/employee/deleteDeposit", userAuth, deleteDeposit);
+router.delete("/employee/deleteSafeCount", userAuth, deleteSafeCount);
 
 //--Company Routes
 //----Signin/Signup Routes
 router.post("/company/register", companyRegisterValidation, validationMiddleware, companyRegister);
 router.post("/company/login", companyLoginValidation, validationMiddleware, companyLogin);
 //----Employee Invite Routes
-router.post("/company/inviteEmployee", companyUserAuth, inviteEmployee);
-router.post("/company/getAllInvites", companyUserAuth, getAllInvites);
-router.delete("/company/deleteInvite", companyUserAuth, deleteInvite);
+router.post("/company/inviteEmployee", userAuth, restrictAccess, inviteEmployee);
+router.post("/company/getAllInvites", userAuth, restrictAccess, getAllInvites);
+router.delete("/company/deleteInvite", userAuth, restrictAccess, deleteInvite);
 //----Employee Info Routes
-router.post("/company/getAllEmployeeInfo", companyUserAuth, getAllEmployeeInfo);
-router.post("/company/getEmployeeById", companyUserAuth, getEmployeeById);
-router.post("/company/getEmployeeIdsAndNames", companyUserAuth, getEmployeeIdsAndNames);
+router.post("/company/getAllEmployeeInfo", userAuth, restrictAccess, getAllEmployeeInfo);
+router.post("/company/getEmployeeById", userAuth, restrictAccess, getEmployeeById);
+router.post("/company/getEmployeeIdsAndNames", userAuth, restrictAccess, getEmployeeIdsAndNames);
 //----Employee Access Control Routes
 //------Inventory
-router.post("/company/getAllInventoryAccessControl", companyUserAuth, getAllInventoryAccessControl);
-router.post("/company/getInventoryAccessControlById", companyUserAuth, getInventoryAccessControlById);
-router.post("/company/assignInventoryAccessControl", companyUserAuth, assignInventoryAccessControl);
+router.post("/company/getAllInventoryAccessControl", userAuth, restrictAccess, getAllInventoryAccessControl);
+router.post("/company/getInventoryAccessControlById", userAuth, restrictAccess, getInventoryAccessControlById);
+router.post("/company/assignInventoryAccessControl", userAuth, restrictAccess, assignInventoryAccessControl);
 //------Labor
-router.post("/company/getAllLaborAccessControl", companyUserAuth, getAllLaborAccessControl);
-router.post("/company/getLaborAccessControlById", companyUserAuth, getLaborAccessControlById);
-router.post("/company/assignLaborAccessControl", companyUserAuth, assignLaborAccessControl);
+router.post("/company/getAllLaborAccessControl", userAuth, restrictAccess, getAllLaborAccessControl);
+router.post("/company/getLaborAccessControlById", userAuth, restrictAccess, getLaborAccessControlById);
+router.post("/company/assignLaborAccessControl", userAuth, restrictAccess, assignLaborAccessControl);
 //------Cash
-router.post("/company/getAllCashAccessControl", companyUserAuth, getAllCashAccessControl);
-router.post("/company/getCashAccessControlById", companyUserAuth, getCashAccessControlById);
-router.post("/company/assignCashAccessControl", companyUserAuth, assignCashAccessControl);
+router.post("/company/getAllCashAccessControl", userAuth, restrictAccess, getAllCashAccessControl);
+router.post("/company/getCashAccessControlById", userAuth, restrictAccess, getCashAccessControlById);
+router.post("/company/assignCashAccessControl", userAuth, restrictAccess, assignCashAccessControl);
 //----Product Management Routes
 //------Read
-router.post("/company/getAllProducts", companyUserAuth, getAllProducts);
-router.post("/company/getAllProductSKUs", companyUserAuth, getAllProductSKUs);
-router.post("/company/getAllLatestProductCounts", companyUserAuth, getAllLatestProductCounts);
-router.post("/company/getLatestProductCounts", companyUserAuth, getLatestProductCounts);
-router.post("/company/getProductCountHistory", companyUserAuth, getProductCountHistory);
+router.post("/company/getAllProducts", userAuth, restrictAccess, getAllProducts);
+router.post("/company/getAllProductSKUs", userAuth, restrictAccess, getAllProductSKUs);
+router.post("/company/getAllLatestProductCounts", userAuth, restrictAccess, getAllLatestProductCounts);
+router.post("/company/getLatestProductCounts", userAuth, restrictAccess, getLatestProductCounts);
+router.post("/company/getProductCountHistory", userAuth, restrictAccess, getProductCountHistory);
 //------Read, Insert
-router.post("/company/addProduct", companyUserAuth, addProduct);
-router.post("/company/recordProductCounts", companyUserAuth, recordProductCounts);
+router.post("/company/addProduct", userAuth, restrictAccess, addProduct);
+router.post("/company/recordProductCounts", userAuth, restrictAccess, recordProductCounts);
 //------Read, Insert, Update
-router.post("/company/updateProduct", companyUserAuth, updateProduct);
-router.post("/company/updateProductCounts", companyUserAuth, updateProductCounts);
+router.post("/company/updateProduct", userAuth, restrictAccess, updateProduct);
+router.post("/company/updateProductCounts", userAuth, restrictAccess, updateProductCounts);
 //------Read, Insert, Delete
-router.delete("/company/deleteProduct", companyUserAuth, deleteProduct);
-router.delete("/company/deleteProductCounts", companyUserAuth, deleteProductCounts);
+router.delete("/company/deleteProduct", userAuth, restrictAccess, deleteProduct);
+router.delete("/company/deleteProductCounts", userAuth, restrictAccess, deleteProductCounts);
 //----Cash Management Routes
 //------Read
-router.post("/company/getLatestDeposits", companyUserAuth, getLatestDeposits);
-router.post("/company/getLatestSafeCounts", companyUserAuth, getLatestSafeCounts);
+router.post("/company/getLatestDeposits", userAuth, restrictAccess, getLatestDeposits);
+router.post("/company/getLatestSafeCounts", userAuth, restrictAccess, getLatestSafeCounts);
 //------Read, Insert
-router.post("/company/recordDeposit", companyUserAuth, recordDeposit);
-router.post("/company/recordSafeCount", companyUserAuth, recordSafeCount);
+router.post("/company/recordDeposit", userAuth, restrictAccess, recordDeposit);
+router.post("/company/recordSafeCount", userAuth, restrictAccess, recordSafeCount);
 //------Read, Insert, Update
-router.post("/company/updateDeposit", companyUserAuth, updateDeposit);
-router.post("/company/updateSafeCount", companyUserAuth, updateSafeCount);
+router.post("/company/updateDeposit", userAuth, restrictAccess, updateDeposit);
+router.post("/company/updateSafeCount", userAuth, restrictAccess, updateSafeCount);
 //------Read, Insert, Update, Delete
-router.delete("/company/deleteDeposit", companyUserAuth, deleteDeposit);
-router.delete("/company/deleteSafeCount", companyUserAuth, deleteSafeCount);
+router.delete("/company/deleteDeposit", userAuth, restrictAccess, deleteDeposit);
+router.delete("/company/deleteSafeCount", userAuth, restrictAccess, deleteSafeCount);
+
+//--Time Routes
+router.post("/time/login", companyLoginValidation, validationMiddleware, timeLogin);
+router.post("/time/checkEmployeePin", userAuth, checkEmployeePin);
+router.post("/time/clockIn", userAuth, timeUserAuth, clockIn);
+router.post("/time/breakStart", userAuth, timeUserAuth, breakStart);
+router.post("/time/breakEnd", userAuth, timeUserAuth, breakEnd);
+router.post("/time/clockOut", userAuth, timeUserAuth, clockOut);
+router.post("/time/signEmployeeOut", timeSignEmployeeOut);
 
 router.post("/logout", logout);
 

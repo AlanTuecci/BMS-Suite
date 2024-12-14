@@ -3,8 +3,8 @@ CREATE TABLE schema_version(
     version varchar(6) NOT NULL
 );
 
---Current minimum supported backend version is v4.0
-insert into schema_version values('5');
+--Current minimum supported backend version is v6.0
+insert into schema_version values('6');
 
 --company_info TABLE
 CREATE TABLE company_info(
@@ -69,9 +69,17 @@ CREATE TABLE product_counts(
 CREATE TABLE employee_labor_info(
     company_id serial NOT NULL,
     employee_id serial NOT NULL,
-    hourly_wage money NOT NULL,
+    hourly_wage money,
     access_control_level smallint DEFAULT 0,
     FOREIGN KEY (company_id, employee_id) REFERENCES employee_info(company_id, employee_id)
+);
+
+--employee_time_pin_record TABLE
+CREATE TABLE employee_time_pin_record(
+    company_id serial NOT NULL,
+    employee_id serial NOT NULL,
+    employee_time_pin varchar(60) NOT NULL,
+    FOREIGN KEY (company_id, employee_id) REFERENCES employee_info(company_id, employee_id)    
 );
 
 --time_punch_record TABLE
@@ -79,11 +87,20 @@ CREATE TABLE time_punch_record(
     company_id serial NOT NULL,
     employee_id serial NOT NULL,
     shift_id serial NOT NULL,
+    is_active boolean NOT NULL,
     clock_in_timestamp timestamp with time zone DEFAULT now(),
     clock_out_timestamp timestamp with time zone DEFAULT now(),
     break_start_timestamp timestamp with time zone DEFAULT now(),
     break_end_timestamp timestamp with time zone DEFAULT now(),
     FOREIGN KEY (company_id, employee_id) REFERENCES employee_info(company_id, employee_id),
+    PRIMARY KEY (company_id, employee_id, shift_id)
+);
+
+CREATE TABLE active_shift_record(
+    company_id serial NOT NULL,
+    employee_id serial NOT NULL,
+    shift_id serial NOT NULL,
+    FOREIGN KEY (company_id, employee_id, shift_id) REFERENCES time_punch_record(company_id, employee_id, shift_id),
     PRIMARY KEY (company_id, employee_id, shift_id)
 );
 
