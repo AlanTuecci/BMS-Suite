@@ -6,7 +6,6 @@ exports.recordDeposit = async (req, res) => {
   const { deposit_amount } = req.body;
   const depositor_employee_id = req.body.depositor_employee_id ?? 0;
   const depositee_employee_id = req.body.depositee_employee_id ?? 0;
-  const extern_deposit_id = req.body.extern_deposit_id ?? null;
 
   const client = await pool.connect();
 
@@ -39,8 +38,8 @@ exports.recordDeposit = async (req, res) => {
     await client.query("BEGIN");
 
     await client.query(
-      "INSERT INTO register_deposits_record(company_id, depositor_employee_id, depositee_employee_id, deposit_amount, extern_deposit_id) values($1, $2, $3, $4, $5)",
-      [company_id, depositor_employee_id, depositee_employee_id, deposit_amount, extern_deposit_id]
+      "INSERT INTO register_deposits_record(company_id, depositor_employee_id, depositee_employee_id, deposit_amount) values($1, $2, $3, $4)",
+      [company_id, depositor_employee_id, depositee_employee_id, deposit_amount]
     );
 
     await client.query("COMMIT");

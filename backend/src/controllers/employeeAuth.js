@@ -55,6 +55,12 @@ exports.employeeRegister = async (req, res) => {
       [rows[0].company_id, employee_id, 0]
     );
 
+    const hashedPin = await hash("0000", 10);
+    await client.query(
+      "insert into employee_time_pin_record(company_id, employee_id, employee_time_pin) values($1, $2, $3)",
+      [rows[0].company_id, employee_id, hashedPin]
+    );
+
     await client.query("delete from invite_codes where invite_code = $1", [invite_code]);
 
     await client.query("COMMIT");
@@ -136,6 +142,7 @@ exports.employeeLogin = async (req, res) => {
     return res.status(200).cookie("token", token, { httpOnly: true }).json({
       success: true,
       message: "Login successful.",
+      user_type: "employee",
       inventory_access_level: inventory_access_level,
       labor_access_level: labor_access_level,
       cash_access_level: cash_access_level,
