@@ -8,12 +8,14 @@ import {
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import Invite from "./pages/Invite";
 import TimeManagement from "./pages/TimeManagement";
 import EmployeePermissions from "./pages/EmployeePermissions";
 import ProductManagement from './pages/ProductManagement';
 import { useSelector } from "react-redux";
+import Deposit from "./pages/Deposit";
+import Dashboard from "./pages/Dashboard";
+import Count from "./pages/Count";
 
 
 const PrivateRoutes = () => {
@@ -45,6 +47,8 @@ const App = () => {
             path="/employee-permissions"
             element={<EmployeePermissions />}
           ></Route>
+         <Route path = "/deposit" element= {<Deposit/>}></Route>
+         <Route path="/count" element = {<Count/>}></Route>
         </Route>
 
         <Route element={<RestrictedRoutes />}>

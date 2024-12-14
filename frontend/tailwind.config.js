@@ -21,6 +21,10 @@ module.exports = {
       'dashboard_shadow': '#A9A5EB',
       'darker_purple':'#17118A',
       'lighter_purple': '#1E18A1',
+      'light_gray': '#E8E8E8',
+      'lighter_gray': '#f1f5f9',
+      'light_darker_gray': "#A5A5A5",
+      'red': '#b91c1c',
     }
   },
   plugins: [],
