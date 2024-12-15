@@ -8,6 +8,9 @@ const userAuthFromLocalStorage = () => {
 const initialState = {
   isAuth: userAuthFromLocalStorage(),
   userType: null,
+  inventoryAccessLevel: 0,
+  laborAccessLevel: 0,
+  cashAccessLevel: 0,
 };
 
 export const authSlice = createSlice({
@@ -16,11 +19,17 @@ export const authSlice = createSlice({
   reducers: {
     authenticateUser: (state, action) => {
       state.isAuth = true;
-      state.userType = action.payload;
+      state.userType = action.payload.userType;
+      state.inventoryAccessLevel = action.payload.inventoryAccessLevel || 0;
+      state.laborAccessLevel = action.payload.laborAccessLevel || 0;
+      state.cashAccessLevel = action.payload.cashAccessLevel || 0;
     },
     unAuthenicateUser: (state) => {
       state.isAuth = false;
       state.userType = null;
+      state.inventoryAccessLevel = 0;
+      state.laborAccessLevel = 0;
+      state.cashAccessLevel = 0;
     },
   },
 });
