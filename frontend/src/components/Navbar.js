@@ -178,11 +178,9 @@ const Navbar = () => {
           </div>
         </div>
       )}
-
         </div>
       </header>
     );
 };
-
   
 export default Navbar

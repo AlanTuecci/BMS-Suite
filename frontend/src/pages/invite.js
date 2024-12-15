@@ -49,7 +49,6 @@ const Invite = () => {
 
   if (loading)
     return <p className="text-center text-gray-600">Loading invites...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <div className="flex h-screen bg-white">

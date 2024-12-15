@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import { onGetAllProductSKUs, onAddProduct } from "../api/auth";
+import { onGetAllLatestProductCounts, onAddProduct } from "../api/auth";
+import { AuthContext } from "../context/AuthContext";
 
-function ProductManagement() {
-  const userType = useSelector((state) => state.auth.userType);
+function InventorySummary() {
+  const { authState } = useContext(AuthContext);
+  const userType = authState.userType;
   const navigate = useNavigate();
-  const [prdBx, setPrdBx] = useState(false);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [prdBx, setPrdBx] = useState(false);
   const [productSku, setProductSku] = useState("");
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
-  const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await onGetAllProductSKUs(userType);
+      const response = await onGetAllLatestProductCounts(userType);
       setProducts(response.data);
       setFilteredProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
-      setError("Failed to fetch products");
+      setError("Failed to fetch product data");
     } finally {
       setLoading(false);
     }
@@ -58,37 +58,27 @@ function ProductManagement() {
 
       await onAddProduct(productData);
       setSuccessMessage("Product added successfully!");
-      setErrors({});
-      fetchProducts();
       setPrdBx(false);
+      fetchProducts();
     } catch (error) {
-      if (error.response?.data?.errors) {
-        const errorObj = {};
-        error.response.data.errors.forEach((err) => {
-          errorObj[err.path] = err.msg;
-        });
-        setErrors(errorObj);
-      } else {
-        console.error("Error adding product:", error);
-        setErrors({ general: "Failed to add product" });
-      }
+      console.error("Error adding product:", error);
+      alert("Failed to add product. Please try again.");
     }
   };
 
   const navigateToProductCount = (product) => {
-    navigate("/product-count", { state: { product } });
-  };
+    navigate(`/product-count`, { state: { productSku: product.product_sku } });
+  };  
 
   if (loading) return <p className="text-center text-gray-600">Loading products...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (!products.length) return <p className="text-center text-gray-600">No products found.</p>;
 
   return (
     <div className="flex h-screen bg-white">
       <Sidebar />
       <div className="flex-grow p-8 ml-16">
         <h1 className="text-5xl font-light text-gray-800 mb-4 leading-tight">
-          Product Inventory
+          Inventory Summary
         </h1>
         <p className="text-gray-600 mb-6">
           Track and manage your product inventory here.
@@ -104,7 +94,7 @@ function ProductManagement() {
           />
           {userType === "company" && (
             <button
-              className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple"
               onClick={() => setPrdBx(true)}
             >
               + Create Product
@@ -113,12 +103,19 @@ function ProductManagement() {
         </div>
 
         <div className="font-mono text-gray-800">
+          {/* Table Header */}
           <div className="mb-4 w-full flex bg-gray-100 rounded-lg p-3">
-            <span className="w-1/3 font-semibold">Product SKU</span>
-            <span className="w-1/3 font-semibold">Product Name</span>
-            <span className="w-1/3 text-right font-semibold">Options</span>
+            <span className="w-1/5 font-semibold text-center">Product SKU</span>
+            <span className="w-1/5 font-semibold text-center">Product Name</span>
+            <span className="w-1/5 font-semibold text-center">Employee ID</span>
+            <span className="w-1/5 font-semibold text-center" style={{ whiteSpace: "nowrap" }}>
+              Time Stamp
+            </span>
+            <span className="w-1/5 font-semibold text-center">Counts (Loose | Tray | Case)</span>
+            <span className="w-1/5 text-right font-semibold">Options</span>
           </div>
 
+          {/* Table Rows */}
           {filteredProducts.map((product, index) => (
             <div
               key={product.product_sku}
@@ -126,9 +123,17 @@ function ProductManagement() {
                 index % 2 === 0 ? "" : "bg-gray-100 rounded-md"
               }`}
             >
-              <span className="w-1/3">#{product.product_sku}</span>
-              <span className="w-1/3">{product.product_name || "N/A"}</span>
-              <div className="w-1/3 text-right">
+              <span className="w-1/5 text-center">#{product.product_sku}</span>
+              <span className="w-1/5 text-center">{product.product_name}</span>
+              <span className="w-1/5 text-center">{product.employee_id}</span>
+              <span className="w-1/5 text-center" style={{ whiteSpace: "nowrap" }}>
+                {new Date(product.count_timestamp).toLocaleString()}
+              </span>
+              <span className="w-1/5 text-center">
+                {product.on_hand_loose_unit_count} | {product.on_hand_tray_count} |{" "}
+                {product.on_hand_case_count}
+              </span>
+              <div className="w-1/5 text-right">
                 <button
                   className="text-blue-600 ml-2 text-2xl hover:text-blue-800"
                   onClick={() => navigateToProductCount(product)}
@@ -144,60 +149,51 @@ function ProductManagement() {
           <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="rounded-lg p-8 bg-white w-[25em]">
               <form onSubmit={handleAddProduct}>
-                <div className="leading-tight mb-4">
-                  <h2 className="text-xl font-medium">Enter Product Information</h2>
-                  <p className="text-sm text-gray-600">Add Your Product Details</p>
-                </div>
+                <h2 className="text-xl font-medium mb-4">Create Product</h2>
                 <div className="mb-4">
-                  <label className="block mb-2">Product SKU</label>
+                  <label>Product SKU</label>
                   <input
-                    className="w-full px-2 py-1 border border-gray-300 rounded-md"
                     type="text"
+                    name="productSku"
                     value={productSku}
                     onChange={(e) => setProductSku(e.target.value)}
+                    className="border border-gray-300 w-full px-3 py-2 rounded-md"
                     required
                   />
-                  {errors.product_sku && (
-                    <p className="text-red-500 text-sm">{errors.product_sku}</p>
-                  )}
                 </div>
                 <div className="mb-4">
-                  <label className="block mb-2">Product Name</label>
+                  <label>Product Name</label>
                   <input
-                    className="w-full px-2 py-1 border border-gray-300 rounded-md"
                     type="text"
+                    name="productName"
                     value={productName}
                     onChange={(e) => setProductName(e.target.value)}
+                    className="border border-gray-300 w-full px-3 py-2 rounded-md"
                     required
                   />
-                  {errors.product_name && (
-                    <p className="text-red-500 text-sm">{errors.product_name}</p>
-                  )}
                 </div>
                 <div className="mb-4">
-                  <label className="block mb-2">Product Description</label>
+                  <label>Product Description</label>
                   <textarea
-                    className="w-full px-2 py-1 border border-gray-300 rounded-md"
+                    name="productDescription"
                     value={productDescription}
                     onChange={(e) => setProductDescription(e.target.value)}
+                    className="border border-gray-300 w-full px-3 py-2 rounded-md"
                   />
                 </div>
-                {errors.general && (
-                  <p className="text-red-500 text-sm">{errors.general}</p>
-                )}
-                <div className="flex justify-between">
+                <div className="flex justify-end gap-4">
                   <button
                     type="button"
-                    className="px-4 py-2 border border-gray-500 text-gray-500 rounded-md hover:bg-gray-200"
                     onClick={() => setPrdBx(false)}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-compblue text-white rounded-md hover:bg-blue-700"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                   >
-                    Enter
+                    Add Product
                   </button>
                 </div>
               </form>
@@ -209,4 +205,4 @@ function ProductManagement() {
   );
 }
 
-export default ProductManagement;
+export default InventorySummary;

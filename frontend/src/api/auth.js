@@ -7,6 +7,10 @@ const API_URL =
 
 axios.defaults.withCredentials = true;
 
+export async function onAuth() {
+  return await axios.post(`${API_URL}/auth`);
+}
+
 export async function onLogin(loginData, userType) {
   console.log(API_URL);
   return await axios.post(`${API_URL}/${userType}/login`, loginData);
@@ -62,4 +66,24 @@ export async function onGetAllProductSKUs(userType) {
 
 export async function onAddProduct(productData) {
   return await axios.post(`${API_URL}/company/addProduct`, productData);
+}
+
+export async function onGetAllLatestProductCounts(userType) {
+  return await axios.post(`${API_URL}/${userType}/getAllLatestProductCounts`);
+}
+
+export async function onGetProductCountHistory(userType, productSKU) {
+  return await axios.post(`${API_URL}/${userType}/getProductCountHistory`, productSKU);
+}
+
+export async function onUpdateProductCounts(userType, updatedData) {
+  return await axios.post(`${API_URL}/${userType}/updateProductCounts`, updatedData);
+}
+
+export async function onRecordProductCounts(userType, recordedData) {
+  return await axios.post(`${API_URL}/${userType}/recordProductCounts`, recordedData);
+}
+
+export async function onDeleteProductCounts(userType, deleteData) {
+  return await axios.delete(`${API_URL}/${userType}/deleteProductCounts`, { data: deleteData });
 }
