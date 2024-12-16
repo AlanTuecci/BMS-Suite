@@ -155,7 +155,7 @@ function ProductCount() {
           <h2 className="text-2xl font-medium">Product SKU: #{productSku}</h2>
         </div>
 
-        {inventoryAccessLevel >= 2 && (
+        {inventoryAccessLevel >= 1 && (
           <button
             className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple mb-6"
             onClick={handleRecordModalOpen}
@@ -171,7 +171,7 @@ function ProductCount() {
             <span className="w-1/5 font-semibold text-center">Loose Units</span>
             <span className="w-1/5 font-semibold text-center">Trays</span>
             <span className="w-1/5 font-semibold text-center">Cases</span>
-            {inventoryAccessLevel >= 3 && <span className="w-1/5 text-right font-semibold">Options</span>}
+            {inventoryAccessLevel >= 2 && <span className="w-1/5 text-right font-semibold">Options</span>}
           </div>
 
           {history.map((entry, index) => (
@@ -188,7 +188,7 @@ function ProductCount() {
               <span className="w-1/5 text-center">{entry.on_hand_loose_unit_count}</span>
               <span className="w-1/5 text-center">{entry.on_hand_tray_count}</span>
               <span className="w-1/5 text-center">{entry.on_hand_case_count}</span>
-              {inventoryAccessLevel >= 3 && (
+              {inventoryAccessLevel >= 2 && (
                 <div className="w-1/5 text-right">
                   <button
                     className="text-blue-600 ml-2 text-2xl hover:text-blue-800"
@@ -300,7 +300,7 @@ function ProductCount() {
                   >
                     Cancel
                   </button>
-                  {inventoryAccessLevel >= 4 && (
+                  {inventoryAccessLevel >= 3 && (
                     <button
                       type="button"
                       onClick={handleDeleteProductCount}
