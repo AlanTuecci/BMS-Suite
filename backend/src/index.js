@@ -10,7 +10,7 @@ const { rateLimit } = require("express-rate-limit");
 //limit number of requests to 40 requests per minute
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  limit: 40,
+  limit: 200,
 });
 
 //for CORS -> full client url string with port
