@@ -14,7 +14,7 @@ exports.clockOut = async (req, res) => {
   );
 
   if (response.rows.length == 0) {
-    return res.status(400).json({
+    return res.status(400).clearCookie("access_token", { httpOnly: true }).json({
       errors: [
         {
           type: "field",
@@ -39,7 +39,7 @@ exports.clockOut = async (req, res) => {
     );
 
     if (response.rows[0].break_start_timestamp && !response.rows[0].break_end_timestamp) {
-      return res.status(400).json({
+      return res.status(400).clearCookie("access_token", { httpOnly: true }).json({
         errors: [
           {
             type: "field",
@@ -84,12 +84,13 @@ exports.clockOut = async (req, res) => {
       signed_in: false,
       clocked_in: false,
       on_break: false,
+      had_break: true,
     });
   } catch (error) {
     console.log(error);
     await client.query("ROLLBACK");
 
-    return res.status(500).json({
+    return res.status(500).clearCookie("access_token", { httpOnly: true }).json({
       errors: [
         {
           type: "Unknown",

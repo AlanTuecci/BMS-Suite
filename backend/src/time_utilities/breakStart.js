@@ -14,7 +14,7 @@ exports.breakStart = async (req, res) => {
   );
 
   if (response.rows.length == 0) {
-    return res.status(400).json({
+    return res.status(400).clearCookie("access_token", { httpOnly: true }).json({
       errors: [
         {
           type: "field",
@@ -39,7 +39,7 @@ exports.breakStart = async (req, res) => {
   );
 
   if (response.rows[0].break_start_timestamp) {
-    return res.status(400).json({
+    return res.status(400).clearCookie("access_token", { httpOnly: true }).json({
       errors: [
         {
           type: "field",
@@ -68,18 +68,19 @@ exports.breakStart = async (req, res) => {
 
     await client.query("COMMIT");
 
-    return res.status(200).json({
+    return res.status(200).clearCookie("access_token", { httpOnly: true }).json({
       success: true,
       message: `Break started!`,
-      signed_in: true,
+      signed_in: false,
       clocked_in: true,
       on_break: true,
+      had_break: false,
     });
   } catch (error) {
     console.log(error);
     await client.query("ROLLBACK");
 
-    return res.status(500).json({
+    return res.status(500).clearCookie("access_token", { httpOnly: true }).json({
       errors: [
         {
           type: "Unknown",
