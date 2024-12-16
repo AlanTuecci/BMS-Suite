@@ -13,7 +13,7 @@ function InventorySummary() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [prdBx, setPrdBx] = useState(false);
+  const [productBox, setProductBox] = useState(false);
   const [productSku, setProductSku] = useState("");
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
@@ -58,7 +58,7 @@ function InventorySummary() {
 
       await onAddProduct(productData);
       setSuccessMessage("Product added successfully!");
-      setPrdBx(false);
+      setProductBox(false);
       fetchProducts();
     } catch (error) {
       console.error("Error adding product:", error);
@@ -95,7 +95,7 @@ function InventorySummary() {
           {userType === "company" && (
             <button
               className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple"
-              onClick={() => setPrdBx(true)}
+              onClick={() => setProductBox(true)}
             >
               + Create Product
             </button>
@@ -103,7 +103,6 @@ function InventorySummary() {
         </div>
 
         <div className="font-mono text-gray-800">
-          {/* Table Header */}
           <div className="mb-4 w-full flex bg-gray-100 rounded-lg p-3">
             <span className="w-1/5 font-semibold text-center">Product SKU</span>
             <span className="w-1/5 font-semibold text-center">Product Name</span>
@@ -115,7 +114,6 @@ function InventorySummary() {
             <span className="w-1/5 text-right font-semibold">Options</span>
           </div>
 
-          {/* Table Rows */}
           {filteredProducts.map((product, index) => (
             <div
               key={product.product_sku}
@@ -145,7 +143,7 @@ function InventorySummary() {
           ))}
         </div>
 
-        {prdBx && (
+        {productBox && (
           <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="rounded-lg p-8 bg-white w-[25em]">
               <form onSubmit={handleAddProduct}>
@@ -184,7 +182,7 @@ function InventorySummary() {
                 <div className="flex justify-end gap-4">
                   <button
                     type="button"
-                    onClick={() => setPrdBx(false)}
+                    onClick={() => setProductBox(false)}
                     className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
                   >
                     Cancel
