@@ -78,12 +78,6 @@ function Dashboard() {
       photo: cashIcon,
     },
     {
-      title: "Invite Employees",
-      description: "Encountering a challenge? Seek assistance here.",
-      link: "invite",
-      photo: groupIcon,
-    },
-    {
       title: "My Info",
       description: "View and update your personal information.",
       link: "my-info",

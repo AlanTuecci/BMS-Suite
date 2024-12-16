@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { AuthContext } from "../context/AuthContext";
 import { 
@@ -13,6 +13,7 @@ function ProductCount() {
   const { authState } = useContext(AuthContext);
   const { userType, inventoryAccessLevel } = authState;
   const location = useLocation();
+  const navigate = useNavigate();
   const { productSku } = location.state || {};
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -155,14 +156,22 @@ function ProductCount() {
           <h2 className="text-2xl font-medium">Product SKU: #{productSku}</h2>
         </div>
 
-        {inventoryAccessLevel >= 2 && (
+        <div className="flex items-center gap-4 mb-6">
+          {inventoryAccessLevel >= 1 && (
+            <button
+              className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple"
+              onClick={handleRecordModalOpen}
+            >
+              Record Product Count
+            </button>
+          )}
           <button
-            className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple mb-6"
-            onClick={handleRecordModalOpen}
+            className="bg-white border-compblue border-2 text-compblue px-4 py-2 rounded-lg hover:bg-gray-400"
+            onClick={() => navigate("/inventory-summary")}
           >
-            Record Product Count
+            Go Back
           </button>
-        )}
+        </div>
 
         <div className="font-mono text-gray-800">
           <div className="mb-4 w-full flex bg-gray-100 rounded-lg p-3">
@@ -171,7 +180,7 @@ function ProductCount() {
             <span className="w-1/5 font-semibold text-center">Loose Units</span>
             <span className="w-1/5 font-semibold text-center">Trays</span>
             <span className="w-1/5 font-semibold text-center">Cases</span>
-            {inventoryAccessLevel >= 3 && <span className="w-1/5 text-right font-semibold">Options</span>}
+            {inventoryAccessLevel >= 2 && <span className="w-1/5 text-right font-semibold">Options</span>}
           </div>
 
           {history.map((entry, index) => (
@@ -188,7 +197,7 @@ function ProductCount() {
               <span className="w-1/5 text-center">{entry.on_hand_loose_unit_count}</span>
               <span className="w-1/5 text-center">{entry.on_hand_tray_count}</span>
               <span className="w-1/5 text-center">{entry.on_hand_case_count}</span>
-              {inventoryAccessLevel >= 3 && (
+              {inventoryAccessLevel >= 2 && (
                 <div className="w-1/5 text-right">
                   <button
                     className="text-blue-600 ml-2 text-2xl hover:text-blue-800"
@@ -300,7 +309,7 @@ function ProductCount() {
                   >
                     Cancel
                   </button>
-                  {inventoryAccessLevel >= 4 && (
+                  {inventoryAccessLevel >= 3 && (
                     <button
                       type="button"
                       onClick={handleDeleteProductCount}

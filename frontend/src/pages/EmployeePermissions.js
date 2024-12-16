@@ -158,10 +158,10 @@ const EmployeePermissions = () => {
     return <p className="text-center text-gray-600">No employees found.</p>;
 
   const permissionLevels = [
-    { level: 1, label: "View" },
-    { level: 2, label: "Read and Insert" },
-    { level: 3, label: "Full Access" },
-    { level: 4, label: "Delete" },
+    { level: 0, label: "Read" },
+    { level: 1, label: "Record" },
+    { level: 2, label: "Update" },
+    { level: 3, label: "Delete" },
   ];
 
   return (
