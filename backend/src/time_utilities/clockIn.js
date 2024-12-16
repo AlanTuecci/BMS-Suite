@@ -1,6 +1,4 @@
 const pool = require("../db");
-const { sign } = require("jsonwebtoken");
-const { TIME_SECRET } = require("../constants");
 
 exports.clockIn = async (req, res) => {
   const { company_id, employee_id } = req.user;
@@ -14,7 +12,7 @@ exports.clockIn = async (req, res) => {
   );
 
   if (response.rows.length != 0) {
-    return res.status(400).json({
+    return res.status(400).clearCookie("access_token", { httpOnly: true }).json({
       errors: [
         {
           type: "field",
@@ -64,26 +62,19 @@ exports.clockIn = async (req, res) => {
 
     await client.query("COMMIT");
 
-    const payload = {
-      user_type: "time_employee",
-      company_id: company_id,
-      employee_id: employee_id
-    };
-
-    const access_token = sign(payload, TIME_SECRET, { expiresIn: 60 });
-
-    return res.status(200).cookie("access_token", access_token, { httpOnly: true }).json({
+    return res.status(200).clearCookie("access_token", { httpOnly: true }).json({
       success: true,
       message: `Clocked in!`,
-      signed_in: true,
+      signed_in: false,
       clocked_in: true,
       on_break: false,
+      had_break: false,
     });
   } catch (error) {
     console.log(error);
     await client.query("ROLLBACK");
 
-    return res.status(500).json({
+    return res.status(500).clearCookie("access_token", { httpOnly: true }).json({
       errors: [
         {
           type: "Unknown",

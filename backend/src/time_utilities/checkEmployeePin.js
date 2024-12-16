@@ -29,6 +29,20 @@ exports.checkEmployeePin = async (req, res) => {
     [company_id, employee_id]
   );
 
+  if (rows.length == 0) {
+    return res.status(400).json({
+      errors: [
+        {
+          type: "field",
+          value: employee_id,
+          msg: "No pin found.",
+          path: "employee_id",
+          location: "body",
+        },
+      ],
+    });
+  }
+
   const validPin = await compare(pin, rows[0].employee_time_pin);
 
   if (!validPin) {
@@ -46,6 +60,7 @@ exports.checkEmployeePin = async (req, res) => {
   } else {
     let clocked_in = false;
     let on_break = false;
+    let had_break = false;
     let shift_id = 0;
 
     const response = await pool.query(
@@ -70,8 +85,11 @@ exports.checkEmployeePin = async (req, res) => {
         [company_id, employee_id, response.rows[0].shift_id]
       );
 
-      if (rows[0].break_start_timestamp != null && rows[0].break_end_timestamp == null) {
-        on_break = true;
+      if (rows[0].break_start_timestamp != null) {
+        had_break = true;
+        if (rows[0].break_end_timestamp == null) {
+          on_break = true;
+        }
       }
     }
 
@@ -89,6 +107,7 @@ exports.checkEmployeePin = async (req, res) => {
       signed_in: true,
       clocked_in: clocked_in,
       on_break: on_break,
+      had_break: had_break,
     });
   }
 };
