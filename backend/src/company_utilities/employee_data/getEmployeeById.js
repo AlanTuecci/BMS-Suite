@@ -5,18 +5,18 @@ exports.getEmployeeById = async (req, res) => {
   const { employee_id } = req.body;
 
   try {
-    let { rows } = await pool.query("select * from employee_info where company_id = $1 and employee_id = $2", [
-      company_id,
-      employee_id,
-    ]);
-
-    let fieldToRemove = ["employee_password"];
-
-    rows.forEach((obj) => {
-      fieldToRemove.forEach((field) => {
-        delete obj[field];
-      });
-    });
+    let { rows } = await pool.query(
+      `SELECT 
+        employee_id,
+        full_name,
+        employee_email,
+        employee_register_timestamp,
+        extern_employee_id
+       FROM employee_info 
+       WHERE company_id = $1 
+        AND employee_id = $2`,
+      [company_id, employee_id]
+    );
 
     return res.status(200).json(rows);
   } catch (error) {
