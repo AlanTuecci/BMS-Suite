@@ -151,6 +151,7 @@ router.post("/time/breakStart", userAuth, timeUserAuth, breakStart);
 router.post("/time/breakEnd", userAuth, timeUserAuth, breakEnd);
 router.post("/time/clockOut", userAuth, timeUserAuth, clockOut);
 router.post("/time/signEmployeeOut", timeSignEmployeeOut);
+router.post("/time/getEmployeeIdsAndNames", userAuth, getEmployeeIdsAndNames);
 
 router.post("/logout", logout);
 
