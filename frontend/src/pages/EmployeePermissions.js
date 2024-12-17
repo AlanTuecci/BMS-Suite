@@ -9,6 +9,7 @@ import {
   onAssignCashAccessControl,
 } from "../api/auth";
 import Sidebar from "../components/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 const EmployeePermissions = () => {
   const [employees, setEmployees] = useState([]);
@@ -25,6 +26,7 @@ const EmployeePermissions = () => {
     cash: 0,
   });
   const [feedbackMessage, setFeedbackMessage] = useState(null);
+  const navigate = useNavigate()
 
   const fetchEmployees = async () => {
     try {
@@ -173,14 +175,21 @@ const EmployeePermissions = () => {
         </h1>
         <p className="text-gray-600 mb-6">Manage Employee Permissions Here</p>
 
-        <div className="mb-6">
+        <div className="mb-6 flex items-center gap-4">
           <input
             type="text"
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search Employees..."
-            className="w-1/4 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-1/4 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-compblue focus:outline-none"
           />
+        
+          <button
+            className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple"
+            onClick={() => navigate("/invite")}
+          >
+            + Invite Employee
+          </button>
         </div>
 
         <div className="font-mono text-gray-800">
