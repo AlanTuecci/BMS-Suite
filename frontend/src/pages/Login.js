@@ -1,10 +1,8 @@
-import { useState } from "react";
-import { onLogin } from "../api/auth";
-import { useLocation, Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import loginImage from "../media/login/Login.png";
-import { useDispatch } from "react-redux";
-import { authenticateUser } from "../redux/slices/authSlice";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -13,12 +11,12 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
-
+  const { loginUser } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
+
   const queryParams = new URLSearchParams(location.search);
   const userType = queryParams.get("userType") || "employee";
-
-  const dispatch = useDispatch();
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -26,25 +24,21 @@ const Login = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const loginValues = {
-        email: values.email,
-        password: values.password,
-      };
-      const { data } = await onLogin(loginValues, userType);
-      setErrors({});
-      setSuccess(data.message);
-      setValues({
-        email: "",
-        password: "",
-      });
+    const loginData = {
+      email: values.email,
+      password: values.password,
+    };
 
-      dispatch(authenticateUser(userType));
-      localStorage.setItem("isAuth", true);
-    } catch (error) {
-      let errorObj = {};
-      error.response.data.errors.forEach((element) => {
-        errorObj[element.path] = element.msg;
+    const { success, errors } = await loginUser(loginData, userType);
+
+    if (success) {
+      setErrors({});
+      setSuccess("Login successful!");
+      navigate("/dashboard");
+    } else {
+      const errorObj = {};
+      errors.forEach((err) => {
+        errorObj[err.path] = err.msg;
       });
       setErrors(errorObj);
       setSuccess("");

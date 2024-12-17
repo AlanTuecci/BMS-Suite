@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { onRegistration } from "../api/auth";
+import React, { useState, useContext } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import registerImage from "../media/register/Register.png";
-
+import { AuthContext } from "../context/AuthContext";
 const Register = () => {
   const [values, setValues] = useState({
     email: "",
@@ -16,6 +15,8 @@ const Register = () => {
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
+
+  const { registerUser } = useContext(AuthContext);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -32,19 +33,20 @@ const Register = () => {
       return;
     }
 
-    try {
-      const registrationValues = {
-        email: values.email,
-        password: values.password,
-        [userType === "employee" ? "invite_code" : "company_ein"]:
-          userType === "employee" ? values.invite_code : values.company_ein,
-        [userType === "employee" ? "full_name" : "company_info"]:
-          userType === "employee" ? values.full_name : values.company_info,
-      };
+    const registrationValues = {
+      email: values.email,
+      password: values.password,
+      [userType === "employee" ? "invite_code" : "company_ein"]:
+        userType === "employee" ? values.invite_code : values.company_ein,
+      [userType === "employee" ? "full_name" : "company_info"]:
+        userType === "employee" ? values.full_name : values.company_info,
+    };
 
-      const { data } = await onRegistration(registrationValues, userType);
+    const { success, errors } = await registerUser(registrationValues, userType);
+
+    if (success) {
       setErrors({});
-      setSuccess(data.message);
+      setSuccess("Registration successful!");
       setValues({
         email: "",
         password: "",
@@ -54,13 +56,11 @@ const Register = () => {
         full_name: "",
         company_info: "",
       });
-    } catch (error) {
-      let errorObj = {};
-      if (error.response?.data?.errors) {
-        error.response.data.errors.forEach((element) => {
-          errorObj[element.path] = element.msg;
-        });
-      }
+    } else {
+      const errorObj = {};
+      errors.forEach((err) => {
+        errorObj[err.path] = err.msg;
+      });
       setErrors(errorObj);
       setSuccess("");
     }

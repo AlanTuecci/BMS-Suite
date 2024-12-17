@@ -1,3 +1,4 @@
+import React, { useContext } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -13,30 +14,34 @@ import TimeManagement from "./pages/TimeManagement";
 import EmployeePermissions from "./pages/EmployeePermissions";
 import ProductManagement from './pages/ProductManagement';
 import { useSelector } from "react-redux";
-import Deposit from "./pages/Deposit";
-import Dashboard from "./pages/Dashboard";
-import Count from "./pages/Count";
 
 
 const PrivateRoutes = () => {
-  const authState = useSelector((state) => state.auth);
+  const { authState } = useContext(AuthContext);
+  const { isAuth, userType } = authState;
 
-  if (!authState.isAuth) {
-    return <Navigate to="/" />;
+  if (isAuth && userType === "time_admin") {
+    return <Navigate to="/clock-in" replace />;
   }
-  return <Outlet />;
-};
 
-const RestrictedRoutes = () => {
-  const authState = useSelector((state) => state.auth);
-  return <>{!authState.isAuth ? <Outlet /> : <Navigate to="/dashboard" />}</>;
+  return isAuth ? <Outlet /> : <Navigate to="/home" />;
 };
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Home />}></Route>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<RestrictedRoutes />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+          </Route>
+
+          <Route element={<TimeAdminRoutes />}>
+            <Route path="/clock-in" element={<ClockIn />} />
+          </Route>
 
         <Route element={<PrivateRoutes />}>
           <Route path="/dashboard" element={<Dashboard />}></Route>
@@ -47,17 +52,12 @@ const App = () => {
             path="/employee-permissions"
             element={<EmployeePermissions />}
           ></Route>
-         <Route path = "/deposit" element= {<Deposit/>}></Route>
-         <Route path="/count" element = {<Count/>}></Route>
         </Route>
 
-        <Route element={<RestrictedRoutes />}>
-          <Route path="/home" element={<Home />}></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 

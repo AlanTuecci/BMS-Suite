@@ -10,7 +10,7 @@ const { rateLimit } = require("express-rate-limit");
 //limit number of requests to 40 requests per minute
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  limit: 40,
+  limit: 200,
 });
 
 //for CORS -> full client url string with port
@@ -51,7 +51,7 @@ const appStart = async () => {
   try {
     console.log(`Starting app in ${NODE_ENV} mode\n`);
     await checkConnect();
-    await checkVersion(5);
+    await checkVersion(6);
     app.listen(SERVER_PORT, () => {
       console.log(`The server is running on port: ${SERVER_PORT}`);
       console.log(`The server is using CORS and accepting connections from ${clientUrlString}`);

@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Sidebar from "../components/Sidebar";
 
 const TimeManagement = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const today = new Date();
   const month = today.getMonth();
   const year = today.getFullYear();
 
   const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
   const monthNames = [
     "January",
     "February",
@@ -33,14 +30,10 @@ const TimeManagement = () => {
   function generateCalendar(year, month) {
     const weeks = [];
     let week = [];
-
     const firstDayOfMonth = new Date(year, month, 1);
     const lastDayOfMonth = new Date(year, month + 1, 0);
-
     const numberOfDaysInMonth = lastDayOfMonth.getDate();
-
     let date = 1;
-
     let jsDay = firstDayOfMonth.getDay();
     let dayIndex = jsDayToIndex(jsDay);
 
@@ -89,28 +82,9 @@ const TimeManagement = () => {
   const { weekStart, weekEnd } = getWeekStartAndEnd(today);
 
   return (
-    <div className="flex min-h-screen bg-white">
-      <div
-        className={`fixed top-0 left-0 h-full bg-gray-800 text-white transition-all duration-300 ${
-          isSidebarOpen ? "w-64" : "w-16"
-        }`}
-      >
-        <div className="p-4">
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white text-2xl"
-          >
-            {isSidebarOpen ? "Close" : "Open"}
-          </button>
-        </div>
-        <Sidebar isSidebarOpen={isSidebarOpen} />
-      </div>
-
-      <div
-        className={`flex-grow p-12 transition-all duration-300 ${
-          isSidebarOpen ? "ml-64" : "ml-16"
-        } flex flex-col`}
-      >
+    <div className="flex h-screen bg-white">
+      <Sidebar />
+      <div className="flex-grow p-8 ml-16">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-gray-900">Time Sheet</h1>
           <p className="text-gray-600">Log your hours for the work week</p>
@@ -165,9 +139,9 @@ const TimeManagement = () => {
               <tr>
                 {weekDays.map((day, index) => (
                   <th
-                      key={index}
-                      className="p-4 text-gray-600 border-b border-gray-200 font-medium text-center bg-[#F0FAFC]"
-                    >
+                    key={index}
+                    className="p-4 text-gray-600 border-b border-gray-200 font-medium text-center bg-[#F0FAFC]"
+                  >
                     {day}
                   </th>
                 ))}

@@ -9,6 +9,7 @@ import {
   onAssignCashAccessControl,
 } from "../api/auth";
 import Sidebar from "../components/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 const EmployeePermissions = () => {
   const [employees, setEmployees] = useState([]);
@@ -18,16 +19,14 @@ const EmployeePermissions = () => {
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [permissions, setPermissions] = useState({
     inventory: 0,
     labor: 0,
     cash: 0,
   });
-
   const [feedbackMessage, setFeedbackMessage] = useState(null);
+  const navigate = useNavigate()
 
   const fetchEmployees = async () => {
     try {
@@ -46,7 +45,7 @@ const EmployeePermissions = () => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   const fetchEmployeePermissions = async (employee_id) => {
     try {
@@ -161,48 +160,36 @@ const EmployeePermissions = () => {
     return <p className="text-center text-gray-600">No employees found.</p>;
 
   const permissionLevels = [
-    { level: 1, label: "View" },
-    { level: 2, label: "Read and Insert" },
-    { level: 3, label: "Full Access" },
-    { level: 4, label: "Delete" },
+    { level: 0, label: "Read" },
+    { level: 1, label: "Record" },
+    { level: 2, label: "Update" },
+    { level: 3, label: "Delete" },
   ];
 
   return (
     <div className="flex h-screen bg-white">
-      <div
-        className={`fixed top-0 left-0 h-full bg-gray-800 transition-all duration-300 ${
-          isSidebarOpen ? "w-64" : "w-16"
-        }`}
-      >
-        <div className="p-4">
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-2xl"
-          >
-            {isSidebarOpen ? "Close" : "Open"}
-          </button>
-        </div>
-        <Sidebar isSidebarOpen={isSidebarOpen} />
-      </div>
-
-      <div
-        className={`flex-grow p-8 transition-all duration-300 ${
-          isSidebarOpen ? "ml-64" : "ml-16"
-        }`}
-      >
+      <Sidebar />
+      <div className="flex-grow p-8 ml-16">
         <h1 className="text-5xl font-light text-gray-800 mb-4 mt-4 leading-tight">
           Employee Permissions
         </h1>
         <p className="text-gray-600 mb-6">Manage Employee Permissions Here</p>
 
-        <div className="mb-6">
+        <div className="mb-6 flex items-center gap-4">
           <input
             type="text"
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search Employees..."
-            className="w-1/4 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-1/4 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-compblue focus:outline-none"
           />
+        
+          <button
+            className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple"
+            onClick={() => navigate("/invite")}
+          >
+            + Invite Employee
+          </button>
         </div>
 
         <div className="font-mono text-gray-800">

@@ -13,6 +13,7 @@ module.exports = {
   CLIENT_URL: isProduction ? process.env.PROD_CLIENT_URL : process.env.DEV_CLIENT_URL,
   CLIENT_PORT: isProduction ? process.env.PROD_CLIENT_PORT : process.env.DEV_CLIENT_PORT,
   SECRET: isProduction ? process.env.PROD_SECRET : process.env.DEV_SECRET,
+  TIME_SECRET: isProduction ? process.env.PROD_TIME_SECRET : process.env.DEV_TIME_SECRET,
   DB_USER: process.env.DB_USER,
   DB_HOST: process.env.DB_HOST,
   DB_DATABASE: process.env.DB_DATABASE,

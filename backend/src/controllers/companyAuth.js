@@ -81,6 +81,10 @@ exports.companyLogin = async (req, res) => {
     return res.status(200).cookie("token", token, { httpOnly: true }).json({
       success: true,
       message: "Login successful.",
+      user_type: "company",
+      inventory_access_level: 4,
+      labor_access_level: 4,
+      cash_access_level: 4,
     });
   } catch (error) {
     console.log(error.message);
