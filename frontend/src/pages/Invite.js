@@ -68,12 +68,12 @@ const Invite = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter employee email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:ring-2 focus:ring-compblue focus:outline-none"
               required
             />
             <button
               type="submit"
-              className="px-6 py-2 bg-compblue text-white rounded-r-md hover:bg-blue-700"
+              className="px-6 py-2 bg-compblue text-white rounded-r-md hover:bg-lighter_purple"
             >
               Send Invite
             </button>
