@@ -53,6 +53,8 @@ const { getAllPastShifts } = require("../company_utilities/labor_data/getAllPast
 const { getAllActiveShifts } = require("../company_utilities/labor_data/getAllActiveShifts");
 const { getPastShifts } = require("../employee_utilities/labor_data/getPastShifts");
 const { getNumProductCounts } = require("../shared_utilities/inventory_data/getNumProductCounts");
+const { getNumSafeCounts } = require("../shared_utilities/inventory_data/getNumSafeCounts");
+const { getNumDeposits } = require("../shared_utilities/inventory_data/getNumDeposits");
 
 const router = Router();
 
@@ -153,6 +155,8 @@ router.post("/company/getActiveShifts", userAuth, getAllActiveShifts);
 
 //--Shared Routes
 router.post("/getNumProductCounts", userAuth, restrictAccess, getNumProductCounts);
+router.post("/getNumSafeCounts", userAuth, restrictAccess, getNumSafeCounts);
+router.post("/getNumDeposits", userAuth, restrictAccess, getNumDeposits);
 
 //--Time Routes
 router.post("/time/login", companyLoginValidation, validationMiddleware, timeLogin);

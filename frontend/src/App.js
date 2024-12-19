@@ -1,11 +1,5 @@
 import React, { useContext } from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  Routes,
-  Route,
-  Outlet,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route, Outlet } from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -19,6 +13,8 @@ import ClockIn from "./pages/ClockIn";
 import MyInfo from "./pages/MyInfo";
 import EmployeeShifts from "./pages/EmployeeShifts";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
+import SafeCounts from "./pages/SafeCounts";
+import RegisterDeposits from "./pages/RegisterDeposits";
 
 const RestrictedRoutes = () => {
   const { authState } = useContext(AuthContext);
@@ -73,6 +69,8 @@ const App = () => {
             <Route path="/product-count" element={<ProductCount />} />
             <Route path="/my-info" element={<MyInfo />} />
             <Route path="/employee-shifts" element={<EmployeeShifts />} />
+            <Route path="/cash-control" element={<SafeCounts />} />
+            <Route path="/register-deposit" element={<RegisterDeposits />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
