@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react";
+
 import Sidebar from "../components/Sidebar";
+import { Link } from "react-router-dom";
 import DashboardCard from "../components/DashboardCard";
 import { AuthContext } from "../context/AuthContext";
 import { onTimeLogin } from "../api/auth";
@@ -9,6 +11,8 @@ import groupIcon from "../media/dashboard/group_24dp_14213D_FILL0_wght400_GRAD0_
 import cashIcon from "../media/dashboard/payments_24dp_14213D_FILL0_wght400_GRAD0_opsz24.svg";
 import binIcon from "../media/dashboard/inventory_2_24dp_14213D_FILL0_wght400_GRAD0_opsz24.svg";
 import timeIcon from "../media/dashboard/work_history_24dp_14213D_FILL0_wght400_GRAD0_opsz24.svg";
+import CalcIcon from "../media/sidebar/Calc.svg"
+import MoneyIcon from "../media/sidebar/Money.svg"
 
 function Dashboard() {
   const { authState } = useContext(AuthContext);
@@ -16,6 +20,7 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const [showTimeLoginModal, setShowTimeLoginModal] = useState(false);
+  const [showCashModal, setCashModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
@@ -47,6 +52,7 @@ function Dashboard() {
       description: "Monitor and manage your revenue stream.",
       link: "cash-control",
       photo: cashIcon,
+      onClick: () => setCashModal(true),
     },
     {
       title: "Manage Employees",
@@ -197,8 +203,39 @@ function Dashboard() {
           </div>
         </div>
       )}
+
+      {showCashModal && (
+        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className=" flex bg-bkgd rounded-2xl text-center p-8 md:p-12 shadow-md z-[11] relative">
+                <button className="absolute top-3 right-5 text-blue_txt_color hover:text-gray text-2xl" onClick={() => setCashModal(false)}>
+                    &times;
+                </button>
+                <div className="flex gap-7">
+                    
+                <Link to="/count">
+                    <div className="flex flex-col justify-center cursor-pointer w-40 h-40 p-9 bg-another_purple text-blue_txt_color rounded-xl shadow-md hover:shadow-lg ease-in-out duration-300"
+                        onClick={() => setCashModal(false)}
+                        >
+                            <img src={CalcIcon}></img>
+                            <h3 className="font-semibold">Safe Counts</h3>
+                    </div>
+                </Link>
+                <Link to ="/deposit">
+                    <div
+                        className="flex flex-col justify-center cursor-pointer w-40 h-40 p-9 bg-another_purple text-blue_txt_color rounded-xl shadow-md hover:shadow-lg ease-in-out duration-300"
+                        onClick={() => setCashModal(false)}
+                    >   
+                        <img src={MoneyIcon}></img>
+                        <h3 className="font-semibold">Deposits</h3>
+                    </div>
+                </Link>
+                </div>
+            </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default Dashboard;
+

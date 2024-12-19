@@ -7,17 +7,20 @@ import {
   Outlet,
 } from "react-router-dom";
 import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import Invite from "./pages/Invite";
 import TimeManagement from "./pages/TimeManagement";
 import EmployeePermissions from "./pages/EmployeePermissions";
 import InventorySummary from "./pages/InventorySummary";
 import ProductCount from "./pages/ProductCount";
+import Deposit from "./pages/Deposit";
+import Count from "./pages/SafeCount";
 import ClockIn from "./pages/ClockIn";
 import MyInfo from "./pages/MyInfo";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
+
 
 const RestrictedRoutes = () => {
   const { authState } = useContext(AuthContext);
@@ -71,6 +74,8 @@ const App = () => {
             <Route path="/employee-permissions" element={<EmployeePermissions />} />
             <Route path="/product-count" element={<ProductCount />} />
             <Route path="/my-info" element={<MyInfo />} />
+            <Route path="/deposit" element={<Deposit/>}/>
+            <Route path="/count" element={<Count/>}/>
           </Route>
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />

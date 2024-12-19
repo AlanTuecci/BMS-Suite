@@ -64,6 +64,25 @@ export async function onAssignCashAccessControl(data) {
   return await axios.post(`${API_URL}/company/assignCashAccessControl`, data);
 }
 
+export async function recordDeposits(data){
+  return await axios.post(`${API_URL}/company/recordDeposit`, data)
+}
+
+export async function getLatestDeposits(data){
+  return await axios.post(`${API_URL}/company/getLatestDeposits`, data)
+}
+export async function updateDeposits(data){
+  return await axios.post(`${API_URL}/company/updateDeposit`, data)
+}
+
+export async function recordSafeCounts(data){
+  return await axios.post(`${API_URL}/company/recordSafeCount`, data)
+}
+
+export async function updateSafeCounts(data){
+  return await axios.post(`${API_URL}/company/updateSafeCount`, data)
+}
+
 export async function onGetAllProductSKUs(userType) {
   return await axios.post(`${API_URL}/${userType}/getAllProductSKUs`);
 }
