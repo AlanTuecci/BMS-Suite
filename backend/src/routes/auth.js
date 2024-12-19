@@ -52,6 +52,7 @@ const { restrictAccess } = require("../controllers/restrictAccess");
 const { getAllPastShifts } = require("../company_utilities/labor_data/getAllPastShifts");
 const { getAllActiveShifts } = require("../company_utilities/labor_data/getAllActiveShifts");
 const { getPastShifts } = require("../employee_utilities/labor_data/getPastShifts");
+const { getNumProductCounts } = require("../shared_utilities/inventory_data/getNumProductCounts");
 
 const router = Router();
 
@@ -146,9 +147,12 @@ router.post("/company/updateSafeCount", userAuth, restrictAccess, updateSafeCoun
 //------Read, Insert, Update, Delete
 router.delete("/company/deleteDeposit", userAuth, restrictAccess, deleteDeposit);
 router.delete("/company/deleteSafeCount", userAuth, restrictAccess, deleteSafeCount);
-//--Time Management Routes
+//----Time Management Routes
 router.post("/company/getPastShifts", userAuth, getAllPastShifts);
 router.post("/company/getActiveShifts", userAuth, getAllActiveShifts);
+
+//--Shared Routes
+router.post("/getNumProductCounts", userAuth, restrictAccess, getNumProductCounts);
 
 //--Time Routes
 router.post("/time/login", companyLoginValidation, validationMiddleware, timeLogin);
