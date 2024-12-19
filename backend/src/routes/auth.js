@@ -41,7 +41,7 @@ const { getLaborAccessControlById } = require("../company_utilities/labor_data/g
 const { getCashAccessControlById } = require("../company_utilities/cash_data/getCashAccessControlById");
 const { timeLogin } = require("../controllers/timeAdminAuth");
 const { timeUserAuth } = require("../middlewares/time-user-passport-middleware");
-const { updatePin } = require("../employee_utilities/updatePin");
+const { updatePin } = require("../employee_utilities/labor_data/updatePin");
 const { checkEmployeePin } = require("../time_utilities/checkEmployeePin");
 const { clockIn } = require("../time_utilities/clockIn");
 const { breakStart } = require("../time_utilities/breakStart");
@@ -49,6 +49,9 @@ const { breakEnd } = require("../time_utilities/breakEnd");
 const { clockOut } = require("../time_utilities/clockOut");
 const { userAuth } = require("../middlewares/auth-passport-middleware");
 const { restrictAccess } = require("../controllers/restrictAccess");
+const { getAllPastShifts } = require("../company_utilities/labor_data/getAllPastShifts");
+const { getAllActiveShifts } = require("../company_utilities/labor_data/getAllActiveShifts");
+const { getPastShifts } = require("../employee_utilities/labor_data/getPastShifts");
 
 const router = Router();
 
@@ -61,6 +64,7 @@ router.post("/employee/register", employeeRegisterValidation, validationMiddlewa
 router.post("/employee/login", employeeLoginValidation, validationMiddleware, employeeLogin);
 //----Time Management Routes
 router.post("/employee/updatePin", userAuth, restrictAccess, updatePin);
+router.post("/employee/getPastShifts", userAuth, getPastShifts);
 //----Product Management Routes
 //------Control 0 --> Read
 router.post("/employee/getAllProducts", userAuth, restrictAccess, getAllProducts);
@@ -142,6 +146,9 @@ router.post("/company/updateSafeCount", userAuth, restrictAccess, updateSafeCoun
 //------Read, Insert, Update, Delete
 router.delete("/company/deleteDeposit", userAuth, restrictAccess, deleteDeposit);
 router.delete("/company/deleteSafeCount", userAuth, restrictAccess, deleteSafeCount);
+//--Time Management Routes
+router.post("/company/getPastShifts", userAuth, getAllPastShifts);
+router.post("/company/getActiveShifts", userAuth, getAllActiveShifts);
 
 //--Time Routes
 router.post("/time/login", companyLoginValidation, validationMiddleware, timeLogin);
