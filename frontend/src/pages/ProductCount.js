@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { AuthContext } from "../context/AuthContext";
-import { 
-  onGetProductCountHistory, 
-  onRecordProductCounts, 
-  onUpdateProductCounts, 
-  onDeleteProductCounts 
+import {
+  onGetProductCountHistory,
+  onRecordProductCounts,
+  onUpdateProductCounts,
+  onDeleteProductCounts,
+  onGetNumProductCounts
 } from "../api/auth";
 
 function ProductCount() {
@@ -15,18 +16,26 @@ function ProductCount() {
   const location = useLocation();
   const navigate = useNavigate();
   const { productSku } = location.state || {};
+
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 10;
+
   const [recordModalOpen, setRecordModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+
   const [recordData, setRecordData] = useState({
     product_sku: productSku || "",
     on_hand_loose_unit_count: "",
     on_hand_tray_count: "",
     on_hand_case_count: "",
   });
+
   const [updateData, setUpdateData] = useState({
     product_sku: productSku || "",
     product_count_id: null,
@@ -35,10 +44,27 @@ function ProductCount() {
     on_hand_case_count: "",
   });
 
+  const fetchTotalCounts = async () => {
+    try {
+      const response = await onGetNumProductCounts(productSku);
+      const totalCount = parseInt(response.data.count, 10);
+      const pages = Math.ceil(totalCount / itemsPerPage);
+      setTotalPages(pages);
+    } catch (err) {
+      console.error("Error fetching total counts:", err);
+      setError("Failed to fetch total counts.");
+    }
+  };
+
   const fetchProductHistory = async () => {
     try {
       setLoading(true);
-      const response = await onGetProductCountHistory(userType, { product_sku: productSku });
+      const minEntryNum = (currentPage - 1) * itemsPerPage;
+      const response = await onGetProductCountHistory(userType, {
+        product_sku: productSku,
+        num_entries: itemsPerPage,
+        min_entry_num: minEntryNum,
+      });
       setHistory(response.data);
     } catch (err) {
       console.error("Error fetching history:", err);
@@ -50,9 +76,15 @@ function ProductCount() {
 
   useEffect(() => {
     if (productSku) {
-      fetchProductHistory();
+      fetchTotalCounts();
     }
   }, [productSku]);
+
+  useEffect(() => {
+    if (productSku) {
+      fetchProductHistory();
+    }
+  }, [productSku, currentPage]);
 
   const handleRecordModalOpen = () => setRecordModalOpen(true);
 
@@ -210,6 +242,24 @@ function ProductCount() {
             </div>
           ))}
         </div>
+
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-6 pb-4">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                className={`px-4 py-2 mx-1 rounded ${
+                  currentPage === index + 1
+                    ? "bg-compblue text-white"
+                    : "bg-white text-compblue border-1 border-compblue"
+                }`}
+                onClick={() => setCurrentPage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        )}
 
         {recordModalOpen && (
           <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">

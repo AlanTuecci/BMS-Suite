@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
   onGetEmployees,
-  onGetInventoryAccessControl,
-  onGetLaborAccessControl,
-  onGetCashAccessControl,
+  onGetInventoryAccessControlById,
+  onGetLaborAccessControlById,
+  onGetCashAccessControlById,
   onAssignInventoryAccessControl,
   onAssignLaborAccessControl,
   onAssignCashAccessControl,
@@ -50,34 +50,33 @@ const EmployeePermissions = () => {
   const fetchEmployeePermissions = async (employee_id) => {
     try {
       setModalLoading(true);
-
+  
       const [
         inventoryResponse,
         laborResponse,
         cashResponse,
       ] = await Promise.all([
-        onGetInventoryAccessControl(),
-        onGetLaborAccessControl(),
-        onGetCashAccessControl(),
+        onGetInventoryAccessControlById(employee_id),
+        onGetLaborAccessControlById(employee_id),
+        onGetCashAccessControlById(employee_id),
       ]);
-
-      const inventoryPerm = inventoryResponse.data.find(
-        (perm) => perm.employee_id === employee_id
-      );
-      const laborPerm = laborResponse.data.find(
-        (perm) => perm.employee_id === employee_id
-      );
-      const cashPerm = cashResponse.data.find(
-        (perm) => perm.employee_id === employee_id
-      );
-
+  
+      const inventoryPerm = inventoryResponse.data[0]?.access_control_level || 0;
+      const laborPerm = laborResponse.data[0]?.access_control_level || 0;
+      const cashPerm = cashResponse.data[0]?.access_control_level || 0;
+  
       setPermissions({
-        inventory: inventoryPerm ? inventoryPerm.access_control_level : 0,
-        labor: laborPerm ? laborPerm.access_control_level : 0,
-        cash: cashPerm ? cashPerm.access_control_level : 0,
+        inventory: inventoryPerm,
+        labor: laborPerm,
+        cash: cashPerm,
       });
     } catch (error) {
       console.error("Error fetching permissions:", error);
+      setPermissions({
+        inventory: 0,
+        labor: 0,
+        cash: 0,
+      });
     } finally {
       setModalLoading(false);
     }
