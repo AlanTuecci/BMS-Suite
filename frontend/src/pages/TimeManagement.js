@@ -206,7 +206,7 @@ const TimeManagement = () => {
         </div>
 
         <div className="bg-white shadow-md rounded-xl overflow-hidden flex-grow">
-          <table className="w-full text-left border-collapse h-full">
+          <table className="w-full text-left border-collapse h-full pb-8">
             <thead>
               <tr>
                 {weekDays.map((day, index) => (

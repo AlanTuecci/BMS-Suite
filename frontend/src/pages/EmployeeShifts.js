@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { onGetAllPastShifts, onGetAllActiveShifts } from "../api/auth";
 
 const EmployeeShifts = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { date: selectedDate } = location.state || {};
 
   const [shiftData, setShiftData] = useState([]);
@@ -15,7 +16,7 @@ const EmployeeShifts = () => {
 
   useEffect(() => {
     const today = new Date();
-    today.setDate(today.getDate() - 1);
+    today.setDate(today.getDate());
     const formattedToday = today.toISOString().split("T")[0];
     setIsToday(formattedToday === selectedDate);
     fetchShifts();
@@ -55,10 +56,20 @@ const EmployeeShifts = () => {
     <div className="flex h-screen bg-white">
       <Sidebar />
       <div className="flex-grow p-8 ml-16">
-        <h1 className="text-5xl font-light text-gray-800 mb-4 mt-4 leading-tight">
-          Employee Shifts for {selectedDate}
-        </h1>
-        <p className="text-gray-600 mb-6">Manage Employee Shifts Here</p>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-5xl font-light text-gray-800 mb-2 leading-tight">
+              Employee Shifts for {selectedDate}
+            </h1>
+            <p className="text-gray-600">Manage Employee Shifts Here</p>
+          </div>
+          <button
+            className="bg-white text-compblue border border-compblue px-4 py-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+            onClick={() => navigate(-1)}
+          >
+            Go Back
+          </button>
+        </div>
 
         {isToday && (
           <div className="mb-6 flex items-center gap-4">
