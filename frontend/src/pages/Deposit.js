@@ -1,19 +1,19 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Sidebar from "../components/Sidebar";
 import { AuthContext } from "../context/AuthContext";
 import {recordDeposits, getLatestDeposits} from "../api/auth";
 import { useNavigate } from "react-router-dom";
 
-const Deposit = () => {
+function Deposit() {
   
-  const { authState } = useContext(AuthContext);
-const data = authState?.data || {};  // Safely access authState.data
+const { authState } = useContext(AuthContext);
+const userData = authState.recordData;
 const [activeModal, setActiveModal] = useState(null);
 const [loading, setLoading] = useState(true);
-const [filteredDeposits, setFilteredDeposits] = useState([]);  // Make sure this is an array
+const [deposits, setDeposits] = useState([]);  // Make sure this is an array
 const [depositAmount, setdepositAmount] = useState(0.0);  // Deposit amount as a number (default 0.0)
-const [depositorId, setdepositorId] = useState(0);  // Depositor ID as a number (default 0)
-const [depositeeId, setdepositeeId] = useState(0);  // Depositee ID as a number (default 0)
+const [depositorId, setdepositorId] = useState("");  // Depositor ID as a number (default 0)
+const [depositeeId, setdepositeeId] = useState("");  // Depositee ID as a number (default 0)
 const [error, setError] = useState(null);
 const [successMessage, setSuccessMessage] = useState("");  // Message for success
 const [depositBox, setDepositBox] = useState(false);  // Control deposit modal visibility
@@ -22,12 +22,11 @@ const [depositId, setDepositId] = useState(0);  // Deposit ID as a number (defau
 const handleCloseModal = () => setActiveModal(null);
 const navigate = useNavigate();
 
-
   const fetchDeposits = async () => {
     try {
       setLoading(true);
-      const response = await getLatestDeposits(data); // Assuming this returns an array of deposits
-      setFilteredDeposits(response.data); // Set the array of deposits here
+      const response = await getLatestDeposits(userData); // Assuming this returns an array of deposits
+      setDeposits(response.data); // Set the array of deposits here
     } catch (error) {
       console.error("Error fetching data", error);
       setError("Failed to fetch data");
@@ -35,29 +34,33 @@ const navigate = useNavigate();
       setLoading(false);
     }
   };
-  
+//   useEffect(() =>{
+//     if(userData){
+//         fetchDeposits();
+//     }
+//   }, [userData]);
 
   const handleAddDeposit =  async (e) => {
     e.preventDefault();
     try{
         const depositData = {
             deposit_amount: depositAmount,
-            depositor_id: depositorId,
             depositee_employee_id: depositeeId,
             depositor_employee_id: depositId,
         }; 
         await recordDeposits(depositData) //do i use this or does there need to be a route for Adding the deposit record?
         setSuccessMessage("Product added successfully!");
         setDepositBox(false);
-        fetchDeposits();
+        fetchDeposits(userData);
     }   catch (error){
         console.error("Error adding deposit record:", error);
         alert("Failed to add deposit record. Please try again.");
     }
   }
 
-  return (
+  if (error) return <p className="text-center text-red-500">{error}</p>;
 
+  return (
     <div class= "flex flex-col md:flex-row h-screen bg-bkgdb overflow-x-auto relative">
       <Sidebar/>
       <div class="flex flex-col flex-grow p-4 ">
@@ -68,7 +71,7 @@ const navigate = useNavigate();
 
         <div className="mb-6 mt-5 flex gap-4">
           <button
-            className="bg-compblue text-white px-4 py-2 ml-auto rounded-lg hover:bg-blue-700 " onClick={() => setDepositBox(true)}
+            className="bg-compblue text-white px-4 py-2 ml-auto rounded-lg hover:bg-blue-700 " onClick={() => setDepositBox(true)} //opens the box 
           >
             + Record Deposits
           </button>
@@ -89,26 +92,27 @@ const navigate = useNavigate();
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-gray-200">
-                  {filteredDeposits.map((deposits) => (
+
+                  {deposits.map((deposit) => (
                     <tr
-                        key={deposits.deposit_Id}
+                        key={deposit.deposit_id}
                         class="cursor-pointer hover:bg-lighter_gray"
                         onClick={() => setDepositBox(true)}
                     >
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        # {deposits.deposit_Id}
+                        # {deposit.deposit_id}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        {deposits.deposit_amount}
+                        {deposit.deposit_amount}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        {new Date(deposits.deposit_timestamp).toLocaleString()}
+                        {new Date(deposit.deposit_timestamp).toLocaleString()}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        {deposits.depositor_employee_id}
+                        {deposit.depositor_employee_id}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        {deposits.depositee_employee_id}
+                        {deposit.depositee_employee_id}
                         </td>
                     </tr>
                     ))}
@@ -125,7 +129,7 @@ const navigate = useNavigate();
             <div className="bg-white w-1/2 max-w-lg rounded-2xl shadow-lg p-8 relative">
               <button
                 className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-xl"
-                onClick={() => setDepositBox(false)}
+                onClick={() => setDepositBox(false)} //closes box 
               >
                 &times;
               </button>
@@ -134,7 +138,7 @@ const navigate = useNavigate();
                 <h3 className="text-2xl font-semibold mb-4 border-b-2 border-light_gray">Deposit Info</h3>
                 <div class = "flex flex-col "> 
                     <div class="flex items-center mb-2">
-                        <label class="text-lg font-semibold "> Desposit Amount: </label>
+                        <label class="text-lg font-semibold border-1 border-txt_color"> Desposit Amount: </label>
                         <input
                             name="depositAmount"
                             value={depositAmount}
@@ -148,7 +152,7 @@ const navigate = useNavigate();
                         <input
                             name="depositorID"
                             value={depositorId}
-                            onChange={(e) => setdepositorId(e.target.value)}
+                            onChange={(e) => setdepositorId(parseInt(e.target.value))}
                             class="text-gray-700 ml-auto"
                             required
                         />
@@ -158,7 +162,7 @@ const navigate = useNavigate();
                         <input
                         name="depositeeID"
                         value={depositeeId}
-                        onChange={(e) => setdepositeeId(e.target.value)}
+                        onChange={(e) => setdepositeeId(parseInt(e.target.value))}
                         class="text-gray-700 ml-auto"
                         required
                         />

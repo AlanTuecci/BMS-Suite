@@ -64,8 +64,8 @@ export async function onAssignCashAccessControl(data) {
   return await axios.post(`${API_URL}/company/assignCashAccessControl`, data);
 }
 
-export async function recordDeposits(data){
-  return await axios.post(`${API_URL}/company/recordDeposit`, data)
+export async function recordDeposits(recordData){
+  return await axios.post(`${API_URL}/company/recordDeposit`, recordData)
 }
 
 export async function getLatestDeposits(data){
