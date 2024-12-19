@@ -19,6 +19,9 @@ function InventorySummary() {
   const [productDescription, setProductDescription] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
+
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -45,6 +48,7 @@ function InventorySummary() {
       product.product_sku.toString().includes(searchTerm)
     );
     setFilteredProducts(filtered);
+    setCurrentPage(1);
   }, [searchTerm, products]);
 
   const handleAddProduct = async (e) => {
@@ -57,9 +61,9 @@ function InventorySummary() {
       };
 
       await onAddProduct(productData);
-      setProductDescription("")
-      setProductName("")
-      setProductSku("")
+      setProductDescription("");
+      setProductName("");
+      setProductSku("");
       setSuccessMessage("Product added successfully!");
       setProductBox(false);
       fetchProducts();
@@ -71,7 +75,15 @@ function InventorySummary() {
 
   const navigateToProductCount = (product) => {
     navigate(`/product-count`, { state: { productSku: product.product_sku } });
-  };  
+  };
+
+  const getPaginatedProducts = () => {
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
+    return filteredProducts.slice(startIndex, endIndex);
+  };
+
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   if (loading) return <p className="text-center text-gray-600">Loading products...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
@@ -117,7 +129,7 @@ function InventorySummary() {
             <span className="w-1/5 text-right font-semibold">Options</span>
           </div>
 
-          {filteredProducts.map((product, index) => (
+          {getPaginatedProducts().map((product, index) => (
             <div
               key={product.product_sku}
               className={`mb-2 w-full flex items-center p-2 ${
@@ -145,6 +157,24 @@ function InventorySummary() {
             </div>
           ))}
         </div>
+
+        {totalPages > 1 && (
+          <div className="flex justify-center p-8 pb-15 ml-16">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                className={`px-4 py-2 mx-1 rounded ${
+                  currentPage === index + 1
+                    ? "bg-compblue text-white"
+                    : "bg-white text-compblue border-1 border-compblue"
+                }`}
+                onClick={() => setCurrentPage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        )}
 
         {productBox && (
           <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
@@ -186,13 +216,13 @@ function InventorySummary() {
                   <button
                     type="button"
                     onClick={() => setProductBox(false)}
-                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+                    className="px-4 py-2 border-2 border-compblue text-compblue bg-white rounded-md"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="px-4 py-2 bg-compblue text-white rounded-md hover:bg-lighter_purple"
                   >
                     Add Product
                   </button>

@@ -76,8 +76,12 @@ export async function onGetAllLatestProductCounts(userType) {
   return await axios.post(`${API_URL}/${userType}/getAllLatestProductCounts`);
 }
 
-export async function onGetProductCountHistory(userType, productSKU) {
-  return await axios.post(`${API_URL}/${userType}/getProductCountHistory`, productSKU);
+export async function onGetProductCountHistory(userType, { product_sku, num_entries, min_entry_num }) {
+  return await axios.post(`${API_URL}/${userType}/getProductCountHistory`, {
+    product_sku,
+    num_entries,
+    min_entry_num,
+  });
 }
 
 export async function onUpdateProductCounts(userType, updatedData) {
@@ -146,4 +150,8 @@ export async function onGetLaborAccessControlById(employee_id) {
 
 export async function onGetCashAccessControlById(employee_id) {
   return await axios.post(`${API_URL}/company/getCashAccessControlById`, { employee_id });
+}
+
+export async function onGetNumProductCounts(product_sku) {
+  return await axios.post(`${API_URL}/getNumProductCounts`, { product_sku });
 }
