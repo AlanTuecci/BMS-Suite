@@ -1,4 +1,4 @@
-const pool = require("../db");
+const pool = require("../../db");
 const { hash } = require("bcryptjs");
 
 exports.updatePin = async (req, res) => {
