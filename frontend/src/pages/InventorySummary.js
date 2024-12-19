@@ -57,6 +57,9 @@ function InventorySummary() {
       };
 
       await onAddProduct(productData);
+      setProductDescription("")
+      setProductName("")
+      setProductSku("")
       setSuccessMessage("Product added successfully!");
       setProductBox(false);
       fetchProducts();
