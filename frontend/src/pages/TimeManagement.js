@@ -17,6 +17,7 @@ const TimeManagement = () => {
 
   const [selectedDate, setSelectedDate] = useState("");
   const [shiftDays, setShiftDays] = useState([]);
+  const [activeShiftDays, setActiveShiftDays] = useState([]);
   const [selectedShifts, setSelectedShifts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -121,14 +122,24 @@ const TimeManagement = () => {
     }
   };
 
-  const fetchActiveShifts = async () => {
+  const fetchActiveShiftDays = async () => {
     if (userType !== "company") return;
     try {
-      await axios.post(
+      const response = await axios.post(
         "/api/company/getActiveShifts",
         {},
         { withCredentials: true }
       );
+      const activeShiftData = response.data;
+
+      const activeShiftsGroupedByDay = activeShiftData.reduce((acc, shift) => {
+        const day = new Date(shift.clock_in_timestamp).getDate();
+        if (!acc[day]) acc[day] = [];
+        acc[day].push(shift);
+        return acc;
+      }, {});
+
+      setActiveShiftDays(activeShiftsGroupedByDay);
     } catch (error) {
       console.error("Error fetching active shifts:", error);
     }
@@ -140,13 +151,17 @@ const TimeManagement = () => {
     const monthX = (selectedDateObj.getMonth() + 1).toString().padStart(2, "0");
     const dayX = selectedDateObj.getDate().toString().padStart(2, "0");
     const formattedSelectedDate = `${yearX}-${monthX}-${dayX}`;
-
-    const shiftsForDay = shiftDays[day];
-    if (shiftsForDay) {
+  
+    const todayDate = today.toISOString().split("T")[0];
+    const isToday = formattedSelectedDate === todayDate;
+  
+    const pastShiftsForDay = shiftDays[day];
+    const activeShiftsForDay = activeShiftDays[day];
+    const shiftsForDay = [...(pastShiftsForDay || []), ...(activeShiftsForDay || [])];
+  
+    if (shiftsForDay.length > 0) {
       setSelectedDate(formattedSelectedDate);
-      const currentDate = today.toISOString().split("T")[0];
-      const isToday = formattedSelectedDate === currentDate;
-
+  
       if (userType === "company") {
         navigate("/employee-shifts", {
           state: { date: formattedSelectedDate, shifts: shiftsForDay, isToday },
@@ -157,10 +172,11 @@ const TimeManagement = () => {
       }
     }
   };
+  
 
   useEffect(() => {
     fetchShiftDays();
-    fetchActiveShifts();
+    fetchActiveShiftDays();
   }, [userType, month]);
 
   return (
@@ -211,7 +227,7 @@ const TimeManagement = () => {
                       day === today.getDate() &&
                       month === today.getMonth() &&
                       year === today.getFullYear();
-                    const hasShift = shiftDays[day];
+                    const hasShift = shiftDays[day] || activeShiftDays[day];
                     return (
                       <td
                         key={colIndex}
