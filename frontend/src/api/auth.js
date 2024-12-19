@@ -135,3 +135,15 @@ export async function onGetAllPastShifts(monthNum) {
 export async function onGetAllActiveShifts() {
   return await axios.post(`${API_URL}/company/getActiveShifts`);
 }
+
+export async function onGetInventoryAccessControlById(employee_id) {
+  return await axios.post(`${API_URL}/company/getInventoryAccessControlById`, { employee_id });
+}
+
+export async function onGetLaborAccessControlById(employee_id) {
+  return await axios.post(`${API_URL}/company/getLaborAccessControlById`, { employee_id });
+}
+
+export async function onGetCashAccessControlById(employee_id) {
+  return await axios.post(`${API_URL}/company/getCashAccessControlById`, { employee_id });
+}
