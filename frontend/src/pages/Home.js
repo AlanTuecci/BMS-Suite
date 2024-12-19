@@ -72,20 +72,6 @@ const Home = () => {
             />
             &nbsp;management needs
           </p>
-          <div className="pt-8 justify-center">
-            <button
-               className="px-5 py-2.5 mx-2 text-xl text-bkgd bg-compblue transition duration-200 rounded-full hover:shadow-xl hover:shadow-[#cdccf4] hover:scale-105"
-              onClick={() => handleLoginRegisterClick("/register")}
-            >
-              Get Started
-            </button>
-            <button 
-              className="px-5 py-2.5 mx-2 text-xl text-[#14213D] transition duration-200 rounded-full border-3 border-[#14213D] hover:scale-105"
-              onClick={() => handleLoginRegisterClick("/Login")}
-            >
-              Learn More
-            </button>
-          </div>
         </div>
         <div className="hidden lg:w-2/6 lg:flex lg:justify-center lg:py-8 lg:px-2">
           <img
@@ -141,10 +127,6 @@ const Home = () => {
             <div class ="flex flex-col justify-center px-4">
               <h2 class="text-2xl font-semibold"> Ready to Take Control <br/> Of Your Business with Ease?</h2>
               <p class="text-sm font-medium">Transforming Business Management with and All-In-One Solution</p>
-            </div>
-            <div class="flex justify-center items-center w-auto px-4">
-              <button className="px-5 py-2.5 mx-2 text-xl text-bkgd bg-compblue transition duration-200 rounded-full hover:shadow-xl hover:scale-105"
-              onClick={() => handleLoginRegisterClick("/register")}> Get Started </button>
             </div>
           </div>
         </div>
