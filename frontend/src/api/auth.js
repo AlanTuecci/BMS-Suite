@@ -123,3 +123,15 @@ export async function onSignEmployeeOut() {
 export async function onUpdatePin(pin) {
   return await axios.post(`${API_URL}/employee/updatePin`, pin);
 }
+
+export async function getPastShifts() {
+  return await axios.post(`${API_URL}/employee/getPastShifts`);
+}
+
+export async function onGetAllPastShifts(monthNum) {
+  return await axios.post(`${API_URL}/company/getPastShifts`, { month_num: monthNum });
+}
+
+export async function onGetAllActiveShifts() {
+  return await axios.post(`${API_URL}/company/getActiveShifts`);
+}

@@ -49,6 +49,12 @@ function Dashboard() {
       photo: cashIcon,
     },
     {
+      title: "Time Management",
+      description: "Oversee and manage employee information.",
+      link: "time-management",
+      photo: timeIcon,
+    },
+    {
       title: "Manage Employees",
       description: "Oversee and manage employee information.",
       link: "employee-permissions",

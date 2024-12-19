@@ -17,6 +17,7 @@ import InventorySummary from "./pages/InventorySummary";
 import ProductCount from "./pages/ProductCount";
 import ClockIn from "./pages/ClockIn";
 import MyInfo from "./pages/MyInfo";
+import EmployeeShifts from "./pages/EmployeeShifts";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 
 const RestrictedRoutes = () => {
@@ -71,6 +72,7 @@ const App = () => {
             <Route path="/employee-permissions" element={<EmployeePermissions />} />
             <Route path="/product-count" element={<ProductCount />} />
             <Route path="/my-info" element={<MyInfo />} />
+            <Route path="/employee-shifts" element={<EmployeeShifts />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
