@@ -1,9 +1,7 @@
 import axios from "axios";
 
 const API_URL =
-  process.env.NODE_ENV === "development"
-    ? process.env.REACT_APP_DEV_API_URL
-    : process.env.REACT_APP_API_URL_PROD;
+  process.env.NODE_ENV === "development" ? process.env.REACT_APP_DEV_API_URL : process.env.REACT_APP_API_URL_PROD;
 
 axios.defaults.withCredentials = true;
 
@@ -154,4 +152,44 @@ export async function onGetCashAccessControlById(employee_id) {
 
 export async function onGetNumProductCounts(product_sku) {
   return await axios.post(`${API_URL}/getNumProductCounts`, { product_sku });
+}
+
+export async function onRecordDeposit(userType, data) {
+  return await axios.post(`${API_URL}/${userType}/recordDeposit`, data);
+}
+
+export async function onRecordSafeCount(userType, data) {
+  return await axios.post(`${API_URL}/${userType}/recordSafeCount`, data);
+}
+
+export async function onGetLatestDeposits(userType, data) {
+  return await axios.post(`${API_URL}/${userType}/getLatestDeposits`, data);
+}
+
+export async function onGetLatestSafeCounts(userType, data) {
+  return await axios.post(`${API_URL}/${userType}/getLatestSafeCounts`, data);
+}
+
+export async function onUpdateDeposits(userType, data) {
+  return await axios.post(`${API_URL}/${userType}/updateDeposit`, data);
+}
+
+export async function onUpdateSafeCounts(userType, data) {
+  return await axios.post(`${API_URL}/${userType}/updateSafeCount`, data);
+}
+
+export async function onDeleteDeposit(userType, deleteData) {
+  return await axios.delete(`${API_URL}/${userType}/deleteDeposit`, { data: deleteData });
+}
+
+export async function onDeleteSafeCount(userType, deleteData) {
+  return await axios.delete(`${API_URL}/${userType}/deleteSafeCount`, { data: deleteData });
+}
+
+export async function onGetNumSafeCounts() {
+  return await axios.post(`${API_URL}/getNumSafeCounts`);
+}
+
+export async function onGetNumDeposits() {
+  return await axios.post(`${API_URL}/getNumDeposits`);
 }

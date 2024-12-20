@@ -24,14 +24,26 @@ const EmployeeShifts = () => {
 
   const fetchShifts = async () => {
     try {
-      if (isToday && isActiveShifts) {
-        const response = await onGetAllActiveShifts();
-        setShiftData(response.data);
-      } else {
-        const monthNum = new Date(selectedDate).getMonth() + 1;
-        const response = await onGetAllPastShifts(monthNum);
-        setShiftData(response.data);
-      }
+      const response = isToday && isActiveShifts 
+        ? await onGetAllActiveShifts() 
+        : await onGetAllPastShifts(new Date(selectedDate).getMonth() + 1);
+      
+      const filteredData = response.data.filter((shift) => {
+        const shiftDate = new Date(shift.clock_in_timestamp).toLocaleDateString().split("T")[0];
+        
+        const parseLocaleDateString = (dateString) => {
+          const [month, day, year] = dateString.split('/');
+          return new Date(`${year}-${month}-${day}`);
+        }
+
+        const parsedDate = parseLocaleDateString(shiftDate);
+
+        const isoString = parsedDate.toISOString().split("T")[0];
+
+        return isoString === selectedDate;
+      });
+
+      setShiftData(filteredData);
     } catch (error) {
       console.error("Error fetching shifts:", error);
       setErrorMessage("Failed to load shifts. Try again later.");
@@ -43,9 +55,7 @@ const EmployeeShifts = () => {
   };
 
   const toggleShiftType = (shiftType) => {
-    if ((shiftType === "active" && !isActiveShifts) || (shiftType === "past" && isActiveShifts)) {
-      setIsActiveShifts(shiftType === "active");
-    }
+    setIsActiveShifts(shiftType === "active");
   };
 
   const filteredShifts = shiftData.filter((shift) =>

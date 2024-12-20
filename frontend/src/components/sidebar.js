@@ -56,7 +56,7 @@ const Sidebar = () => {
           </button>
 
           <button>
-            <Link to='/cash-management'><img src={cashIcon} alt="Cash" className="w-8 h-8 hover:scale-110 transition-transform duration-300" /></Link>
+            <Link to='/cash-control'><img src={cashIcon} alt="Cash" className="w-8 h-8 hover:scale-110 transition-transform duration-300" /></Link>
           </button>
         </div>
 
