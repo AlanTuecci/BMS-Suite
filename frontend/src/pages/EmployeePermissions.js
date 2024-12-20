@@ -26,7 +26,7 @@ const EmployeePermissions = () => {
     cash: 0,
   });
   const [feedbackMessage, setFeedbackMessage] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const fetchEmployees = async () => {
     try {
@@ -50,21 +50,17 @@ const EmployeePermissions = () => {
   const fetchEmployeePermissions = async (employee_id) => {
     try {
       setModalLoading(true);
-  
-      const [
-        inventoryResponse,
-        laborResponse,
-        cashResponse,
-      ] = await Promise.all([
+
+      const [inventoryResponse, laborResponse, cashResponse] = await Promise.all([
         onGetInventoryAccessControlById(employee_id),
         onGetLaborAccessControlById(employee_id),
         onGetCashAccessControlById(employee_id),
       ]);
-  
+
       const inventoryPerm = inventoryResponse.data[0]?.access_control_level || 0;
       const laborPerm = laborResponse.data[0]?.access_control_level || 0;
       const cashPerm = cashResponse.data[0]?.access_control_level || 0;
-  
+
       setPermissions({
         inventory: inventoryPerm,
         labor: laborPerm,
@@ -152,12 +148,6 @@ const EmployeePermissions = () => {
     }
   };
 
-  if (loading)
-    return <p className="text-center text-gray-600">Loading employees...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (!employees.length)
-    return <p className="text-center text-gray-600">No employees found.</p>;
-
   const permissionLevels = [
     { level: 0, label: "Read" },
     { level: 1, label: "Record" },
@@ -182,7 +172,7 @@ const EmployeePermissions = () => {
             placeholder="Search Employees..."
             className="w-1/4 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-compblue focus:outline-none"
           />
-        
+
           <button
             className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple"
             onClick={() => navigate("/invite")}
@@ -191,6 +181,9 @@ const EmployeePermissions = () => {
           </button>
         </div>
 
+        {loading && <p className="text-center text-gray-600 mb-4">Loading employees...</p>}
+        {error && <p className="text-center text-red-500 mb-4">{error}</p>}
+
         <div className="font-mono text-gray-800">
           <div className="mb-4 text-gray-800 w-full flex bg-gray-100 rounded-lg p-3">
             <span className="w-1/4 font-semibold">Employee ID</span>
@@ -198,6 +191,10 @@ const EmployeePermissions = () => {
             <span className="w-1/4 font-semibold">Email</span>
             <span className="w-1/4 font-semibold">Date Added</span>
           </div>
+
+          {filteredEmployees.length === 0 && !loading && !error && (
+            <p className="text-center text-gray-600 mt-4">No employees found.</p>
+          )}
 
           {filteredEmployees.map((employee, index) => (
             <div
@@ -220,7 +217,7 @@ const EmployeePermissions = () => {
           ))}
         </div>
 
-        {isModalVisible && (
+        {isModalVisible && selectedEmployee && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-3xl p-6 w-full max-w-3xl">
               <h2 className="text-2xl font-semibold mb-6 text-center">
