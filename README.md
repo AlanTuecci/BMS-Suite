@@ -1,10 +1,12 @@
 # BMS-Suite
 
+A web-based service that provides inventory management, cash controls, and employee time-punch management.
+
 By Alan Tuecci, Zakaria Almardaee, and Dainell Baker
 
-### Version 0.3.1
+### Version 0.6.3
 
-Authenticator-Dev-1 -> Frontend Registration/Login Implementation
+Release-1 -> MVP Feature Release
 
 ### Dependency Information
 
@@ -21,7 +23,7 @@ npm install
 Required:
 
 - NodeJS version 20.10.0 or greater
-- PostgreSQL v16
+- PostgreSQL v16 or newer
 
 ### Database Setup
 
@@ -45,11 +47,13 @@ DEV_SERVER_PORT={dev_server_port}
 DEV_CLIENT_URL={dev_client_url}
 DEV_CLIENT_PORT={dev_client_port}
 DEV_SECRET={dev_jwt_secret}
+DEV_TIME_SECRET={dev_jwt_time_secret}
 
 PROD_SERVER_PORT={prod_server_port}
 PROD_CLIENT_URL={prod_client_url}
 PROD_CLIENT_PORT={prod_server_port}
 PROD_SECRET={prod_jwt_secret}
+PROD_TIME_SECRET={dev_jwt_time_secret}
 ```
 
 Then, create a `.env` file in the (frontend) project root with the following content:
@@ -66,19 +70,16 @@ Note: Instructions for obtaining an app password from Google can be found at thi
 First, make sure the environment is running in dev mode by using the following command:
 
 (For Windows machines)
-
 ```bat
 SET NODE_ENV=development
 ```
 
 (For linux/mac machines)
-
 ```bash
 EXPORT NODE_ENV=development
 ```
 
 Then, launch the ExpressJS server by using the following commands:
-
 ```bash
 cd backend
 npm run dev
@@ -87,30 +88,29 @@ npm run dev
 This will launch ExpressJS in development mode, with Nodemon, which will restart the server once changes to the files are detected
 
 Once the ExpressJS server is running, launch the ReactJS development server in a separate terminal instance with the following commands:
-
 ```bash
 cd frontend
 npm start
 ```
+
+Note: Please ensure that the urls/ports are matching in the frontend and backend ENV files.
+If the server is listening on port 8080, make sure the frontend is sending requests to port 8080.
 
 ### To launch a production build
 
 First, make sure the environment is running in prod mode by using the following command:
 
 (For Windows machines)
-
 ```bat
 SET NODE_ENV=production
 ```
 
 (For linux/mac machines)
-
 ```bash
 EXPORT NODE_ENV=production
 ```
 
 Then build the static frontend files and start the server using the following commands:
-
 ```bash
 cd frontend
 npm run build
