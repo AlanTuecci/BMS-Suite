@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const { NODE_ENV, SERVER_PORT, CLIENT_URL, CLIENT_PORT } = require("./constants");
 const cookieParser = require("cookie-parser");
+const lusca = require("lusca");
 const passport = require("passport");
 const cors = require("cors");
 const path = require("path");
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: clientUrlString, credentials: true }));
 app.use(passport.initialize());
+app.use(lusca.csrf());
 app.use(limiter);
 
 //import routes
