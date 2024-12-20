@@ -4,7 +4,7 @@ A web-based service that provides inventory management, cash controls, and emplo
 
 By Alan Tuecci, Zakaria Almardaee, and Dainell Baker
 
-### Version 0.6.3
+### Version 0.6.6
 
 Release-1 -> MVP Feature Release
 
