@@ -75,7 +75,7 @@ function RegisterDeposits() {
   };
 
   const navigateToDeposit = (deposit) => {
-    navigate(`/update-deposit`, { state: { deposit_id: deposit.deposit_id } });
+    navigate(`/bms-suite/update-deposit`, { state: { deposit_id: deposit.deposit_id } });
   };
 
   const totalPages = Math.ceil(numDeposits / depositsPerPage);
@@ -95,7 +95,7 @@ function RegisterDeposits() {
             {(userType === "company" || cashAccessLevel > 1) && (
               <button
                 className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple"
-                onClick={() => navigate(`/cash-control`)}
+                onClick={() => navigate(`/bms-suite/cash-control`)}
               >
                 Safe Counts
               </button>
@@ -216,7 +216,6 @@ function RegisterDeposits() {
                     />
                   </div>
                 </div>
-
 
                 <div className="flex justify-end gap-2">
                   <button

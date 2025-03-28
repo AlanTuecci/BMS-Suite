@@ -24,17 +24,18 @@ const EmployeeShifts = () => {
 
   const fetchShifts = async () => {
     try {
-      const response = isToday && isActiveShifts 
-        ? await onGetAllActiveShifts() 
-        : await onGetAllPastShifts(new Date(selectedDate).getMonth() + 1);
-      
+      const response =
+        isToday && isActiveShifts
+          ? await onGetAllActiveShifts()
+          : await onGetAllPastShifts(new Date(selectedDate).getMonth() + 1);
+
       const filteredData = response.data.filter((shift) => {
         const shiftDate = new Date(shift.clock_in_timestamp).toLocaleDateString().split("T")[0];
-        
+
         const parseLocaleDateString = (dateString) => {
-          const [month, day, year] = dateString.split('/');
+          const [month, day, year] = dateString.split("/");
           return new Date(`${year}-${month}-${day}`);
-        }
+        };
 
         const parsedDate = parseLocaleDateString(shiftDate);
 
@@ -58,9 +59,7 @@ const EmployeeShifts = () => {
     setIsActiveShifts(shiftType === "active");
   };
 
-  const filteredShifts = shiftData.filter((shift) =>
-    shift.employee_id.toString().includes(searchTerm)
-  );
+  const filteredShifts = shiftData.filter((shift) => shift.employee_id.toString().includes(searchTerm));
 
   return (
     <div className="flex h-screen bg-white">
@@ -68,9 +67,7 @@ const EmployeeShifts = () => {
       <div className="flex-grow p-8 ml-16">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-5xl font-light text-gray-800 mb-2 leading-tight">
-              Employee Shifts for {selectedDate}
-            </h1>
+            <h1 className="text-5xl font-light text-gray-800 mb-2 leading-tight">Employee Shifts for {selectedDate}</h1>
             <p className="text-gray-600">Manage Employee Shifts Here</p>
           </div>
           <button
@@ -116,9 +113,7 @@ const EmployeeShifts = () => {
           </div>
         )}
 
-        {errorMessage && (
-          <p className="text-red-600 mb-4 text-center">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="text-red-600 mb-4 text-center">{errorMessage}</p>}
 
         <div className="font-mono text-gray-800">
           <div className="mb-4 text-gray-800 w-full flex bg-gray-100 rounded-lg p-3">
@@ -133,29 +128,19 @@ const EmployeeShifts = () => {
           {filteredShifts.map((shift, index) => (
             <div
               key={shift.shift_id}
-              className={`mb-2 w-full flex items-center p-2 ${
-                index % 2 === 0 ? "" : "bg-gray-100 rounded-md"
-              }`}
+              className={`mb-2 w-full flex items-center p-2 ${index % 2 === 0 ? "" : "bg-gray-100 rounded-md"}`}
             >
               <span className="w-1/6">{shift.employee_id}</span>
               <span className="w-1/6">{shift.shift_id}</span>
+              <span className="w-1/6">{new Date(shift.clock_in_timestamp).toLocaleTimeString()}</span>
               <span className="w-1/6">
-                {new Date(shift.clock_in_timestamp).toLocaleTimeString()}
+                {shift.break_start_timestamp ? new Date(shift.break_start_timestamp).toLocaleTimeString() : "N/A"}
               </span>
               <span className="w-1/6">
-                {shift.break_start_timestamp
-                  ? new Date(shift.break_start_timestamp).toLocaleTimeString()
-                  : "N/A"}
+                {shift.break_end_timestamp ? new Date(shift.break_end_timestamp).toLocaleTimeString() : "N/A"}
               </span>
               <span className="w-1/6">
-                {shift.break_end_timestamp
-                  ? new Date(shift.break_end_timestamp).toLocaleTimeString()
-                  : "N/A"}
-              </span>
-              <span className="w-1/6">
-                {shift.clock_out_timestamp
-                  ? new Date(shift.clock_out_timestamp).toLocaleTimeString()
-                  : "N/A"}
+                {shift.clock_out_timestamp ? new Date(shift.clock_out_timestamp).toLocaleTimeString() : "N/A"}
               </span>
             </div>
           ))}

@@ -66,17 +66,10 @@ const TimeManagement = () => {
   const calendarWeeks = generateCalendar(year, month);
 
   const fetchShiftDays = async () => {
-    const apiUrl =
-      userType === "employee"
-        ? "/api/employee/getPastShifts"
-        : "/api/company/getPastShifts";
+    const apiUrl = userType === "employee" ? "/bms-suite/api/employee/getPastShifts" : "/bms-suite/api/company/getPastShifts";
 
     try {
-      const response = await axios.post(
-        apiUrl,
-        { month_num: month + 1 },
-        { withCredentials: true }
-      );
+      const response = await axios.post(apiUrl, { month_num: month + 1 }, { withCredentials: true });
       const shiftData = response.data;
 
       const shiftsGroupedByDay = shiftData.reduce((acc, shift) => {
@@ -93,12 +86,8 @@ const TimeManagement = () => {
       shiftData.forEach((shift) => {
         const clockIn = new Date(shift.clock_in_timestamp).getTime();
         const clockOut = new Date(shift.clock_out_timestamp).getTime();
-        const breakStart = shift.break_start_timestamp
-          ? new Date(shift.break_start_timestamp).getTime()
-          : null;
-        const breakEnd = shift.break_end_timestamp
-          ? new Date(shift.break_end_timestamp).getTime()
-          : null;
+        const breakStart = shift.break_start_timestamp ? new Date(shift.break_start_timestamp).getTime() : null;
+        const breakEnd = shift.break_end_timestamp ? new Date(shift.break_end_timestamp).getTime() : null;
 
         if (clockOut > clockIn) {
           totalTime += clockOut - clockIn;
@@ -125,11 +114,7 @@ const TimeManagement = () => {
   const fetchActiveShiftDays = async () => {
     if (userType !== "company") return;
     try {
-      const response = await axios.post(
-        "/api/company/getActiveShifts",
-        {},
-        { withCredentials: true }
-      );
+      const response = await axios.post("/bms-suite/api/company/getActiveShifts", {}, { withCredentials: true });
       const activeShiftData = response.data;
 
       const activeShiftsGroupedByDay = activeShiftData.reduce((acc, shift) => {
@@ -151,19 +136,19 @@ const TimeManagement = () => {
     const monthX = (selectedDateObj.getMonth() + 1).toString().padStart(2, "0");
     const dayX = selectedDateObj.getDate().toString().padStart(2, "0");
     const formattedSelectedDate = `${yearX}-${monthX}-${dayX}`;
-  
+
     const todayDate = today.toISOString().split("T")[0];
     const isToday = formattedSelectedDate === todayDate;
-  
+
     const pastShiftsForDay = shiftDays[day];
     const activeShiftsForDay = activeShiftDays[day];
     const shiftsForDay = [...(pastShiftsForDay || []), ...(activeShiftsForDay || [])];
-  
+
     if (shiftsForDay.length > 0) {
       setSelectedDate(formattedSelectedDate);
-  
+
       if (userType === "company") {
-        navigate("/employee-shifts", {
+        navigate("/bms-suite/employee-shifts", {
           state: { date: formattedSelectedDate, shifts: shiftsForDay, isToday },
         });
       } else {
@@ -172,7 +157,6 @@ const TimeManagement = () => {
       }
     }
   };
-  
 
   useEffect(() => {
     fetchShiftDays();
@@ -224,9 +208,7 @@ const TimeManagement = () => {
                 <tr key={rowIndex} className="h-24">
                   {week.map((day, colIndex) => {
                     const isToday =
-                      day === today.getDate() &&
-                      month === today.getMonth() &&
-                      year === today.getFullYear();
+                      day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
                     const hasShift = shiftDays[day] || activeShiftDays[day];
                     return (
                       <td
@@ -256,31 +238,23 @@ const TimeManagement = () => {
       {showModal && selectedShifts.length > 0 && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold mb-4 text-center">
-              Shift Details for {selectedDate}
-            </h2>
+            <h2 className="text-xl font-semibold mb-4 text-center">Shift Details for {selectedDate}</h2>
             <div className="flex flex-col items-center">
               {selectedShifts.map((shift, index) => (
                 <div key={index} className="mb-4 w-full">
                   <p className="text-center">
-                    <strong>Clock In:</strong>{" "}
-                    {new Date(shift.clock_in_timestamp).toLocaleTimeString()}
+                    <strong>Clock In:</strong> {new Date(shift.clock_in_timestamp).toLocaleTimeString()}
                   </p>
                   <p className="text-center">
                     <strong>Break Start:</strong>{" "}
-                    {shift.break_start_timestamp
-                      ? new Date(shift.break_start_timestamp).toLocaleTimeString()
-                      : "N/A"}
+                    {shift.break_start_timestamp ? new Date(shift.break_start_timestamp).toLocaleTimeString() : "N/A"}
                   </p>
                   <p className="text-center">
                     <strong>Break End:</strong>{" "}
-                    {shift.break_end_timestamp
-                      ? new Date(shift.break_end_timestamp).toLocaleTimeString()
-                      : "N/A"}
+                    {shift.break_end_timestamp ? new Date(shift.break_end_timestamp).toLocaleTimeString() : "N/A"}
                   </p>
                   <p className="text-center">
-                    <strong>Clock Out:</strong>{" "}
-                    {new Date(shift.clock_out_timestamp).toLocaleTimeString()}
+                    <strong>Clock Out:</strong> {new Date(shift.clock_out_timestamp).toLocaleTimeString()}
                   </p>
                 </div>
               ))}

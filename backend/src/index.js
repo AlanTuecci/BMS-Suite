@@ -31,7 +31,7 @@ const checkConnect = require("./db/connectCheck");
 const { checkVersion } = require("./db/checkVersion");
 
 //initilize routes
-app.use("/api", authRoutes);
+app.use("/bms-suite/api", authRoutes);
 
 //serve static files
 app.use(express.static(path.join(__dirname, "../../frontend/build")));

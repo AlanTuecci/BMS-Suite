@@ -30,14 +30,14 @@ export const AuthProvider = ({ children }) => {
       cashAccessLevel: -1,
     });
 
-    navigate("/home");
+    navigate("/bms-suite");
   };
 
   useEffect(() => {
     const fetchUserAuth = async () => {
       setLoading(true);
       try {
-        const response = await axios.post("/api/auth", {}, { withCredentials: true });
+        const response = await axios.post("/bms-suite/api/auth", {}, { withCredentials: true });
         const { user_type, inventory_access_level, labor_access_level, cash_access_level } = response.data;
 
         setAuthState({
@@ -108,9 +108,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ authState, loginUser, timeLoginUser, logoutUser, registerUser, loading }}
-    >
+    <AuthContext.Provider value={{ authState, loginUser, timeLoginUser, logoutUser, registerUser, loading }}>
       {loading ? (
         <div className="flex justify-center items-center h-screen bg-gray-100">
           <div className="text-gray-600 text-xl">Loading...</div>

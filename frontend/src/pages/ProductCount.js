@@ -7,7 +7,7 @@ import {
   onRecordProductCounts,
   onUpdateProductCounts,
   onDeleteProductCounts,
-  onGetNumProductCounts
+  onGetNumProductCounts,
 } from "../api/auth";
 
 function ProductCount() {
@@ -199,7 +199,7 @@ function ProductCount() {
           )}
           <button
             className="bg-white border-compblue border-2 text-compblue px-4 py-2 rounded-lg hover:bg-gray-400"
-            onClick={() => navigate("/inventory-summary")}
+            onClick={() => navigate("/bms-suite/inventory-summary")}
           >
             Go Back
           </button>
@@ -218,13 +218,9 @@ function ProductCount() {
           {history.map((entry, index) => (
             <div
               key={entry.product_count_id}
-              className={`mb-2 w-full flex items-center p-2 ${
-                index % 2 === 0 ? "" : "bg-gray-100 rounded-md"
-              }`}
+              className={`mb-2 w-full flex items-center p-2 ${index % 2 === 0 ? "" : "bg-gray-100 rounded-md"}`}
             >
-              <span className="w-1/5 text-center">
-                {new Date(entry.count_timestamp).toLocaleString()}
-              </span>
+              <span className="w-1/5 text-center">{new Date(entry.count_timestamp).toLocaleString()}</span>
               <span className="w-1/5 text-center">{entry.employee_id}</span>
               <span className="w-1/5 text-center">{entry.on_hand_loose_unit_count}</span>
               <span className="w-1/5 text-center">{entry.on_hand_tray_count}</span>
@@ -304,10 +300,7 @@ function ProductCount() {
                   >
                     Cancel
                   </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-compblue text-white rounded-md hover:bg-lighter_purple"
-                  >
+                  <button type="submit" className="px-4 py-2 bg-compblue text-white rounded-md hover:bg-lighter_purple">
                     Record Count
                   </button>
                 </div>
@@ -368,10 +361,7 @@ function ProductCount() {
                       Delete
                     </button>
                   )}
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-compblue text-white rounded-md hover:bg-lighter_purple"
-                  >
+                  <button type="submit" className="px-4 py-2 bg-compblue text-white rounded-md hover:bg-lighter_purple">
                     Update
                   </button>
                 </div>

@@ -71,17 +71,11 @@ const Register = () => {
       <Navbar />
       <div className="flex flex-col lg:flex-row items-center justify-center lg:space-x-12 py-12 px-6 lg:px-16">
         <div className="w-full lg:w-3/5 flex justify-center lg:justify-end mb-10 lg:mb-0">
-          <img
-            src={registerImage}
-            alt="Register"
-            className="w-4/5 lg:w-full object-contain rounded-3xl shadow-lg"
-          />
+          <img src={registerImage} alt="Register" className="w-4/5 lg:w-full object-contain rounded-3xl shadow-lg" />
         </div>
         <div className="w-full lg:w-2/5 bg-white p-8 rounded-lg shadow-lg space-y-6">
           <div className="text-center lg:text-left">
-            <h1 className="text-3xl font-extrabold text-[#14213D]">
-              Create an Account
-            </h1>
+            <h1 className="text-3xl font-extrabold text-[#14213D]">Create an Account</h1>
             <p className="text-[#14213D] mt-2">Register your account below</p>
           </div>
           <form onSubmit={onSubmit} className="space-y-6">
@@ -96,9 +90,7 @@ const Register = () => {
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors.email && (
-                <div className="text-red-600 text-sm">{errors.email}</div>
-              )}
+              {errors.email && <div className="text-red-600 text-sm">{errors.email}</div>}
             </div>
 
             {userType === "company" && (
@@ -113,11 +105,7 @@ const Register = () => {
                   className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                   required
                 />
-                {errors.company_info && (
-                  <div className="text-red-600 text-sm">
-                    {errors.company_info}
-                  </div>
-                )}
+                {errors.company_info && <div className="text-red-600 text-sm">{errors.company_info}</div>}
               </div>
             )}
 
@@ -133,9 +121,7 @@ const Register = () => {
                   className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                   required
                 />
-                {errors.full_name && (
-                  <div className="text-red-600 text-sm">{errors.full_name}</div>
-                )}
+                {errors.full_name && <div className="text-red-600 text-sm">{errors.full_name}</div>}
               </div>
             )}
 
@@ -150,9 +136,7 @@ const Register = () => {
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors.password && (
-                <div className="text-red-600 text-sm">{errors.password}</div>
-              )}
+              {errors.password && <div className="text-red-600 text-sm">{errors.password}</div>}
             </div>
 
             <div>
@@ -168,11 +152,7 @@ const Register = () => {
                 }`}
                 required
               />
-              {errors.confirmPassword && (
-                <div className="text-red-600 text-sm">
-                  {errors.confirmPassword}
-                </div>
-              )}
+              {errors.confirmPassword && <div className="text-red-600 text-sm">{errors.confirmPassword}</div>}
             </div>
 
             <div>
@@ -181,26 +161,14 @@ const Register = () => {
                 name={userType === "employee" ? "invite_code" : "company_ein"}
                 id={userType === "employee" ? "invite_code" : "company_ein"}
                 onChange={onChange}
-                value={
-                  userType === "employee"
-                    ? values.invite_code
-                    : values.company_ein
-                }
-                placeholder={
-                  userType === "employee" ? "Invite Code" : "Company EIN"
-                }
+                value={userType === "employee" ? values.invite_code : values.company_ein}
+                placeholder={userType === "employee" ? "Invite Code" : "Company EIN"}
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors[
-                userType === "employee" ? "invite_code" : "company_ein"
-              ] && (
+              {errors[userType === "employee" ? "invite_code" : "company_ein"] && (
                 <div className="text-red-600 text-sm">
-                  {
-                    errors[
-                      userType === "employee" ? "invite_code" : "company_ein"
-                    ]
-                  }
+                  {errors[userType === "employee" ? "invite_code" : "company_ein"]}
                 </div>
               )}
             </div>
@@ -220,7 +188,7 @@ const Register = () => {
             <p className="text-gray-600">
               Already have an account?{" "}
               <Link
-                to={`/login?userType=${userType}`}
+                to={`/bms-suite/login?userType=${userType}`}
                 className="text-[#454FE1] font-semibold hover:underline"
               >
                 Log in here

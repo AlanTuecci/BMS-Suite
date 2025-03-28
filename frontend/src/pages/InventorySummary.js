@@ -43,9 +43,10 @@ function InventorySummary() {
   }, [userType]);
 
   useEffect(() => {
-    const filtered = products.filter((product) =>
-      product.product_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.product_sku.toString().includes(searchTerm)
+    const filtered = products.filter(
+      (product) =>
+        product.product_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.product_sku.toString().includes(searchTerm)
     );
     setFilteredProducts(filtered);
     setCurrentPage(1);
@@ -74,7 +75,7 @@ function InventorySummary() {
   };
 
   const navigateToProductCount = (product) => {
-    navigate(`/product-count`, { state: { productSku: product.product_sku } });
+    navigate(`/bms-suite/product-count`, { state: { productSku: product.product_sku } });
   };
 
   const getPaginatedProducts = () => {
@@ -92,12 +93,8 @@ function InventorySummary() {
     <div className="flex h-screen bg-white">
       <Sidebar />
       <div className="flex-grow p-8 ml-16">
-        <h1 className="text-5xl font-light text-gray-800 mb-4 leading-tight">
-          Inventory Summary
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Track and manage your product inventory here.
-        </p>
+        <h1 className="text-5xl font-light text-gray-800 mb-4 leading-tight">Inventory Summary</h1>
+        <p className="text-gray-600 mb-6">Track and manage your product inventory here.</p>
 
         <div className="mb-6 flex items-center gap-4">
           <input
@@ -132,9 +129,7 @@ function InventorySummary() {
           {getPaginatedProducts().map((product, index) => (
             <div
               key={product.product_sku}
-              className={`mb-2 w-full flex items-center p-2 ${
-                index % 2 === 0 ? "" : "bg-gray-100 rounded-md"
-              }`}
+              className={`mb-2 w-full flex items-center p-2 ${index % 2 === 0 ? "" : "bg-gray-100 rounded-md"}`}
             >
               <span className="w-1/5 text-center">#{product.product_sku}</span>
               <span className="w-1/5 text-center">{product.product_name}</span>
@@ -143,8 +138,7 @@ function InventorySummary() {
                 {new Date(product.count_timestamp).toLocaleString()}
               </span>
               <span className="w-1/5 text-center">
-                {product.on_hand_loose_unit_count} | {product.on_hand_tray_count} |{" "}
-                {product.on_hand_case_count}
+                {product.on_hand_loose_unit_count} | {product.on_hand_tray_count} | {product.on_hand_case_count}
               </span>
               <div className="w-1/5 text-right">
                 <button
@@ -220,10 +214,7 @@ function InventorySummary() {
                   >
                     Cancel
                   </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-compblue text-white rounded-md hover:bg-lighter_purple"
-                  >
+                  <button type="submit" className="px-4 py-2 bg-compblue text-white rounded-md hover:bg-lighter_purple">
                     Add Product
                   </button>
                 </div>

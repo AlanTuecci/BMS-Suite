@@ -1,7 +1,8 @@
 {
   "name": "bms-suite-client",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "private": true,
+  "homepage": "/bms-suite",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "@testing-library/jest-dom": "^5.17.0",

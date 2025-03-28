@@ -38,9 +38,7 @@ const ClockIn = () => {
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-    const filtered = employees.filter((employee) =>
-      employee.full_name.toLowerCase().includes(term)
-    );
+    const filtered = employees.filter((employee) => employee.full_name.toLowerCase().includes(term));
     setFilteredEmployees(filtered);
   };
 
@@ -116,9 +114,7 @@ const ClockIn = () => {
     <div className="flex h-screen bg-white">
       <Sidebar />
       <div className="flex-grow p-8 ml-16">
-        <h1 className="text-5xl font-light text-gray-800 mb-4 mt-4 leading-tight">
-          Clock In
-        </h1>
+        <h1 className="text-5xl font-light text-gray-800 mb-4 mt-4 leading-tight">Clock In</h1>
         <p className="text-gray-600 mb-6">Select an employee to clock in:</p>
 
         <div className="mb-6">
@@ -135,9 +131,7 @@ const ClockIn = () => {
           {filteredEmployees.map((employee, index) => (
             <div
               key={employee.employee_id}
-              className={`mb-2 w-full flex items-center p-2 ${
-                index % 2 === 1 ? "" : "bg-gray-100 rounded-md"
-              }`}
+              className={`mb-2 w-full flex items-center p-2 ${index % 2 === 1 ? "" : "bg-gray-100 rounded-md"}`}
               onClick={() => handleEmployeeClick(employee)}
             >
               <span className="w-1/2">#{employee.employee_id}</span>
@@ -150,9 +144,7 @@ const ClockIn = () => {
       {modalVisible && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold mb-4">
-              {selectedEmployee.full_name}
-            </h2>
+            <h2 className="text-xl font-semibold mb-4">{selectedEmployee.full_name}</h2>
             {!employeeState ? (
               <>
                 <p className="text-gray-600 mb-4">Enter your 4-digit PIN to authenticate.</p>
@@ -165,13 +157,13 @@ const ClockIn = () => {
                 />
                 {pinError && <p className="text-red-600">{pinError}</p>}
                 <div className="flex justify-end gap-4">
-                  <button onClick={closeModal} className="bg-white text-compblue border-2 border-compblue rounded-md px-4 py-2">
+                  <button
+                    onClick={closeModal}
+                    className="bg-white text-compblue border-2 border-compblue rounded-md px-4 py-2"
+                  >
                     Cancel
                   </button>
-                  <button
-                    onClick={handlePinSubmit}
-                    className="bg-compblue text-white rounded-md px-4 py-2"
-                  >
+                  <button onClick={handlePinSubmit} className="bg-compblue text-white rounded-md px-4 py-2">
                     Submit
                   </button>
                 </div>
@@ -187,26 +179,41 @@ const ClockIn = () => {
                 </p>
                 <div className="flex flex-col gap-4">
                   {!employeeState.clocked_in && (
-                    <button onClick={() => handleAction("clock_in")} className="bg-compblue hover:bg-lighter_purple rounded-md text-white p-2">
+                    <button
+                      onClick={() => handleAction("clock_in")}
+                      className="bg-compblue hover:bg-lighter_purple rounded-md text-white p-2"
+                    >
                       Clock In
                     </button>
                   )}
                   {employeeState.clocked_in && employeeState.on_break && (
-                    <button onClick={() => handleAction("break_end")} className="bg-compblue hover:bg-lighter_purple rounded-md text-white p-2">
+                    <button
+                      onClick={() => handleAction("break_end")}
+                      className="bg-compblue hover:bg-lighter_purple rounded-md text-white p-2"
+                    >
                       End Break
                     </button>
                   )}
                   {employeeState.clocked_in && !employeeState.on_break && !employeeState.had_break && (
-                    <button onClick={() => handleAction("break_start")} className="bg-compblue hover:bg-lighter_purple rounded-md text-white p-2">
+                    <button
+                      onClick={() => handleAction("break_start")}
+                      className="bg-compblue hover:bg-lighter_purple rounded-md text-white p-2"
+                    >
                       Start Break
                     </button>
                   )}
                   {employeeState.clocked_in && employeeState.had_break && !employeeState.on_break && (
-                    <button onClick={() => handleAction("clock_out")} className="bg-compblue hover:bg-lighter_purple rounded-md text-white p-2">
+                    <button
+                      onClick={() => handleAction("clock_out")}
+                      className="bg-compblue hover:bg-lighter_purple rounded-md text-white p-2"
+                    >
                       Clock Out
                     </button>
                   )}
-                  <button onClick={() => handleAction("sign_out")} className="bg-white text-compblue border-2 border-compblue rounded-md p-2">
+                  <button
+                    onClick={() => handleAction("sign_out")}
+                    className="bg-white text-compblue border-2 border-compblue rounded-md p-2"
+                  >
                     Cancel
                   </button>
                 </div>

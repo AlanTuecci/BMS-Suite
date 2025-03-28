@@ -105,7 +105,7 @@ function SafeCounts() {
   };
 
   const navigateToSafeCount = (count) => {
-    navigate(`/update-safe-count`, { state: { count } });
+    navigate(`/bms-suite/update-safe-count`, { state: { count } });
   };
 
   const totalPages = Math.ceil(numCounts / countsPerPage);
@@ -123,7 +123,7 @@ function SafeCounts() {
             {(userType === "company" || cashAccessLevel > 1) && (
               <button
                 className="bg-compblue text-white px-4 py-2 rounded-lg hover:bg-lighter_purple"
-                onClick={() => navigate(`/register-deposit`)}
+                onClick={() => navigate(`/bms-suite/register-deposit`)}
               >
                 Register Deposits
               </button>

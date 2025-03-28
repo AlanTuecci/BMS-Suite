@@ -34,7 +34,7 @@ const Login = () => {
     if (success) {
       setErrors({});
       setSuccess("Login successful!");
-      navigate("/dashboard");
+      navigate("/bms-suite/dashboard");
     } else {
       const errorObj = {};
       errors.forEach((err) => {
@@ -50,17 +50,11 @@ const Login = () => {
       <Navbar />
       <div className="flex flex-col lg:flex-row items-center justify-center lg:space-x-12 py-12 px-6 lg:px-16">
         <div className="w-full lg:w-3/5 flex justify-center lg:justify-end mb-10 lg:mb-0">
-          <img
-            src={loginImage}
-            alt="Login"
-            className="w-4/5 lg:w-full object-contain rounded-3xl shadow-lg"
-          />
+          <img src={loginImage} alt="Login" className="w-4/5 lg:w-full object-contain rounded-3xl shadow-lg" />
         </div>
         <div className="w-full lg:w-2/5 bg-white p-8 rounded-lg shadow-lg space-y-6">
           <div className="text-center lg:text-left">
-            <h1 className="text-3xl font-extrabold text-gray-900">
-              Log In To Your Account
-            </h1>
+            <h1 className="text-3xl font-extrabold text-gray-900">Log In To Your Account</h1>
           </div>
           <form onSubmit={onSubmit} className="space-y-6">
             <div>
@@ -74,9 +68,7 @@ const Login = () => {
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors.email && (
-                <div className="text-red-600 text-sm">{errors.email}</div>
-              )}
+              {errors.email && <div className="text-red-600 text-sm">{errors.email}</div>}
             </div>
 
             <div>
@@ -90,9 +82,7 @@ const Login = () => {
                 className="w-full p-3 border-b-2 border-[#14213D] text-gray-800 focus:outline-none focus:border-[#454FE1]"
                 required
               />
-              {errors.password && (
-                <div className="text-red-600 text-sm">{errors.password}</div>
-              )}
+              {errors.password && <div className="text-red-600 text-sm">{errors.password}</div>}
             </div>
             {success && <div className="text-green-600 text-sm">{success}</div>}
             <div>
@@ -108,7 +98,7 @@ const Login = () => {
             <p className="text-gray-600">
               Don't have an account?{" "}
               <Link
-                to={`/register?userType=${userType}`}
+                to={`/bms-suite/register?userType=${userType}`}
                 className="text-[#454FE1] font-semibold hover:underline"
               >
                 Sign up here

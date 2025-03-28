@@ -20,7 +20,7 @@ function Dashboard() {
   const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-US", {
     day: "2-digit",
@@ -107,25 +107,23 @@ function Dashboard() {
       setErrorMessage("Please enter both email and password.");
       return;
     }
-  
+
     setLoading(true);
     setErrorMessage("");
-  
+
     try {
       const loginData = { email, password };
       const response = await onTimeLogin(loginData, navigate);
-  
+
       if (response.data.success) {
         setShowTimeLoginModal(false);
-        navigate("/clock-in");
+        navigate("/bms-suite/clock-in");
         window.location.reload();
       } else {
         setErrorMessage(response.data.message || "Login failed. Try again.");
       }
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.msg || "An error occurred. Please try again."
-      );
+      setErrorMessage(error.response?.data?.errors?.[0]?.msg || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
