@@ -2,6 +2,9 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { onLogin, onRegistration, onTimeLogin, onLogout } from "../api/auth";
 
+const API_URL =
+  process.env.NODE_ENV === "development" ? process.env.REACT_APP_DEV_API_URL : process.env.REACT_APP_API_URL_PROD;
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -37,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     const fetchUserAuth = async () => {
       setLoading(true);
       try {
-        const response = await axios.post("/bms-suite/api/auth", {}, { withCredentials: true });
+        const response = await axios.post(`${API_URL}/auth`, {}, { withCredentials: true });
         const { user_type, inventory_access_level, labor_access_level, cash_access_level } = response.data;
 
         setAuthState({

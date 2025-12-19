@@ -84,28 +84,28 @@ const Home = () => {
         </div>
       </div>
 
-      <div class="relative">
-        <div class="flex flex-col justify-center items-center bg-bkgd md:mt-4 mt-16 py-12 pb-20">
-          <h1 class="items-center text-txt_color text-4xl font-bold text-center mb-2">
+      <div className="relative">
+        <div className="flex flex-col justify-center items-center bg-bkgd md:mt-4 mt-16 py-12 pb-20">
+          <h1 className="items-center text-txt_color text-4xl font-bold text-center mb-2">
             Customized Plans <br /> For Your Business Needs
           </h1>
-          <p class="text-txt_color text-base mb-2">Flexible Pricing For Any Business Size</p>
+          <p className="text-txt_color text-base mb-2">Flexible Pricing For Any Business Size</p>
 
-          <div class="py-5 text-txt_color">
-            <ul class="flex gap-10">
-              <li class="text-center px-4">
-                <h2 class="text-4xl font-bold mb-2">300</h2>
-                <p class="text-base font-medium">Active Users</p>
+          <div className="py-5 text-txt_color">
+            <ul className="flex gap-10">
+              <li className="text-center px-4">
+                <h2 className="text-4xl font-bold mb-2">300</h2>
+                <p className="text-base font-medium">Active Users</p>
               </li>
-              <li class="text-center px-4">
-                <h2 class="text-4xl font-bold mb-2">35%</h2>
-                <p class="text-base font-medium">
+              <li className="text-center px-4">
+                <h2 className="text-4xl font-bold mb-2">35%</h2>
+                <p className="text-base font-medium">
                   Boosts <br /> Productivity
                 </p>
               </li>
-              <li class="text-center px-4">
-                <h2 class="text-4xl font-bold mb-2">4.8/5</h2>
-                <p class="text-base font-medium">
+              <li className="text-center px-4">
+                <h2 className="text-4xl font-bold mb-2">4.8/5</h2>
+                <p className="text-base font-medium">
                   From User <br /> Feedback Survey
                 </p>
               </li>
@@ -113,18 +113,18 @@ const Home = () => {
           </div>
         </div>
 
-        <footer class="bg-[#E5E4FF] w-full mt-16 py-12 pb-20 z-10">
-          <div class="flex flex-col justify-center items-center text-txt_color"></div>
+        <footer className="bg-[#E5E4FF] w-full mt-16 py-12 pb-20 z-10">
+          <div className="flex flex-col justify-center items-center text-txt_color"></div>
         </footer>
 
-        <div class="flex justify-center items-center">
-          <div class=" flex justify-between bg-[#17118A] w-[60%] h-180 absolute bottom-75 z-20 rounded-3xl text-bkgd ">
-            <div class="flex flex-col justify-center px-4">
-              <h2 class="text-2xl font-semibold">
+        <div className="flex justify-center items-center">
+          <div className=" flex justify-between bg-[#17118A] w-[60%] h-180 absolute bottom-75 z-20 rounded-3xl text-bkgd ">
+            <div className="flex flex-col justify-center px-4">
+              <h2 className="text-2xl font-semibold">
                 {" "}
                 Ready to Take Control <br /> Of Your Business with Ease?
               </h2>
-              <p class="text-sm font-medium">Transforming Business Management with and All-In-One Solution</p>
+              <p className="text-sm font-medium">Transforming Business Management with and All-In-One Solution</p>
             </div>
           </div>
         </div>

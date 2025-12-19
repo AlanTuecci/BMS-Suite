@@ -58,6 +58,11 @@ const { getNumDeposits } = require("../shared_utilities/inventory_data/getNumDep
 
 const router = Router();
 
+//simple health check
+router.get("/health", (req, res) => {
+  return res.status(200).json("BMS-Suite server online!");
+});
+
 //--Auth Route
 router.post("/auth", userAuth, returnAllUserTypeAndPermissionLevels);
 

@@ -33,15 +33,23 @@ const { checkVersion } = require("./db/checkVersion");
 //initilize routes
 app.use("/bms-suite/api", authRoutes);
 
-//serve static files
-app.use("/bms-suite", express.static(path.join(__dirname, "static")));
+//static files will be served by a load balancer in production
+if (NODE_ENV != "production") {
+  //serve static files
+  app.use("/bms-suite", express.static(path.join(__dirname, "static")));
 
-//fixes the "cannot GET /url" error when refreshing the client-side app.
-//ensures that all server requests will be redirected to index.html, which
-//will make sure that the react-router-dom will handle the appropriate requests.
-app.get("/bms-suite/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "static", "index.html"));
-});
+  //fixes the "cannot GET /url" error when refreshing the client-side app.
+  //ensures that all server requests will be redirected to index.html, which
+  //will make sure that the react-router-dom will handle the appropriate requests.
+  app.get("/bms-suite/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "static", "index.html"));
+  });
+
+  //redirect from '/' to '/bms-suite'
+  app.get("/", (req, res) => {
+    res.redirect("/bms-suite");
+  });
+}
 
 //exporting the app (for testing)
 module.exports = app;

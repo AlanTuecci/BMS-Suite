@@ -1,9 +1,76 @@
 services:
-  app:
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "80:80"
+      target: final
     env_file:
       - ./backend/.env
+    networks:
+      - private
+      - public
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/bms-suite/api/health"]
+      interval: 5s
+      retries: 5
+      timeout: 5s
+
+  nginx:
+    image: nginx:1.29-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - frontend_static:/usr/share/nginx/html/bms-suite/:ro
+    networks:
+      - public
+    restart: always
+    depends_on:
+      backend:
+        condition: service_healthy
+        restart: true
+
+  postgres:
+    image: postgres:18-alpine
+    restart: always
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend/database.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg_database:/var/lib/postgresql/data
+    networks:
+      - private
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend-build
+    volumes:
+      - frontend_static:/usr/local/app/build
+
+configs:
+  nginx_config:
+    file: ./nginx.conf
+
+networks:
+  public:
+  private:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "10.0.0.0/19"
+          gateway: "10.0.0.1"
+
+volumes:
+  pg_database:
+  frontend_static:

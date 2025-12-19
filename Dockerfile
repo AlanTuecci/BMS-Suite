@@ -59,6 +59,7 @@ RUN npm run build
 # there are common steps needed for each.
 ###################################################
 FROM base AS backend-dev
+RUN apk --no-cache add curl
 COPY backend/package.json backend/package-lock.json ./
 RUN npm install
 COPY backend/database.sql backend/server.js ./
@@ -80,16 +81,16 @@ RUN npm run test
 # Stage: final
 #
 # This stage is intended to be the final "production" image. It sets up the
-# backend and copies the built frontend application from the frontend-build stage.
+# backend in an optimized state.
 #
 ###################################################
 FROM base AS final
+RUN apk --no-cache add curl
 ENV NODE_ENV=production
 COPY --from=backend-dev /usr/local/app/package.json /usr/local/app/package-lock.json ./
 RUN npm ci --production && \
     npm cache clean --force
-COPY backend/database.sql backend/server.js ./
+COPY backend/server.js ./
 COPY backend/src ./src
-COPY --from=frontend-build /usr/local/app/build ./src/static
-EXPOSE 80
+EXPOSE 5000
 CMD ["node", "server.js"]

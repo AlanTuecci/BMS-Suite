@@ -1,0 +1,83 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend-dev
+    ports:
+      - "3000:3000"
+    networks:
+      - public
+    volumes:
+      - ./frontend/src:/usr/local/app/src
+      - ./frontend/public:/usr/local/app/public
+    environment:
+      - CHOKIDAR_USEPOLLING=true # ACCORDING TO GEMINI: Helps with hot-reload on Windows
+      - WATCHPACK_POLLING=true # ACCORDING TO GEMINI: Helps with hot-reload on Windows
+      - WDS_SOCKET_PORT=0 # ACCORDING TO GEMINI: Helps with hot-reload on Windows
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-dev
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend/src:/usr/local/app/src
+      - ./backend/server.js:/usr/local/app/server.js
+    environment:
+      - CHOKIDAR_USEPOLLING=true # ACCORDING TO GEMINI: Helps with hot-reload on Windows
+      - WATCHPACK_POLLING=true # ACCORDING TO GEMINI: Helps with hot-reload on Windows
+      - WDS_SOCKET_PORT=0 # ACCORDING TO GEMINI: Helps with hot-reload on Windows
+    networks:
+      - private
+      - public
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/bms-suite/api/health"]
+      interval: 5s
+      retries: 5
+      timeout: 5s
+
+  nginx:
+    image: nginx:1.29-alpine
+    ports:
+      - 8080:8080
+    configs:
+      - source: nginx_config
+        target: /etc/nginx/nginx.conf
+    networks:
+      - public
+    depends_on:
+      backend:
+        condition: service_healthy
+        restart: true
+
+  postgres:
+    image: postgres:18-alpine
+    restart: always
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend/database.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg_database:/var/lib/postgresql/data
+    networks:
+      - private
+
+configs:
+  nginx_config:
+    file: ./nginx.dev.conf
+
+networks:
+  public:
+  private:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "10.0.0.0/19"
+          gateway: "10.0.0.1"
+
+volumes:
+  pg_database:
